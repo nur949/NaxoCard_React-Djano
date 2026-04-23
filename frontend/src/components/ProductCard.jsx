@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Eye, Heart, ShoppingCart, Star } from "lucide-react";
+import { Heart, ShoppingCart, Star } from "lucide-react";
 import { memo } from "react";
 import { Link } from "react-router-dom";
 import { productImage as resolveProductImage } from "../api/client.js";
@@ -44,7 +44,6 @@ function ProductCardComponent(rawProps) {
     availability,
     wishlisted = false,
     onAddToCart,
-    onQuickView,
     onToggleWishlist,
     className,
     loading = false,
@@ -84,12 +83,6 @@ function ProductCardComponent(rawProps) {
     }
   }
 
-  function handleQuickView(event) {
-    event.preventDefault();
-    event.stopPropagation();
-    onQuickView?.(product);
-  }
-
   const hasDiscount = Number(discount) > 0;
   const numericRating = Number(rating || 0);
 
@@ -126,28 +119,6 @@ function ProductCardComponent(rawProps) {
             loading="lazy"
             className="aspect-square w-full object-cover transition duration-300 group-hover:scale-110"
           />
-
-          <div className="pointer-events-none absolute inset-x-3 bottom-3 z-20 translate-y-4 opacity-0 transition duration-300 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100">
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                type="button"
-                onClick={handleQuickView}
-                className="inline-flex items-center justify-center gap-2 rounded-lg bg-white/92 px-3 py-2 text-sm font-semibold text-foreground shadow-sm backdrop-blur transition hover:bg-white"
-              >
-                <Eye size={16} />
-                Quick view
-              </button>
-              <button
-                type="button"
-                onClick={handleAddToCart}
-                disabled={stock < 1}
-                className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                <ShoppingCart size={16} />
-                Add
-              </button>
-            </div>
-          </div>
         </div>
 
         <div className="mt-4 space-y-3">

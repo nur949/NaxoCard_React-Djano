@@ -56,6 +56,27 @@
 
 ## 🧱 Architecture
 
+## 🧠 Tech Stack
+
+<p align="center">
+
+  <!-- Backend -->
+  <img src="https://skillicons.dev/icons?i=django,python" />
+
+  <!-- Frontend -->
+  <img src="https://skillicons.dev/icons?i=react,vite,js,html,css" />
+
+  <!-- Styling -->
+  <img src="https://skillicons.dev/icons?i=tailwind" />
+
+  <!-- Database -->
+  <img src="https://skillicons.dev/icons?i=postgres" />
+
+  <!-- Dev Tools -->
+  <img src="https://skillicons.dev/icons?i=docker,git,github" />
+
+</p>
+
 ```bash id="x8v2lm"
 Frontend (React + Vite + Tailwind)
         ↓

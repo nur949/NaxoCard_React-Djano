@@ -1,0 +1,118 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 20% 98%;
+    --foreground: 213 25% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 32% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 32% 12%;
+    --primary: 220 100% 64%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 207 14% 42%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 210 20% 94%;
+    --muted-foreground: 213 11% 44%;
+    --accent: 171 80% 42%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 72% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 210 18% 88%;
+    --input: 210 18% 88%;
+    --ring: 220 100% 64%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222 30% 8%;
+    --foreground: 40 30% 96%;
+    --card: 222 26% 11%;
+    --card-foreground: 40 30% 96%;
+    --popover: 222 26% 11%;
+    --popover-foreground: 40 30% 96%;
+    --primary: 220 100% 68%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 215 23% 22%;
+    --secondary-foreground: 40 30% 96%;
+    --muted: 218 20% 18%;
+    --muted-foreground: 218 13% 72%;
+    --accent: 38 92% 56%;
+    --accent-foreground: 32 50% 10%;
+    --destructive: 0 72% 58%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 218 18% 24%;
+    --input: 218 18% 24%;
+    --ring: 220 100% 68%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  h1 {
+    @apply text-4xl font-black leading-tight tracking-normal sm:text-6xl;
+  }
+
+  h2 {
+    @apply text-3xl font-extrabold leading-tight tracking-normal;
+  }
+
+  h3 {
+    @apply text-2xl font-bold leading-snug tracking-normal;
+  }
+
+  h4 {
+    @apply text-xl font-bold leading-snug tracking-normal;
+  }
+
+  h5 {
+    @apply text-lg font-semibold leading-snug tracking-normal;
+  }
+
+  h6 {
+    @apply text-base font-semibold leading-snug tracking-normal;
+  }
+}
+
+@layer components {
+  .section {
+    @apply container px-4 sm:px-6 lg:px-8;
+  }
+
+  .surface-glass {
+    @apply border border-white/25 bg-white/70 shadow-soft backdrop-blur-xl dark:border-white/10 dark:bg-card/70;
+  }
+
+  .panel {
+    @apply rounded-lg border bg-card text-card-foreground shadow-soft;
+    box-shadow: 0 2px 8px rgba(27, 46, 94, 0.06);
+  }
+
+  .input {
+    @apply flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  .btn-primary {
+    @apply btn bg-primary text-primary-foreground hover:bg-primary/90;
+  }
+
+  .btn-ghost {
+    @apply btn border border-border bg-background hover:bg-muted;
+  }
+}

@@ -3,9 +3,24 @@ from django.conf import settings
 from django.shortcuts import get_object_or_404
 from rest_framework import decorators, permissions, response, status, views, viewsets
 
-from .models import Cart, CartItem, Order
+from users.models import AdminActivityLog
+
+from .models import Cart, CartItem, Coupon, Order
 from .permissions import IsOwnerOrAdmin
-from .serializers import CartItemSerializer, CartSerializer, OrderSerializer
+from .serializers import CartItemSerializer, CartSerializer, CouponSerializer, OrderSerializer
+
+
+def log_admin_activity(request, action, target_type, description, target_id="", metadata=None):
+    if not request.user or not request.user.is_authenticated or not request.user.is_staff:
+        return
+    AdminActivityLog.objects.create(
+        actor=request.user,
+        action=action,
+        target_type=target_type,
+        target_id=str(target_id),
+        description=description,
+        metadata=metadata or {},
+    )
 
 
 class CartViewSet(viewsets.GenericViewSet):
@@ -69,6 +84,9 @@ class OrderViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         base = Order.all_objects if self.action in ["trash", "restore", "clean_trash"] else Order.objects
         queryset = base.prefetch_related("items").all()
+        status_filter = self.request.query_params.get("status")
+        if status_filter:
+            queryset = queryset.filter(status=status_filter)
         if not self.request.user.is_staff:
             queryset = queryset.filter(user=self.request.user)
         return queryset
@@ -79,7 +97,22 @@ class OrderViewSet(viewsets.ModelViewSet):
         return super().get_permissions()
 
     def perform_destroy(self, instance):
+        order_id = instance.pk
         instance.delete()
+        log_admin_activity(self.request, "order.deleted", "order", f"Deleted order #{order_id}", target_id=order_id)
+
+    def perform_update(self, serializer):
+        previous_status = serializer.instance.status
+        order = serializer.save()
+        if previous_status != order.status:
+            log_admin_activity(
+                self.request,
+                "order.status_updated",
+                "order",
+                f"Order #{order.pk} marked as {order.status}",
+                target_id=order.pk,
+                metadata={"from": previous_status, "to": order.status},
+            )
 
     @decorators.action(detail=False, methods=["get"], permission_classes=[permissions.IsAdminUser])
     def trash(self, request):
@@ -128,10 +161,49 @@ class StripeCheckoutView(views.APIView):
                     "quantity": 1,
                 }
             ],
-            success_url=f"{settings.FRONTEND_URL}/orders?payment=success",
+            success_url=f"{settings.FRONTEND_URL}/order-confirmation?payment=success",
             cancel_url=f"{settings.FRONTEND_URL}/checkout?payment=cancelled",
             metadata={"order_id": order.id},
         )
         order.stripe_session_id = session.id
         order.save(update_fields=["stripe_session_id"])
         return response.Response({"checkout_url": session.url})
+
+
+class CouponViewSet(viewsets.ModelViewSet):
+    serializer_class = CouponSerializer
+
+    def get_permissions(self):
+        if self.action in ["list", "retrieve", "validate"]:
+            return [permissions.IsAuthenticated()]
+        return [permissions.IsAdminUser()]
+
+    def get_queryset(self):
+        queryset = Coupon.objects.all()
+        if not self.request.user.is_staff:
+            queryset = queryset.filter(is_active=True)
+        return queryset
+
+    def perform_create(self, serializer):
+        coupon = serializer.save(code=serializer.validated_data["code"].upper())
+        log_admin_activity(self.request, "coupon.created", "coupon", f"Created coupon {coupon.code}", target_id=coupon.pk)
+
+    def perform_update(self, serializer):
+        coupon = serializer.save(code=serializer.validated_data.get("code", serializer.instance.code).upper())
+        log_admin_activity(self.request, "coupon.updated", "coupon", f"Updated coupon {coupon.code}", target_id=coupon.pk)
+
+    def perform_destroy(self, instance):
+        code = instance.code
+        coupon_id = instance.pk
+        instance.delete()
+        log_admin_activity(self.request, "coupon.deleted", "coupon", f"Deleted coupon {code}", target_id=coupon_id)
+
+    @decorators.action(detail=False, methods=["post"], permission_classes=[permissions.IsAuthenticated])
+    def validate(self, request):
+        code = request.data.get("code", "").strip().upper()
+        subtotal = request.data.get("subtotal") or 0
+        coupon = Coupon.objects.filter(code=code, is_active=True).first()
+        if not coupon or not coupon.is_valid_for_order(subtotal):
+            return response.Response({"valid": False, "detail": "Coupon is invalid."}, status=status.HTTP_400_BAD_REQUEST)
+        discount = coupon.calculate_discount(subtotal)
+        return response.Response({"valid": True, "coupon": CouponSerializer(coupon).data, "discount_amount": discount})

@@ -116,3 +116,55 @@
     @apply btn border border-border bg-background hover:bg-muted;
   }
 }
+
+@keyframes auth-gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes auth-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0);
+  }
+}
+
+@keyframes auth-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20%,
+  60% {
+    transform: translateX(-6px);
+  }
+  40%,
+  80% {
+    transform: translateX(6px);
+  }
+}
+
+@layer utilities {
+  .animate-auth-gradient {
+    background-size: 200% 200%;
+    animation: auth-gradient 12s ease infinite;
+  }
+
+  .animate-auth-float {
+    animation: auth-float 7s ease-in-out infinite;
+  }
+
+  .animate-auth-shake {
+    animation: auth-shake 0.4s ease;
+  }
+}

@@ -1,10 +1,25 @@
-from django.db.models import Avg, Q
+from django.db.models import Avg, F, Q
 from django_filters import rest_framework as filters
 from rest_framework import decorators, permissions, response, status, viewsets
+
+from users.models import AdminActivityLog
 
 from .models import Category, Product, ProductReview, Wishlist
 from .permissions import IsAdminOrReadOnly
 from .serializers import CategorySerializer, ProductReviewSerializer, ProductSerializer
+
+
+def log_admin_activity(request, action, target_type, description, target_id="", metadata=None):
+    if not request.user or not request.user.is_authenticated or not request.user.is_staff:
+        return
+    AdminActivityLog.objects.create(
+        actor=request.user,
+        action=action,
+        target_type=target_type,
+        target_id=str(target_id),
+        description=description,
+        metadata=metadata or {},
+    )
 
 
 class ProductFilter(filters.FilterSet):
@@ -12,10 +27,23 @@ class ProductFilter(filters.FilterSet):
     max_price = filters.NumberFilter(field_name="price", lookup_expr="lte")
     min_rating = filters.NumberFilter(field_name="rating", lookup_expr="gte")
     category = filters.CharFilter(field_name="category__slug")
+    in_stock = filters.BooleanFilter(method="filter_in_stock")
+    featured = filters.BooleanFilter(field_name="is_featured")
+    on_sale = filters.BooleanFilter(method="filter_on_sale")
+
+    def filter_in_stock(self, queryset, name, value):
+        if value:
+            return queryset.filter(stock__gt=0)
+        return queryset
+
+    def filter_on_sale(self, queryset, name, value):
+        if value:
+            return queryset.filter(compare_at_price__isnull=False, compare_at_price__gt=F("price"))
+        return queryset
 
     class Meta:
         model = Product
-        fields = ["category", "min_price", "max_price", "min_rating"]
+        fields = ["category", "min_price", "max_price", "min_rating", "in_stock", "featured", "on_sale"]
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -29,7 +57,17 @@ class CategoryViewSet(viewsets.ModelViewSet):
         return Category.objects.all()
 
     def perform_destroy(self, instance):
+        slug = instance.slug
         instance.delete()
+        log_admin_activity(self.request, "category.deleted", "category", f"Deleted category {instance.name}", target_id=slug)
+
+    def perform_create(self, serializer):
+        category = serializer.save()
+        log_admin_activity(self.request, "category.created", "category", f"Created category {category.name}", target_id=category.slug)
+
+    def perform_update(self, serializer):
+        category = serializer.save()
+        log_admin_activity(self.request, "category.updated", "category", f"Updated category {category.name}", target_id=category.slug)
 
     @decorators.action(detail=False, methods=["get"], permission_classes=[permissions.IsAdminUser])
     def trash(self, request):
@@ -69,7 +107,17 @@ class ProductViewSet(viewsets.ModelViewSet):
         return queryset
 
     def perform_destroy(self, instance):
+        slug = instance.slug
         instance.delete()
+        log_admin_activity(self.request, "product.deleted", "product", f"Deleted product {instance.name}", target_id=slug)
+
+    def perform_create(self, serializer):
+        product = serializer.save()
+        log_admin_activity(self.request, "product.created", "product", f"Created product {product.name}", target_id=product.slug)
+
+    def perform_update(self, serializer):
+        product = serializer.save()
+        log_admin_activity(self.request, "product.updated", "product", f"Updated product {product.name}", target_id=product.slug)
 
     @decorators.action(detail=False, methods=["get"], permission_classes=[permissions.IsAdminUser])
     def trash(self, request):

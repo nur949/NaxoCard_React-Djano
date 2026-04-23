@@ -1,24 +1,26 @@
-import Chip from "@mui/material/Chip";
+import { cva } from "class-variance-authority";
 import { cn } from "../../lib/utils.js";
 
-function mapColor(variant) {
-  if (variant === "accent") return "warning";
-  if (variant === "destructive") return "error";
-  if (variant === "secondary") return "secondary";
-  return "primary";
+const badgeVariants = cva(
+  "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors",
+  {
+    variants: {
+      variant: {
+        default: "border-transparent bg-primary text-primary-foreground",
+        secondary: "border-transparent bg-secondary text-secondary-foreground",
+        destructive: "border-transparent bg-destructive text-destructive-foreground",
+        outline: "border-border bg-background text-foreground",
+        accent: "border-transparent bg-accent text-accent-foreground",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
+  }
+);
+
+function Badge({ className, variant, ...props }) {
+  return <div className={cn(badgeVariants({ variant }), className)} {...props} />;
 }
 
-function Badge({ className, variant = "default", children, ...props }) {
-  return (
-    <Chip
-      size="small"
-      color={mapColor(variant)}
-      variant={variant === "outline" ? "outlined" : "filled"}
-      label={children}
-      className={cn(className)}
-      {...props}
-    />
-  );
-}
-
-export { Badge };
+export { Badge, badgeVariants };

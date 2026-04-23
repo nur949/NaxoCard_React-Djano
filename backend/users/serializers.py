@@ -4,7 +4,7 @@ from rest_framework import serializers
 
 User = get_user_model()
 
-from .models import LoyaltyTransaction
+from .models import AdminActivityLog, LoyaltyTransaction
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -24,6 +24,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     next_tier_points = serializers.SerializerMethodField()
+    avatar = serializers.ImageField(required=False, allow_null=True)
 
     class Meta:
         model = User
@@ -34,6 +35,7 @@ class UserSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "phone",
+            "avatar",
             "address",
             "city",
             "postal_code",
@@ -63,6 +65,7 @@ class AdminUserSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "phone",
+            "avatar",
             "city",
             "country",
             "is_active",
@@ -86,6 +89,15 @@ class LoyaltyTransactionSerializer(serializers.ModelSerializer):
         model = LoyaltyTransaction
         fields = ("id", "user", "user_name", "points", "transaction_type", "description", "order_id", "created_at")
         read_only_fields = ("id", "user_name", "created_at")
+
+
+class AdminActivityLogSerializer(serializers.ModelSerializer):
+    actor_name = serializers.CharField(source="actor.username", read_only=True)
+
+    class Meta:
+        model = AdminActivityLog
+        fields = ("id", "actor", "actor_name", "action", "target_type", "target_id", "description", "metadata", "created_at")
+        read_only_fields = ("id", "actor_name", "created_at")
 
 
 class LoyaltyAdjustSerializer(serializers.Serializer):

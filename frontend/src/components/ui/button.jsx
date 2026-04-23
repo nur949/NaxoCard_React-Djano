@@ -1,79 +1,38 @@
-import MuiButton from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import { Children, forwardRef, isValidElement } from "react";
+import { Slot } from "@radix-ui/react-slot";
+import { cva } from "class-variance-authority";
+import { forwardRef } from "react";
 import { cn } from "../../lib/utils.js";
 
-function mapVariant(variant) {
-  if (variant === "outline") return "outlined";
-  if (variant === "ghost") return "text";
-  if (variant === "destructive") return "contained";
-  if (variant === "secondary") return "contained";
-  return "contained";
-}
-
-function mapColor(variant) {
-  if (variant === "destructive") return "error";
-  if (variant === "secondary") return "secondary";
-  return "primary";
-}
-
-function mapSize(size) {
-  if (size === "sm") return "small";
-  if (size === "lg") return "large";
-  return "medium";
-}
-
-const Button = forwardRef(({ className, variant = "default", size = "default", asChild = false, children, ...props }, ref) => {
-  if (asChild) {
-    const child = Children.only(children);
-
-    if (!isValidElement(child)) {
-      return null;
-    }
-
-    return (
-      <MuiButton
-        component={child.type}
-        ref={ref}
-        variant={mapVariant(variant)}
-        color={mapColor(variant)}
-        size={mapSize(size)}
-        className={cn("gap-2", child.props.className, className)}
-        {...props}
-        {...child.props}
-      >
-        {child.props.children}
-      </MuiButton>
-    );
+const buttonVariants = cva(
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
+  {
+    variants: {
+      variant: {
+        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        outline: "border border-border bg-background hover:bg-muted",
+        secondary: "bg-secondary text-secondary-foreground hover:opacity-90",
+        ghost: "hover:bg-muted",
+      },
+      size: {
+        default: "h-10 px-4 py-2",
+        sm: "h-9 rounded-md px-3",
+        lg: "h-11 rounded-md px-6",
+        icon: "h-10 w-10",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
   }
+);
 
-  if (size === "icon") {
-    return (
-      <IconButton
-        ref={ref}
-        color={mapColor(variant)}
-        className={cn("rounded-md", className)}
-        {...props}
-      >
-        {children}
-      </IconButton>
-    );
-  }
-
-  return (
-    <MuiButton
-      ref={ref}
-      variant={mapVariant(variant)}
-      color={mapColor(variant)}
-      size={mapSize(size)}
-      className={cn("gap-2", className)}
-      {...props}
-    >
-      {children}
-    </MuiButton>
-  );
+const Button = forwardRef(({ className, variant, size, asChild = false, ...props }, ref) => {
+  const Comp = asChild ? Slot : "button";
+  return <Comp className={cn(buttonVariants({ variant, size }), className)} ref={ref} {...props} />;
 });
 
 Button.displayName = "Button";
 
-export { Button };
+export { Button, buttonVariants };

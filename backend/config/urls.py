@@ -5,15 +5,16 @@ from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
-from orders.views import CartViewSet, OrderViewSet, StripeCheckoutView
+from orders.views import CartViewSet, CouponViewSet, OrderViewSet, StripeCheckoutView
 from products.views import CategoryViewSet, ProductViewSet
-from users.views import AdminUserViewSet, LoyaltyView, PasswordChangeView, RegisterView, UserProfileView
+from users.views import AdminActivityLogView, AdminDashboardAnalyticsView, AdminUserViewSet, LoyaltyView, PasswordChangeView, RegisterView, UserProfileView
 
 router = DefaultRouter()
 router.register("categories", CategoryViewSet, basename="category")
 router.register("products", ProductViewSet, basename="product")
 router.register("cart", CartViewSet, basename="cart")
 router.register("orders", OrderViewSet, basename="order")
+router.register("coupons", CouponViewSet, basename="coupon")
 router.register("admin/users", AdminUserViewSet, basename="admin-users")
 
 urlpatterns = [
@@ -24,6 +25,8 @@ urlpatterns = [
     path("api/auth/profile/", UserProfileView.as_view(), name="profile"),
     path("api/auth/password/", PasswordChangeView.as_view(), name="password_change"),
     path("api/auth/loyalty/", LoyaltyView.as_view(), name="loyalty"),
+    path("api/admin/analytics/", AdminDashboardAnalyticsView.as_view(), name="admin-analytics"),
+    path("api/admin/activity/", AdminActivityLogView.as_view(), name="admin-activity"),
     path("api/checkout/stripe/", StripeCheckoutView.as_view(), name="stripe_checkout"),
     path("api/", include(router.urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

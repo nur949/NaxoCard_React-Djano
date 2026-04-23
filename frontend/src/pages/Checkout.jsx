@@ -15,15 +15,28 @@ export default function Checkout() {
   const [shipping_address, setAddress] = useState(user?.address || "");
   const [contact, setContact] = useState(user?.phone || "");
   const [city, setCity] = useState(user?.city || "");
+  const [couponCode, setCouponCode] = useState("");
+  const [couponInfo, setCouponInfo] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  async function applyCoupon() {
+    setError("");
+    try {
+      const { data } = await api.post("/coupons/validate/", { code: couponCode, subtotal: cart.total });
+      setCouponInfo(data);
+    } catch (e) {
+      setCouponInfo(null);
+      setError(e.response?.data?.detail || "Coupon is invalid.");
+    }
+  }
 
   async function submit(e) {
     e.preventDefault();
     setLoading(true); setError("");
     try {
       const composedAddress = [shipping_address, city && `City: ${city}`, contact && `Phone: ${contact}`].filter(Boolean).join("\n");
-      await api.post("/orders/", { shipping_address: composedAddress });
+      await api.post("/orders/", { shipping_address: composedAddress, coupon_code: couponInfo?.coupon?.code || couponCode });
       await loadCart();
       const { data } = await api.post("/checkout/stripe/");
       window.location.href = data.checkout_url;
@@ -72,6 +85,11 @@ export default function Checkout() {
               <CardTitle className="flex items-center gap-2 text-xl"><CreditCard size={20} /> Payment</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-3">
+              <div className="grid gap-3 sm:grid-cols-[1fr_auto]">
+                <input className="input" placeholder="Coupon code" value={couponCode} onChange={(e) => setCouponCode(e.target.value.toUpperCase())} />
+                <Button type="button" variant="outline" onClick={applyCoupon}>Apply coupon</Button>
+              </div>
+              {couponInfo?.valid && <div className="rounded-md border border-primary/20 bg-primary/10 p-3 text-sm text-primary">Coupon applied. Discount: Tk {couponInfo.discount_amount}</div>}
               <div className="rounded-md border bg-muted p-4 text-sm text-muted-foreground">
                 You will be redirected to Stripe Checkout in test mode after order creation.
               </div>

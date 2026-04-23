@@ -1,32 +1,28 @@
-import MuiCard from "@mui/material/Card";
-import MuiCardContent from "@mui/material/CardContent";
-import MuiCardHeader from "@mui/material/CardHeader";
-import Typography from "@mui/material/Typography";
 import { forwardRef } from "react";
 import { cn } from "../../lib/utils.js";
 
 const Card = forwardRef(({ className, ...props }, ref) => (
-  <MuiCard ref={ref} className={cn("text-card-foreground", className)} {...props} />
+  <div ref={ref} className={cn("rounded-xl border bg-card text-card-foreground shadow-soft", className)} {...props} />
 ));
 Card.displayName = "Card";
 
-const CardHeader = forwardRef(({ className, children, ...props }, ref) => (
-  <MuiCardHeader ref={ref} className={cn("p-6", className)} title={children} {...props} />
+const CardHeader = forwardRef(({ className, ...props }, ref) => (
+  <div ref={ref} className={cn("flex flex-col space-y-1.5 p-6", className)} {...props} />
 ));
 CardHeader.displayName = "CardHeader";
 
 const CardTitle = forwardRef(({ className, ...props }, ref) => (
-  <Typography ref={ref} variant="h5" className={cn("font-bold", className)} {...props} />
+  <h3 ref={ref} className={cn("text-xl font-black leading-none tracking-tight", className)} {...props} />
 ));
 CardTitle.displayName = "CardTitle";
 
 const CardDescription = forwardRef(({ className, ...props }, ref) => (
-  <Typography ref={ref} variant="body2" color="text.secondary" className={className} {...props} />
+  <p ref={ref} className={cn("text-sm text-muted-foreground", className)} {...props} />
 ));
 CardDescription.displayName = "CardDescription";
 
 const CardContent = forwardRef(({ className, ...props }, ref) => (
-  <MuiCardContent ref={ref} className={cn("p-6", className)} {...props} />
+  <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
 ));
 CardContent.displayName = "CardContent";
 

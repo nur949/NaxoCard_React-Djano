@@ -26,7 +26,7 @@ export default function Home() {
       setTrending(trendingResponse.data.results || trendingResponse.data);
       setCategories((categoryResponse.data.results || categoryResponse.data).slice(0, 4));
     }).finally(() => setLoading(false));
-  }, [loadHome]);
+  }, []);
 
   useEffect(() => {
     loadHome();
@@ -44,7 +44,7 @@ export default function Home() {
       window.removeEventListener("focus", refresh);
       window.removeEventListener("myshop:api-mutated", onMutation);
     };
-  }, []);
+  }, [loadHome]);
 
   return (
     <>

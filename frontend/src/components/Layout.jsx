@@ -60,14 +60,6 @@ export default function Layout() {
           <button className="btn-ghost px-3 md:hidden" onClick={() => setOpen(!open)}><Menu size={20} /></button>
         </div>
         <MegaNav />
-        <div className="hidden bg-muted/40 py-2 lg:block">
-          <div className="section flex items-center justify-center gap-4 text-xs">
-            <span className="font-bold uppercase">trending</span>
-            {["Power", "Northstar", "Loafer", "Sandal", "Heel", "casual shoe"].map((term) => (
-              <Link key={term} to={`/products?search=${encodeURIComponent(term)}`} className="rounded-full bg-background px-3 py-1 font-semibold hover:bg-primary hover:text-primary-foreground">{term}</Link>
-            ))}
-          </div>
-        </div>
         {open && <div className="section grid gap-3 pb-4 md:hidden"><SearchBox compact />{[...nav, ["Cart", "/cart"], [user ? "Profile" : "Login", user ? "/profile" : "/auth"]].map(([l, t]) => <Link key={t} to={t} onClick={() => setOpen(false)} className="rounded-md px-3 py-2 text-sm font-semibold hover:bg-muted">{l}</Link>)}</div>}
       </header>
       <main><Outlet /></main>

@@ -18,6 +18,7 @@ const Auth = lazy(() => import("./pages/Auth.jsx"));
 const Profile = lazy(() => import("./pages/Profile.jsx"));
 const Orders = lazy(() => import("./pages/Orders.jsx"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard.jsx"));
+const OrderConfirmation = lazy(() => import("./pages/OrderConfirmation.jsx"));
 
 function PrivateRoute({ children, adminOnly = false }) {
   const { user, loading } = useAuth();
@@ -45,6 +46,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                     <Route path="/auth" element={<Auth />} />
                     <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
                     <Route path="/orders" element={<PrivateRoute><Orders /></PrivateRoute>} />
+                    <Route path="/order-confirmation" element={<PrivateRoute><OrderConfirmation /></PrivateRoute>} />
                     <Route path="/admin" element={<PrivateRoute adminOnly><AdminDashboard /></PrivateRoute>} />
                   </Route>
                 </Routes>

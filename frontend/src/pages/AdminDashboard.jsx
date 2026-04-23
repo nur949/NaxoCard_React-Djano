@@ -1,180 +1,687 @@
-import { Award, Edit, Plus, RotateCcw, Search, Trash2, Users } from "lucide-react";
-import { useEffect, useState } from "react";
+import {
+  Activity,
+  BadgePercent,
+  Boxes,
+  LayoutDashboard,
+  PackageSearch,
+  ReceiptText,
+  Shield,
+  Tags,
+  Trash2,
+  UserCog,
+} from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { motion } from "framer-motion";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Legend,
+  Line,
+  LineChart,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 import api from "../api/client.js";
 import ErrorBox from "../components/ErrorBox.jsx";
+import Skeleton from "../components/Skeleton.jsx";
+import { Button } from "../components/ui/button.jsx";
 import { Card, CardContent } from "../components/ui/card.jsx";
+import {
+  fetchAdminAnalytics,
+  fetchAdminUsers,
+  fetchCategories,
+  fetchCoupons,
+  fetchOrders,
+  fetchProducts,
+} from "../services/admin.js";
 
-const emptyProduct = { name: "", slug: "", category_id: "", price: "", stock: 0, description: "", rating: "0.00", is_active: true, image_file: null };
+const sections = [
+  ["overview", LayoutDashboard, "Overview"],
+  ["users", UserCog, "Users"],
+  ["products", Boxes, "Products"],
+  ["orders", ReceiptText, "Orders"],
+  ["categories", Tags, "Categories"],
+  ["coupons", BadgePercent, "Coupons"],
+];
+
+const chartColors = ["#4f7cff", "#19a48f", "#ff9f43", "#ef5d60", "#7c5cff"];
+const emptyProduct = {
+  name: "",
+  slug: "",
+  category_id: "",
+  price: "",
+  stock: "",
+  description: "",
+  compare_at_price: "",
+  is_featured: false,
+  image_file: null,
+};
+const emptyCategory = { name: "", slug: "" };
+const emptyCoupon = {
+  code: "",
+  discount_type: "percent",
+  value: "",
+  min_order_amount: "",
+  usage_limit: "",
+  is_active: true,
+  valid_to: "",
+};
 
 export default function AdminDashboard() {
-  const [tab, setTab] = useState("products");
-  const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [orders, setOrders] = useState([]);
-  const [users, setUsers] = useState([]);
-  const [trash, setTrash] = useState({ products: [], orders: [], categories: [] });
-  const [userSearch, setUserSearch] = useState("");
-  const [pointAdjust, setPointAdjust] = useState({ userId: "", points: "", description: "" });
-  const [form, setForm] = useState(emptyProduct);
-  const [editing, setEditing] = useState(null);
+  const [activeSection, setActiveSection] = useState("overview");
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  async function load() {
-    const [p, c, o, u, tp, to, tc] = await Promise.all([
-      api.get("/products/"),
-      api.get("/categories/"),
-      api.get("/orders/"),
-      api.get("/admin/users/"),
-      api.get("/products/trash/"),
-      api.get("/orders/trash/"),
-      api.get("/categories/trash/"),
-    ]);
-    setProducts(p.data.results || p.data); setCategories(c.data.results || c.data); setOrders(o.data.results || o.data); setUsers(u.data.results || u.data);
-    setTrash({ products: tp.data.results || tp.data, orders: to.data.results || to.data, categories: tc.data.results || tc.data });
-  }
-  useEffect(() => { load().catch(() => setError("Admin data could not be loaded.")); }, []);
-  async function saveProduct(e) {
-    e.preventDefault(); setError("");
+  const [analytics, setAnalytics] = useState(null);
+  const [users, setUsers] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [coupons, setCoupons] = useState([]);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [userSearch, setUserSearch] = useState("");
+  const [userRoleFilter, setUserRoleFilter] = useState("");
+  const [orderStatusFilter, setOrderStatusFilter] = useState("");
+  const [productForm, setProductForm] = useState(emptyProduct);
+  const [productEditing, setProductEditing] = useState(null);
+  const [categoryForm, setCategoryForm] = useState(emptyCategory);
+  const [categoryEditing, setCategoryEditing] = useState(null);
+  const [couponForm, setCouponForm] = useState(emptyCoupon);
+  const [couponEditing, setCouponEditing] = useState(null);
+
+  async function loadDashboard() {
+    setLoading(true);
+    setError("");
     try {
-      const payload = new FormData();
-      ["name", "slug", "price", "stock", "description", "rating", "is_active"].forEach((key) => payload.append(key, form[key]));
-      if (form.category_id) payload.append("category_id", form.category_id);
-      if (form.image_file) payload.append("image", form.image_file);
-      const config = { headers: { "Content-Type": "multipart/form-data" } };
-      if (editing) await api.patch(`/products/${editing}/`, payload, config);
-      else await api.post("/products/", payload, config);
-      setForm(emptyProduct); setEditing(null); await load();
-    } catch (e) { setError("Product save failed. Check slug uniqueness and required fields."); }
-  }
-  async function removeProduct(slug) { await api.delete(`/products/${slug}/`); await load(); }
-  async function updateOrder(id, status) { await api.patch(`/orders/${id}/`, { status }); await load(); }
-  async function removeOrder(id) { await api.delete(`/orders/${id}/`); await load(); }
-  async function restoreProduct(slug) { await api.post(`/products/${slug}/restore/`); await load(); }
-  async function restoreOrder(id) { await api.post(`/orders/${id}/restore/`); await load(); }
-  async function restoreCategory(slug) { await api.post(`/categories/${slug}/restore/`); await load(); }
-  async function cleanTrash(type) { await api.delete(`/${type}/clean_trash/`); await load(); }
-  async function updateUser(id, payload) { await api.patch(`/admin/users/${id}/`, payload); await load(); }
-  async function adjustPoints(e) {
-    e.preventDefault(); setError("");
-    try {
-      await api.post(`/admin/users/${pointAdjust.userId}/adjust_points/`, { points: Number(pointAdjust.points), description: pointAdjust.description });
-      setPointAdjust({ userId: "", points: "", description: "" });
-      await load();
+      const [analyticsData, usersData, productsData, ordersData, categoriesData, couponsData] = await Promise.all([
+        fetchAdminAnalytics(),
+        fetchAdminUsers({ search: userSearch, role: userRoleFilter || undefined }),
+        fetchProducts(),
+        fetchOrders({ status: orderStatusFilter || undefined }),
+        fetchCategories(),
+        fetchCoupons(),
+      ]);
+      setAnalytics(analyticsData);
+      setUsers(usersData);
+      setProducts(productsData);
+      setOrders(ordersData);
+      setCategories(categoriesData);
+      setCoupons(couponsData);
+      setSelectedOrder((current) => ordersData.find((order) => order.id === current?.id) || ordersData[0] || null);
     } catch {
-      setError("Point adjustment failed.");
+      setError("Admin dashboard data could not be loaded.");
+    } finally {
+      setLoading(false);
     }
   }
-  const revenue = orders.reduce((sum, order) => sum + Number(order.total || 0), 0).toFixed(2);
-  const lowStock = products.filter((product) => product.stock <= 5);
-  const paidOrders = orders.filter((order) => ["paid", "processing", "shipped", "delivered"].includes(order.status)).length;
-  const filteredUsers = users.filter((item) => `${item.username} ${item.email} ${item.phone || ""}`.toLowerCase().includes(userSearch.toLowerCase()));
+
+  useEffect(() => {
+    loadDashboard();
+  }, [userSearch, userRoleFilter, orderStatusFilter]);
+
+  const lowStockProducts = useMemo(() => products.filter((item) => Number(item.stock) <= 5), [products]);
+  const recentActivity = analytics?.recent_activity || [];
+
+  async function saveProduct(e) {
+    e.preventDefault();
+    setError("");
+    try {
+      const payload = new FormData();
+      ["name", "slug", "category_id", "price", "stock", "description", "compare_at_price"].forEach((field) => {
+        if (productForm[field] !== "" && productForm[field] !== null) payload.append(field, productForm[field]);
+      });
+      payload.append("is_featured", productForm.is_featured);
+      if (productForm.image_file) payload.append("image", productForm.image_file);
+      if (productEditing) await api.patch(`/products/${productEditing}/`, payload, { headers: { "Content-Type": "multipart/form-data" } });
+      else await api.post("/products/", payload, { headers: { "Content-Type": "multipart/form-data" } });
+      setProductForm(emptyProduct);
+      setProductEditing(null);
+      await loadDashboard();
+    } catch {
+      setError("Product save failed.");
+    }
+  }
+
+  async function saveCategory(e) {
+    e.preventDefault();
+    setError("");
+    try {
+      if (categoryEditing) await api.patch(`/categories/${categoryEditing}/`, categoryForm);
+      else await api.post("/categories/", categoryForm);
+      setCategoryForm(emptyCategory);
+      setCategoryEditing(null);
+      await loadDashboard();
+    } catch {
+      setError("Category save failed.");
+    }
+  }
+
+  async function saveCoupon(e) {
+    e.preventDefault();
+    setError("");
+    try {
+      const payload = {
+        ...couponForm,
+        code: couponForm.code.toUpperCase(),
+        value: Number(couponForm.value || 0),
+        min_order_amount: Number(couponForm.min_order_amount || 0),
+        usage_limit: couponForm.usage_limit ? Number(couponForm.usage_limit) : null,
+        valid_to: couponForm.valid_to || null,
+      };
+      if (couponEditing) await api.patch(`/coupons/${couponEditing}/`, payload);
+      else await api.post("/coupons/", payload);
+      setCouponForm(emptyCoupon);
+      setCouponEditing(null);
+      await loadDashboard();
+    } catch {
+      setError("Coupon save failed.");
+    }
+  }
+
+  async function updateUser(userId, payload) {
+    setError("");
+    try {
+      await api.patch(`/admin/users/${userId}/`, payload);
+      await loadDashboard();
+    } catch {
+      setError("User update failed.");
+    }
+  }
+
+  async function deleteUser(userId) {
+    setError("");
+    try {
+      await api.delete(`/admin/users/${userId}/`);
+      await loadDashboard();
+    } catch {
+      setError("User delete failed.");
+    }
+  }
+
+  async function updateOrder(orderId, status) {
+    setError("");
+    try {
+      await api.patch(`/orders/${orderId}/`, { status });
+      await loadDashboard();
+    } catch {
+      setError("Order update failed.");
+    }
+  }
+
+  async function removeEntity(path) {
+    setError("");
+    try {
+      await api.delete(path);
+      await loadDashboard();
+    } catch {
+      setError("Delete failed.");
+    }
+  }
+
+  function startProductEdit(product) {
+    setActiveSection("products");
+    setProductEditing(product.slug);
+    setProductForm({
+      name: product.name || "",
+      slug: product.slug || "",
+      category_id: product.category?.id || "",
+      price: product.price || "",
+      stock: product.stock || "",
+      description: product.description || "",
+      compare_at_price: product.compare_at_price || "",
+      is_featured: Boolean(product.is_featured),
+      image_file: null,
+    });
+  }
+
+  function startCategoryEdit(category) {
+    setActiveSection("categories");
+    setCategoryEditing(category.slug);
+    setCategoryForm({ name: category.name, slug: category.slug });
+  }
+
+  function startCouponEdit(coupon) {
+    setActiveSection("coupons");
+    setCouponEditing(coupon.id);
+    setCouponForm({
+      code: coupon.code || "",
+      discount_type: coupon.discount_type || "percent",
+      value: coupon.value || "",
+      min_order_amount: coupon.min_order_amount || "",
+      usage_limit: coupon.usage_limit || "",
+      is_active: Boolean(coupon.is_active),
+      valid_to: coupon.valid_to ? coupon.valid_to.slice(0, 16) : "",
+    });
+  }
+
+  if (loading && !analytics) {
+    return <section className="section py-8"><Skeleton lines={18} /></section>;
+  }
+
   return (
     <section className="section py-8">
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3"><h1 className="text-3xl font-black">Admin dashboard</h1><div className="flex flex-wrap gap-2">{["products", "orders", "users", "loyalty", "trash"].map((t) => <button key={t} className={tab === t ? "btn-primary" : "btn-ghost"} onClick={() => setTab(t)}>{t}</button>)}</div></div>
       <ErrorBox message={error} />
-      <div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {[["Products", products.length], ["Orders", orders.length], ["Customers", users.length], ["Revenue", `$${revenue}`]].map(([label, value]) => (
-          <Card key={label}><CardContent className="p-5"><p className="text-sm text-muted-foreground">{label}</p><p className="mt-2 text-2xl font-black">{value}</p></CardContent></Card>
-        ))}
-      </div>
-      {lowStock.length > 0 && <div className="mb-6 rounded-md border border-accent/30 bg-accent/10 p-4 text-sm text-accent-foreground">Low stock: {lowStock.slice(0, 5).map((product) => product.name).join(", ")}</div>}
-      {tab === "products" && (
-        <div className="grid gap-6 lg:grid-cols-[420px_1fr]">
-          <form className="panel h-fit p-5" onSubmit={saveProduct}>
-            <h2 className="mb-4 flex items-center gap-2 font-black"><Plus size={18} /> {editing ? "Edit product" : "Add product"}</h2>
-            <div className="grid gap-3">
-              {["name", "slug", "price", "stock", "rating"].map((f) => <input key={f} className="input" placeholder={f} value={form[f]} onChange={(e) => setForm({ ...form, [f]: e.target.value })} required />)}
-              <select className="input" value={form.category_id || ""} onChange={(e) => setForm({ ...form, category_id: e.target.value })}><option value="">No category</option>{categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}</select>
-              <input className="input" type="file" accept="image/*" onChange={(e) => setForm({ ...form, image_file: e.target.files?.[0] || null })} />
-              <textarea className="input min-h-28" placeholder="description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} required />
-              <button className="btn-primary">Save product</button>
-            </div>
-          </form>
-          <div className="grid gap-3">{products.map((p) => <div className="panel flex flex-wrap items-center justify-between gap-3 p-4" key={p.id}><div><strong>{p.name}</strong><p className="text-sm text-muted-foreground">${p.price} - stock {p.stock}</p></div><div className="flex gap-2"><button className="btn-ghost px-3" onClick={() => { setEditing(p.slug); setForm({ name: p.name, slug: p.slug, category_id: p.category?.id || "", price: p.price, stock: p.stock, description: p.description, rating: p.rating, is_active: p.is_active, image_file: null }); }}><Edit size={17} /></button><button className="btn-ghost px-3" onClick={() => removeProduct(p.slug)}><Trash2 size={17} /></button></div></div>)}</div>
-        </div>
-      )}
-      {tab === "orders" && <div className="grid gap-3">{orders.map((o) => <div className="panel flex flex-wrap items-center justify-between gap-3 p-4" key={o.id}><div><strong>Order #{o.id}</strong><p className="text-sm text-muted-foreground">${o.total}</p></div><div className="flex gap-2"><select className="input w-44" value={o.status} onChange={(e) => updateOrder(o.id, e.target.value)}>{["pending", "paid", "processing", "shipped", "delivered", "canceled"].map((s) => <option key={s}>{s}</option>)}</select><button className="btn-ghost px-3" onClick={() => removeOrder(o.id)}><Trash2 size={17} /></button></div></div>)}</div>}
-      {tab === "users" && (
-        <div className="grid gap-4">
-          <div className="panel flex items-center gap-3 p-4">
-            <Search size={18} className="text-muted-foreground" />
-            <input className="input border-0 focus-visible:ring-0" placeholder="Search customers by username, email, phone" value={userSearch} onChange={(e) => setUserSearch(e.target.value)} />
+      <div className="grid gap-6 xl:grid-cols-[240px_minmax(0,1fr)]">
+        <aside className="panel h-fit p-4">
+          <div className="border-b pb-4">
+            <p className="text-xs font-black uppercase tracking-[0.24em] text-primary">Admin panel</p>
+            <h1 className="mt-2 text-2xl font-black">Control center</h1>
           </div>
-          <div className="grid gap-3">
-            {filteredUsers.map((item) => (
-              <div className="panel grid gap-3 p-4 lg:grid-cols-[1fr_auto_auto] lg:items-center" key={item.id}>
-                <div>
-                  <div className="flex items-center gap-2"><Users size={17} className="text-primary" /><strong>{item.username}</strong><span className="rounded-full bg-muted px-2 py-0.5 text-xs capitalize">{item.loyalty_tier}</span></div>
-                  <p className="mt-1 text-sm text-muted-foreground">{item.email} {item.phone ? `- ${item.phone}` : ""}</p>
-                  <p className="mt-1 text-xs text-muted-foreground">Points: {item.loyalty_points} available / {item.lifetime_points} lifetime</p>
-                </div>
-                <label className="flex items-center gap-2 text-sm font-semibold"><input type="checkbox" checked={item.is_active} onChange={(e) => updateUser(item.id, { is_active: e.target.checked })} /> Active</label>
-                <label className="flex items-center gap-2 text-sm font-semibold"><input type="checkbox" checked={item.is_staff} onChange={(e) => updateUser(item.id, { is_staff: e.target.checked })} /> Staff</label>
-              </div>
+          <nav className="mt-4 grid gap-2">
+            {sections.map(([id, Icon, label]) => (
+              <button
+                key={id}
+                className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm font-semibold transition-colors ${activeSection === id ? "bg-primary text-primary-foreground" : "hover:bg-muted"}`}
+                onClick={() => setActiveSection(id)}
+              >
+                <Icon size={17} />
+                {label}
+              </button>
             ))}
+          </nav>
+          <div className="mt-5 rounded-xl bg-muted p-4 text-sm text-muted-foreground">
+            <p className="font-bold text-foreground">Real-time ready</p>
+            <p className="mt-2">Current structure is API-driven and ready for websockets or polling upgrades.</p>
           </div>
-        </div>
-      )}
-      {tab === "loyalty" && (
-        <div className="grid gap-6 lg:grid-cols-[420px_1fr]">
-          <form className="panel h-fit p-5" onSubmit={adjustPoints}>
-            <h2 className="mb-4 flex items-center gap-2 font-black"><Award size={18} /> Adjust loyalty points</h2>
-            <div className="grid gap-3">
-              <select className="input" value={pointAdjust.userId} onChange={(e) => setPointAdjust({ ...pointAdjust, userId: e.target.value })} required>
-                <option value="">Select customer</option>
-                {users.map((item) => <option key={item.id} value={item.id}>{item.username} - {item.email}</option>)}
-              </select>
-              <input className="input" type="number" placeholder="Points, e.g. 100 or -50" value={pointAdjust.points} onChange={(e) => setPointAdjust({ ...pointAdjust, points: e.target.value })} required />
-              <input className="input" placeholder="Reason" value={pointAdjust.description} onChange={(e) => setPointAdjust({ ...pointAdjust, description: e.target.value })} required />
-              <button className="btn-primary">Apply adjustment</button>
-            </div>
-          </form>
-          <div className="grid gap-3">
-            {users.sort((a, b) => b.loyalty_points - a.loyalty_points).slice(0, 10).map((item) => (
-              <div className="panel flex flex-wrap items-center justify-between gap-3 p-4" key={item.id}>
-                <div><strong>{item.username}</strong><p className="text-sm text-muted-foreground capitalize">{item.loyalty_tier} member</p></div>
-                <div className="text-right"><p className="text-xl font-black text-primary">{item.loyalty_points}</p><p className="text-xs text-muted-foreground">available points</p></div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-      {tab === "trash" && (
+        </aside>
+
         <div className="grid gap-6">
-          <div className="rounded-md border border-accent/30 bg-accent/10 p-4 text-sm">
-            Deleted records stay here until you clean trash. Restore brings them back to active lists.
+          <div className="panel flex flex-col gap-4 p-5 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <p className="text-xs font-black uppercase tracking-[0.24em] text-primary">Operations</p>
+              <h2 className="mt-2 text-3xl font-black">Store analytics and management</h2>
+            </div>
+            <div className="flex items-center gap-3 rounded-lg bg-muted px-4 py-3 text-sm">
+              <Activity size={18} className="text-primary" />
+              <span>{recentActivity.length} recent admin activities</span>
+            </div>
           </div>
-          <div className="grid gap-4 lg:grid-cols-3">
-            <TrashSection title="Products" type="products" items={trash.products} label={(item) => item.name} onRestore={(item) => restoreProduct(item.slug)} onClean={() => cleanTrash("products")} />
-            <TrashSection title="Orders" type="orders" items={trash.orders} label={(item) => `Order #${item.id} - $${item.total}`} onRestore={(item) => restoreOrder(item.id)} onClean={() => cleanTrash("orders")} />
-            <TrashSection title="Categories" type="categories" items={trash.categories} label={(item) => item.name} onRestore={(item) => restoreCategory(item.slug)} onClean={() => cleanTrash("categories")} />
-          </div>
+
+          <motion.div
+            key={activeSection}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.22 }}
+            className="grid gap-6"
+          >
+            {activeSection === "overview" && (
+              <>
+                <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                  <KpiCard label="Total users" value={analytics?.totals?.users || 0} icon={UserCog} />
+                  <KpiCard label="Total products" value={analytics?.totals?.products || 0} icon={Boxes} />
+                  <KpiCard label="Total orders" value={analytics?.totals?.orders || 0} icon={ReceiptText} />
+                  <KpiCard label="Revenue" value={`Tk ${Number(analytics?.totals?.revenue || 0).toFixed(2)}`} icon={Shield} />
+                </div>
+
+                <div className="grid gap-6 xl:grid-cols-2">
+                  <ChartCard title="Sales trend">
+                    <ResponsiveContainer width="100%" height={280}>
+                      <LineChart data={(analytics?.sales_line || []).map((item) => ({ ...item, day: formatChartDate(item.day) }))}>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                        <XAxis dataKey="day" />
+                        <YAxis />
+                        <Tooltip />
+                        <Line type="monotone" dataKey="total_sales" stroke="#4f7cff" strokeWidth={3} dot={false} />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </ChartCard>
+
+                  <ChartCard title="Orders by status">
+                    <ResponsiveContainer width="100%" height={280}>
+                      <BarChart data={analytics?.orders_by_status || []}>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                        <XAxis dataKey="status" />
+                        <YAxis allowDecimals={false} />
+                        <Tooltip />
+                        <Bar dataKey="total" radius={[8, 8, 0, 0]}>
+                          {(analytics?.orders_by_status || []).map((entry, index) => <Cell key={entry.status} fill={chartColors[index % chartColors.length]} />)}
+                        </Bar>
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </ChartCard>
+
+                  <ChartCard title="Revenue breakdown">
+                    <ResponsiveContainer width="100%" height={280}>
+                      <PieChart>
+                        <Pie data={analytics?.revenue_breakdown || []} dataKey="value" nameKey="name" innerRadius={60} outerRadius={92} paddingAngle={2}>
+                          {(analytics?.revenue_breakdown || []).map((entry, index) => <Cell key={entry.name} fill={chartColors[index % chartColors.length]} />)}
+                        </Pie>
+                        <Tooltip />
+                        <Legend />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </ChartCard>
+
+                  <ChartCard title="User growth">
+                    <ResponsiveContainer width="100%" height={280}>
+                      <LineChart data={(analytics?.user_growth || []).map((item) => ({ ...item, day: formatChartDate(item.day) }))}>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                        <XAxis dataKey="day" />
+                        <YAxis allowDecimals={false} />
+                        <Tooltip />
+                        <Line type="monotone" dataKey="total_users" stroke="#19a48f" strokeWidth={3} dot={false} />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </ChartCard>
+                </div>
+
+                <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_340px]">
+                  <Card>
+                    <CardContent className="p-6">
+                      <div className="mb-4 flex items-center justify-between">
+                        <h3 className="text-xl font-black">Recent activity</h3>
+                        <span className="text-sm text-muted-foreground">Live admin feed</span>
+                      </div>
+                      <div className="grid gap-3">
+                        {recentActivity.map((item) => (
+                          <div className="rounded-xl border p-4" key={item.id}>
+                            <div className="flex items-start justify-between gap-3">
+                              <div>
+                                <p className="font-semibold">{item.description}</p>
+                                <p className="mt-1 text-xs text-muted-foreground">{item.actor_name || "System"} • {new Date(item.created_at).toLocaleString()}</p>
+                              </div>
+                              <span className="rounded-full bg-muted px-2.5 py-1 text-xs font-bold">{item.target_type}</span>
+                            </div>
+                          </div>
+                        ))}
+                        {recentActivity.length === 0 && <p className="text-sm text-muted-foreground">No activity yet.</p>}
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardContent className="p-6">
+                      <h3 className="text-xl font-black">Inventory watch</h3>
+                      <div className="mt-4 grid gap-3">
+                        {lowStockProducts.slice(0, 6).map((product) => (
+                          <div className="rounded-xl border p-4" key={product.id}>
+                            <p className="font-semibold">{product.name}</p>
+                            <p className="mt-1 text-sm text-muted-foreground">Stock left: {product.stock}</p>
+                          </div>
+                        ))}
+                        {lowStockProducts.length === 0 && <p className="text-sm text-muted-foreground">No low stock alerts.</p>}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </>
+            )}
+
+            {activeSection === "users" && (
+              <div className="grid gap-6">
+                <Card>
+                  <CardContent className="grid gap-3 p-5 md:grid-cols-[minmax(0,1fr)_160px]">
+                    <input className="input" placeholder="Search users by name, email, phone" value={userSearch} onChange={(e) => setUserSearch(e.target.value)} />
+                    <select className="input" value={userRoleFilter} onChange={(e) => setUserRoleFilter(e.target.value)}>
+                      <option value="">All roles</option>
+                      <option value="admin">Admin</option>
+                      <option value="user">User</option>
+                    </select>
+                  </CardContent>
+                </Card>
+
+                <div className="grid gap-4">
+                  {users.map((item) => (
+                    <Card key={item.id}>
+                      <CardContent className="grid gap-4 p-5 xl:grid-cols-[minmax(0,1fr)_140px_140px_120px] xl:items-center">
+                        <div>
+                          <p className="font-black">{item.first_name || item.last_name ? `${item.first_name} ${item.last_name}`.trim() : item.username}</p>
+                          <p className="mt-1 text-sm text-muted-foreground">{item.email}</p>
+                          <p className="mt-1 text-xs text-muted-foreground">Joined {new Date(item.date_joined).toLocaleDateString()}</p>
+                        </div>
+                        <select className="input" value={item.is_staff ? "admin" : "user"} onChange={(e) => updateUser(item.id, { is_staff: e.target.value === "admin" })}>
+                          <option value="user">User</option>
+                          <option value="admin">Admin</option>
+                        </select>
+                        <select className="input" value={item.is_active ? "active" : "inactive"} onChange={(e) => updateUser(item.id, { is_active: e.target.value === "active" })}>
+                          <option value="active">Active</option>
+                          <option value="inactive">Inactive</option>
+                        </select>
+                        <Button variant="outline" onClick={() => deleteUser(item.id)}><Trash2 size={16} /> Delete</Button>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {activeSection === "products" && (
+              <div className="grid gap-6 xl:grid-cols-[360px_minmax(0,1fr)]">
+                <Card>
+                  <CardContent className="p-5">
+                    <h3 className="text-xl font-black">{productEditing ? "Edit product" : "Add product"}</h3>
+                    <form className="mt-4 grid gap-3" onSubmit={saveProduct}>
+                      <input className="input" placeholder="Product name" value={productForm.name} onChange={(e) => setProductForm({ ...productForm, name: e.target.value })} required />
+                      <input className="input" placeholder="Slug" value={productForm.slug} onChange={(e) => setProductForm({ ...productForm, slug: e.target.value })} required />
+                      <select className="input" value={productForm.category_id} onChange={(e) => setProductForm({ ...productForm, category_id: e.target.value })}>
+                        <option value="">Select category</option>
+                        {categories.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}
+                      </select>
+                      <div className="grid gap-3 sm:grid-cols-2">
+                        <input className="input" placeholder="Price" value={productForm.price} onChange={(e) => setProductForm({ ...productForm, price: e.target.value })} required />
+                        <input className="input" placeholder="Stock" value={productForm.stock} onChange={(e) => setProductForm({ ...productForm, stock: e.target.value })} required />
+                      </div>
+                      <input className="input" placeholder="Compare at price" value={productForm.compare_at_price} onChange={(e) => setProductForm({ ...productForm, compare_at_price: e.target.value })} />
+                      <textarea className="input min-h-28" placeholder="Description" value={productForm.description} onChange={(e) => setProductForm({ ...productForm, description: e.target.value })} required />
+                      <label className="flex items-center gap-2 rounded-md border px-3 py-2 text-sm font-semibold">
+                        <input type="checkbox" checked={productForm.is_featured} onChange={(e) => setProductForm({ ...productForm, is_featured: e.target.checked })} />
+                        Featured product
+                      </label>
+                      <input className="input" type="file" accept="image/*" onChange={(e) => setProductForm({ ...productForm, image_file: e.target.files?.[0] || null })} />
+                      <div className="flex gap-2">
+                        <Button className="flex-1">{productEditing ? "Update" : "Create"}</Button>
+                        {productEditing && <Button type="button" variant="outline" onClick={() => { setProductEditing(null); setProductForm(emptyProduct); }}>Cancel</Button>}
+                      </div>
+                    </form>
+                  </CardContent>
+                </Card>
+
+                <div className="grid gap-4">
+                  {products.map((product) => (
+                    <Card key={product.id}>
+                      <CardContent className="grid gap-3 p-5 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+                        <div>
+                          <p className="font-black">{product.name}</p>
+                          <p className="mt-1 text-sm text-muted-foreground">{product.category?.name || "No category"} • Tk {product.price}</p>
+                          <p className="mt-1 text-xs text-muted-foreground">Stock {product.stock} • {product.is_featured ? "Featured" : "Standard"}</p>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          <Button variant="outline" onClick={() => startProductEdit(product)}>Edit</Button>
+                          <Button variant="outline" onClick={() => removeEntity(`/products/${product.slug}/`)}><Trash2 size={16} /> Delete</Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {activeSection === "orders" && (
+              <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
+                <div className="grid gap-4">
+                  <Card>
+                    <CardContent className="grid gap-3 p-5 md:grid-cols-[180px_minmax(0,1fr)]">
+                      <select className="input" value={orderStatusFilter} onChange={(e) => setOrderStatusFilter(e.target.value)}>
+                        <option value="">All statuses</option>
+                        {["pending", "paid", "processing", "shipped", "delivered", "canceled"].map((status) => <option key={status} value={status}>{status}</option>)}
+                      </select>
+                      <div className="rounded-md bg-muted px-4 py-3 text-sm text-muted-foreground">Click any order to view details on the right.</div>
+                    </CardContent>
+                  </Card>
+
+                  {orders.map((order) => (
+                    <Card key={order.id}>
+                      <CardContent className="grid gap-3 p-5 lg:grid-cols-[minmax(0,1fr)_180px] lg:items-center">
+                        <button className="text-left" onClick={() => setSelectedOrder(order)}>
+                          <p className="font-black">Order #{order.id}</p>
+                          <p className="mt-1 text-sm text-muted-foreground">{new Date(order.created_at).toLocaleString()}</p>
+                          <p className="mt-1 text-xs text-muted-foreground">{order.items.length} items • Tk {order.total}</p>
+                        </button>
+                        <select className="input" value={order.status} onChange={(e) => updateOrder(order.id, e.target.value)}>
+                          {["pending", "paid", "processing", "shipped", "delivered", "canceled"].map((status) => <option key={status} value={status}>{status}</option>)}
+                        </select>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+
+                <Card className="h-fit">
+                  <CardContent className="p-6">
+                    <h3 className="text-xl font-black">Order detail</h3>
+                    {selectedOrder ? (
+                      <div className="mt-4 grid gap-4">
+                        <div className="rounded-xl bg-muted p-4">
+                          <p className="font-black">Order #{selectedOrder.id}</p>
+                          <p className="mt-1 text-sm text-muted-foreground">{selectedOrder.shipping_address}</p>
+                          <p className="mt-2 text-sm text-muted-foreground">Status: <span className="font-semibold capitalize text-foreground">{selectedOrder.status}</span></p>
+                        </div>
+                        <div className="grid gap-3">
+                          {selectedOrder.items.map((item) => (
+                            <div className="rounded-xl border p-4" key={item.id}>
+                              <div className="flex justify-between gap-3">
+                                <span className="font-semibold">{item.product_name}</span>
+                                <span className="text-sm text-muted-foreground">x{item.quantity}</span>
+                              </div>
+                              <p className="mt-2 text-sm text-muted-foreground">Tk {item.subtotal}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ) : <p className="mt-4 text-sm text-muted-foreground">Select an order to inspect details.</p>}
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+
+            {activeSection === "categories" && (
+              <div className="grid gap-6 xl:grid-cols-[340px_minmax(0,1fr)]">
+                <Card>
+                  <CardContent className="p-5">
+                    <h3 className="text-xl font-black">{categoryEditing ? "Edit category" : "Add category"}</h3>
+                    <form className="mt-4 grid gap-3" onSubmit={saveCategory}>
+                      <input className="input" placeholder="Category name" value={categoryForm.name} onChange={(e) => setCategoryForm({ ...categoryForm, name: e.target.value })} required />
+                      <input className="input" placeholder="Slug" value={categoryForm.slug} onChange={(e) => setCategoryForm({ ...categoryForm, slug: e.target.value })} required />
+                      <div className="flex gap-2">
+                        <Button className="flex-1">{categoryEditing ? "Update" : "Create"}</Button>
+                        {categoryEditing && <Button type="button" variant="outline" onClick={() => { setCategoryEditing(null); setCategoryForm(emptyCategory); }}>Cancel</Button>}
+                      </div>
+                    </form>
+                  </CardContent>
+                </Card>
+
+                <div className="grid gap-4">
+                  {categories.map((category) => (
+                    <Card key={category.id}>
+                      <CardContent className="flex flex-wrap items-center justify-between gap-3 p-5">
+                        <div>
+                          <p className="font-black">{category.name}</p>
+                          <p className="mt-1 text-sm text-muted-foreground">{category.slug}</p>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          <Button variant="outline" onClick={() => startCategoryEdit(category)}>Edit</Button>
+                          <Button variant="outline" onClick={() => removeEntity(`/categories/${category.slug}/`)}><Trash2 size={16} /> Delete</Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {activeSection === "coupons" && (
+              <div className="grid gap-6 xl:grid-cols-[360px_minmax(0,1fr)]">
+                <Card>
+                  <CardContent className="p-5">
+                    <h3 className="text-xl font-black">{couponEditing ? "Edit coupon" : "Create coupon"}</h3>
+                    <form className="mt-4 grid gap-3" onSubmit={saveCoupon}>
+                      <input className="input" placeholder="Code" value={couponForm.code} onChange={(e) => setCouponForm({ ...couponForm, code: e.target.value.toUpperCase() })} required />
+                      <select className="input" value={couponForm.discount_type} onChange={(e) => setCouponForm({ ...couponForm, discount_type: e.target.value })}>
+                        <option value="percent">Percent</option>
+                        <option value="fixed">Fixed</option>
+                      </select>
+                      <div className="grid gap-3 sm:grid-cols-2">
+                        <input className="input" placeholder="Value" value={couponForm.value} onChange={(e) => setCouponForm({ ...couponForm, value: e.target.value })} required />
+                        <input className="input" placeholder="Min order amount" value={couponForm.min_order_amount} onChange={(e) => setCouponForm({ ...couponForm, min_order_amount: e.target.value })} />
+                      </div>
+                      <div className="grid gap-3 sm:grid-cols-2">
+                        <input className="input" placeholder="Usage limit" value={couponForm.usage_limit} onChange={(e) => setCouponForm({ ...couponForm, usage_limit: e.target.value })} />
+                        <input className="input" type="datetime-local" value={couponForm.valid_to} onChange={(e) => setCouponForm({ ...couponForm, valid_to: e.target.value })} />
+                      </div>
+                      <label className="flex items-center gap-2 rounded-md border px-3 py-2 text-sm font-semibold">
+                        <input type="checkbox" checked={couponForm.is_active} onChange={(e) => setCouponForm({ ...couponForm, is_active: e.target.checked })} />
+                        Active coupon
+                      </label>
+                      <div className="flex gap-2">
+                        <Button className="flex-1">{couponEditing ? "Update" : "Create"}</Button>
+                        {couponEditing && <Button type="button" variant="outline" onClick={() => { setCouponEditing(null); setCouponForm(emptyCoupon); }}>Cancel</Button>}
+                      </div>
+                    </form>
+                  </CardContent>
+                </Card>
+
+                <div className="grid gap-4">
+                  {coupons.map((coupon) => (
+                    <Card key={coupon.id}>
+                      <CardContent className="grid gap-3 p-5 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+                        <div>
+                          <p className="font-black">{coupon.code}</p>
+                          <p className="mt-1 text-sm text-muted-foreground">
+                            {coupon.discount_type === "percent" ? `${coupon.value}% off` : `Tk ${coupon.value} off`} • Min order Tk {coupon.min_order_amount}
+                          </p>
+                          <p className="mt-1 text-xs text-muted-foreground">Used {coupon.used_count} {coupon.usage_limit ? `of ${coupon.usage_limit}` : "times"} • {coupon.is_active ? "Active" : "Inactive"}</p>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          <Button variant="outline" onClick={() => startCouponEdit(coupon)}>Edit</Button>
+                          <Button variant="outline" onClick={() => removeEntity(`/coupons/${coupon.id}/`)}><Trash2 size={16} /> Delete</Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            )}
+          </motion.div>
         </div>
-      )}
+      </div>
     </section>
   );
 }
 
-function TrashSection({ title, items, label, onRestore, onClean }) {
+function KpiCard({ label, value, icon: Icon }) {
   return (
     <Card>
       <CardContent className="p-5">
-        <div className="mb-4 flex items-center justify-between gap-3">
+        <div className="flex items-start justify-between gap-3">
           <div>
-            <h2 className="font-black">{title}</h2>
-            <p className="text-sm text-muted-foreground">{items.length} in trash</p>
+            <p className="text-sm text-muted-foreground">{label}</p>
+            <p className="mt-2 text-3xl font-black">{value}</p>
           </div>
-          <button className="btn-ghost px-3" onClick={onClean} disabled={items.length === 0}><Trash2 size={16} /> Clean</button>
-        </div>
-        <div className="grid gap-2">
-          {items.map((item) => (
-            <div className="flex items-center justify-between gap-3 rounded-md border p-3" key={`${title}-${item.id || item.slug}`}>
-              <span className="text-sm font-semibold">{label(item)}</span>
-              <button className="btn-ghost px-3" onClick={() => onRestore(item)}><RotateCcw size={16} /> Restore</button>
-            </div>
-          ))}
-          {items.length === 0 && <p className="text-sm text-muted-foreground">Trash is empty.</p>}
+          <div className="rounded-2xl bg-primary/10 p-3 text-primary">
+            <Icon size={20} />
+          </div>
         </div>
       </CardContent>
     </Card>
   );
+}
+
+function ChartCard({ title, children }) {
+  return (
+    <Card>
+      <CardContent className="p-6">
+        <h3 className="mb-4 text-xl font-black">{title}</h3>
+        {children}
+      </CardContent>
+    </Card>
+  );
+}
+
+function formatChartDate(value) {
+  if (!value) return "";
+  return new Date(value).toLocaleDateString(undefined, { month: "short", day: "numeric" });
 }

@@ -11,6 +11,7 @@ class User(AbstractUser):
 
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=30, blank=True)
+    avatar = models.ImageField(upload_to="avatars/", blank=True, null=True)
     address = models.TextField(blank=True)
     city = models.CharField(max_length=80, blank=True)
     postal_code = models.CharField(max_length=20, blank=True)
@@ -53,3 +54,19 @@ class LoyaltyTransaction(models.Model):
 
     def __str__(self):
         return f"{self.user} {self.transaction_type} {self.points}"
+
+
+class AdminActivityLog(models.Model):
+    actor = models.ForeignKey(User, related_name="admin_activities", on_delete=models.SET_NULL, null=True, blank=True)
+    action = models.CharField(max_length=120)
+    target_type = models.CharField(max_length=120)
+    target_id = models.CharField(max_length=120, blank=True)
+    description = models.CharField(max_length=255)
+    metadata = models.JSONField(default=dict, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.action} - {self.description}"

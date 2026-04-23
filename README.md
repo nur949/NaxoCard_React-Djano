@@ -70,8 +70,7 @@ Database (PostgreSQL)
 
 ## 📸 Screenshots
 
-> ⚠️ Replace these with your real project UI (VERY IMPORTANT)
-
+> ⚠️ upcoming
 <p align="center">
   <img src="https://via.placeholder.com/800x400?text=Homepage+UI" width="45%"/>
   <img src="https://via.placeholder.com/800x400?text=Product+Page" width="45%"/>

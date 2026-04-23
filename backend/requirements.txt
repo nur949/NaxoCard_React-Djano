@@ -8,3 +8,7 @@ python-dotenv>=1.1,<1.2
 psycopg[binary]>=3.2.13,<3.4
 stripe>=14,<15
 Pillow>=12,<13
+gunicorn>=23,<24
+whitenoise>=6.9,<7
+cloudinary>=1.44,<2
+django-cloudinary-storage>=0.3,<0.4

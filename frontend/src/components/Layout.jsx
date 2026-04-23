@@ -7,7 +7,6 @@ import CartPreview from "./common/CartPreview.jsx";
 import Footer from "./common/Footer.jsx";
 import MegaNav from "./common/MegaNav.jsx";
 import MiniCartDrawer from "./common/MiniCartDrawer.jsx";
-import ThemeToggle from "./common/ThemeToggle.jsx";
 import UserMenu from "./common/UserMenu.jsx";
 import { Button } from "./ui/button.jsx";
 
@@ -87,7 +86,6 @@ export default function Layout() {
           </nav>
 
           <div className="hidden items-center gap-2 md:flex">
-            <ThemeToggle />
             <Button variant="outline" size="icon" className={navTone.iconButton} title="Search">
               <Search size={18} />
             </Button>

@@ -55,39 +55,41 @@ export default function HeroSection() {
   return (
     <section className="relative isolate overflow-hidden bg-[linear-gradient(120deg,#3f96d7_0%,#76a8d8_38%,#cbb7ef_100%)] text-white">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.16),transparent_28%),radial-gradient(circle_at_82%_20%,rgba(255,255,255,0.22),transparent_22%)]" />
-      <div className="absolute left-[8%] top-[18%] text-[4.5rem] font-black uppercase leading-none tracking-[-0.08em] text-white/10 sm:text-[6.5rem] lg:text-[10rem]">
-        Nike
-      </div>
-      <div className="absolute left-[4%] top-[60%] h-[26%] w-[54%] rounded-[42px] border border-white/10 bg-[radial-gradient(circle_at_60%_10%,rgba(255,255,255,0.10),transparent_58%)]" />
-      <div className="absolute right-[12%] top-[16%] h-[38%] w-[24%] rounded-full bg-white/12 blur-[2px]" />
+      <motion.div
+        animate={{ x: [0, 16, 0], y: [0, -8, 0] }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute left-[7%] top-[17%] text-[4.5rem] font-black uppercase leading-none tracking-[-0.08em] text-white/20 sm:text-[6.5rem] lg:text-[10rem]"
+      >
+        Shoe
+      </motion.div>
+      <motion.div
+        animate={{ scale: [1, 1.06, 1], opacity: [0.2, 0.28, 0.2] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute right-[12%] top-[16%] h-[38%] w-[24%] rounded-full bg-white/12 blur-[2px]"
+      />
       <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-b from-transparent to-black/5" />
 
-      <div className="section relative z-10 grid min-h-[520px] items-center gap-4 pb-4 pt-24 sm:pb-6 lg:grid-cols-[0.92fr_1.08fr] lg:gap-6 lg:pt-24">
+      <div className="section relative z-10 grid min-h-[520px] items-center gap-6 pb-6 pt-24 sm:pb-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-8 lg:pt-24">
         <motion.div
           key={activeProduct.id + "-content"}
           initial={{ opacity: 0, y: 26 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, ease: "easeOut" }}
-          className="relative max-w-lg py-4"
+          className="relative max-w-lg py-1 lg:-mt-8"
         >
-          <h1 className="relative z-20 max-w-[8.5ch] text-[2.55rem] font-black leading-[0.94] tracking-[-0.05em] text-[#c9fff8] sm:text-[3.4rem] lg:text-[4rem]">
-            {activeProduct.title}
-          </h1>
-
-          <div className="mt-5 max-w-md space-y-2 text-sm text-white/68 sm:text-[15px]">
-            {activeProduct.subtitle.map((line) => (
-              <p key={line}>{line}</p>
-            ))}
-          </div>
-
-          <div className="mt-7">
+          <div className="mt-32 flex items-center gap-4 lg:mt-40">
             <Link
               to="/products"
-              className="inline-flex items-center gap-4 rounded-full bg-[#d0ecef] px-7 py-3.5 text-sm font-black uppercase tracking-[0.06em] text-slate-900 transition hover:scale-[1.02] sm:px-8 sm:text-base"
+              className="inline-flex items-center gap-4 rounded-full border border-white/40 bg-white/75 px-8 py-4 text-sm font-black uppercase tracking-[0.12em] text-slate-900 shadow-[0_18px_40px_rgba(15,23,42,0.14)] backdrop-blur transition hover:-translate-y-0.5 hover:scale-[1.02] hover:bg-white hover:shadow-[0_22px_48px_rgba(208,236,239,0.3)] sm:px-9 sm:text-base"
             >
               Buy now
               <ChevronRight size={20} />
             </Link>
+
+            <div className="hidden text-sm text-white/75 sm:block">
+              <p className="font-semibold text-white">{activeProduct.name}</p>
+              <p>{activeProduct.caption}</p>
+            </div>
           </div>
         </motion.div>
 
@@ -101,16 +103,16 @@ export default function HeroSection() {
               alt={activeProduct.name}
               loading="eager"
               initial={{ opacity: 0, x: 80, rotate: -12, scale: 0.9 }}
-              animate={{ opacity: 1, x: 0, rotate: -8, scale: 1 }}
+              animate={{ opacity: 1, x: 0, rotate: -8, scale: 1, y: [0, -8, 0] }}
               exit={{ opacity: 0, x: -60, rotate: -3, scale: 0.9 }}
-              transition={{ duration: 0.55, ease: "easeOut" }}
-              className="relative z-20 mx-auto block h-[220px] w-full max-w-[620px] object-contain object-center drop-shadow-[0_24px_26px_rgba(17,24,39,0.26)] sm:h-[300px] lg:h-[360px]"
+              transition={{ duration: 0.55, ease: "easeOut", y: { duration: 5.5, repeat: Infinity, ease: "easeInOut" } }}
+              className="relative z-20 mx-auto block h-[240px] w-full max-w-[660px] object-contain object-center drop-shadow-[0_24px_26px_rgba(17,24,39,0.26)] sm:h-[320px] lg:h-[385px]"
             />
           </AnimatePresence>
         </div>
 
-        <div className="lg:col-span-2 lg:-mt-3">
-          <div className="mx-auto flex w-fit items-center justify-center gap-3 rounded-full border border-white/20 bg-white/10 px-4 py-2.5 backdrop-blur">
+        <div className="lg:col-span-2 lg:-mt-2">
+          <div className="mx-auto flex w-fit items-center justify-center gap-3 rounded-full border border-white/20 bg-white/10 px-4 py-2.5 shadow-[0_18px_48px_rgba(15,23,42,0.12)] backdrop-blur">
           {heroProducts.map((product, index) => {
             const active = product.id === activeProduct.id;
             return (
@@ -120,6 +122,8 @@ export default function HeroSection() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.22 + index * 0.08, duration: 0.4 }}
                 onClick={() => setActiveId(product.id)}
+                whileHover={{ y: -2, scale: active ? 1.1 : 1.04 }}
+                whileTap={{ scale: 0.97 }}
                 className={`grid h-14 w-14 place-items-center overflow-hidden rounded-full border transition-all duration-300 ${active ? "scale-110 border-white/80 bg-white shadow-[0_12px_22px_rgba(17,24,39,0.18)]" : "border-white/30 bg-white/70 hover:bg-white/90"}`}
                 aria-label={product.name}
               >

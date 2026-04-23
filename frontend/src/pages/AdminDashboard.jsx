@@ -61,6 +61,8 @@ const emptyProduct = {
   compare_at_price: "",
   is_featured: false,
   image_file: null,
+  gallery_files: [],
+  variants: [{ name: "", value: "", stock: "" }],
 };
 const emptyCategory = { name: "", slug: "" };
 const emptyCoupon = {
@@ -137,6 +139,14 @@ export default function AdminDashboard() {
       });
       payload.append("is_featured", productForm.is_featured);
       if (productForm.image_file) payload.append("image", productForm.image_file);
+      Array.from(productForm.gallery_files || []).slice(0, 4).forEach((file) => payload.append("gallery_files", file));
+      payload.append("variants_input", JSON.stringify(
+        (productForm.variants || []).filter((item) => item.name.trim() && item.value.trim()).map((item) => ({
+          name: item.name.trim(),
+          value: item.value.trim(),
+          stock: Number(item.stock || 0),
+        }))
+      ));
       if (productEditing) await api.patch(`/products/${productEditing}/`, payload, { headers: { "Content-Type": "multipart/form-data" } });
       else await api.post("/products/", payload, { headers: { "Content-Type": "multipart/form-data" } });
       setProductForm(emptyProduct);
@@ -236,7 +246,38 @@ export default function AdminDashboard() {
       compare_at_price: product.compare_at_price || "",
       is_featured: Boolean(product.is_featured),
       image_file: null,
+      gallery_files: [],
+      variants: product.variants?.length ? product.variants.map((variant) => ({
+        name: variant.name || "",
+        value: variant.value || "",
+        stock: variant.stock || "",
+      })) : [{ name: "", value: "", stock: "" }],
     });
+  }
+
+  function updateProductVariant(index, field, value) {
+    setProductForm((current) => ({
+      ...current,
+      variants: current.variants.map((variant, variantIndex) => (
+        variantIndex === index ? { ...variant, [field]: value } : variant
+      )),
+    }));
+  }
+
+  function addProductVariantRow() {
+    setProductForm((current) => ({
+      ...current,
+      variants: [...current.variants, { name: "", value: "", stock: "" }],
+    }));
+  }
+
+  function removeProductVariantRow(index) {
+    setProductForm((current) => ({
+      ...current,
+      variants: current.variants.length === 1
+        ? [{ name: "", value: "", stock: "" }]
+        : current.variants.filter((_, variantIndex) => variantIndex !== index),
+    }));
   }
 
   function startCategoryEdit(category) {
@@ -472,7 +513,36 @@ export default function AdminDashboard() {
                         <input type="checkbox" checked={productForm.is_featured} onChange={(e) => setProductForm({ ...productForm, is_featured: e.target.checked })} />
                         Featured product
                       </label>
-                      <input className="input" type="file" accept="image/*" onChange={(e) => setProductForm({ ...productForm, image_file: e.target.files?.[0] || null })} />
+                      <div className="grid gap-3 rounded-xl border p-3">
+                        <div>
+                          <p className="text-sm font-black">Product images</p>
+                          <p className="mt-1 text-xs text-muted-foreground">1 cover + up to 4 more images. Total 5.</p>
+                        </div>
+                        <input className="input" type="file" accept="image/*" onChange={(e) => setProductForm({ ...productForm, image_file: e.target.files?.[0] || null })} />
+                        <input className="input" type="file" accept="image/*" multiple onChange={(e) => setProductForm({ ...productForm, gallery_files: Array.from(e.target.files || []).slice(0, 4) })} />
+                        <p className="text-xs text-muted-foreground">
+                          {productForm.image_file ? "Cover selected." : "No cover selected."} {productForm.gallery_files?.length ? `${productForm.gallery_files.length} extra image selected.` : "No extra image selected."}
+                        </p>
+                      </div>
+                      <div className="grid gap-3 rounded-xl border p-3">
+                        <div className="flex items-center justify-between gap-3">
+                          <div>
+                            <p className="text-sm font-black">Variations</p>
+                            <p className="mt-1 text-xs text-muted-foreground">Example: Size 42, Color Red</p>
+                          </div>
+                          <Button type="button" variant="outline" onClick={addProductVariantRow}>Add row</Button>
+                        </div>
+                        <div className="grid gap-3">
+                          {productForm.variants.map((variant, index) => (
+                            <div key={`${index}-${productEditing || "new"}`} className="grid gap-2 rounded-lg border p-3 sm:grid-cols-[1fr_1fr_110px_auto]">
+                              <input className="input" placeholder="Type" value={variant.name} onChange={(e) => updateProductVariant(index, "name", e.target.value)} />
+                              <input className="input" placeholder="Value" value={variant.value} onChange={(e) => updateProductVariant(index, "value", e.target.value)} />
+                              <input className="input" placeholder="Stock" value={variant.stock} onChange={(e) => updateProductVariant(index, "stock", e.target.value)} />
+                              <Button type="button" variant="outline" onClick={() => removeProductVariantRow(index)}><Trash2 size={16} /></Button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                       <div className="flex gap-2">
                         <Button className="flex-1">{productEditing ? "Update" : "Create"}</Button>
                         {productEditing && <Button type="button" variant="outline" onClick={() => { setProductEditing(null); setProductForm(emptyProduct); }}>Cancel</Button>}

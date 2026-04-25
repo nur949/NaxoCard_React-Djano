@@ -20,8 +20,11 @@ export default function Home() {
       api.get("/products/featured/"),
       api.get("/products/?ordering=-sales_count"),
     ]).then(([featuredResponse, trendingResponse]) => {
-      setFeatured(featuredResponse.data);
-      setTrending(trendingResponse.data.results || trendingResponse.data);
+      setFeatured(Array.isArray(featuredResponse.data) ? featuredResponse.data : (featuredResponse.data?.results || []));
+      setTrending(Array.isArray(trendingResponse.data) ? trendingResponse.data : (trendingResponse.data?.results || []));
+    }).catch(() => {
+      setFeatured([]);
+      setTrending([]);
     }).finally(() => setLoading(false));
   }, []);
 

@@ -1,10 +1,12 @@
 from django.contrib.auth import get_user_model
+from django.test import override_settings
 from rest_framework.test import APITestCase
 
 from orders.models import Order
 from products.models import Category, Product
 
 
+@override_settings(ALLOWED_HOSTS=["testserver", "localhost", "127.0.0.1"])
 class CartOrderApiTests(APITestCase):
     def setUp(self):
         self.user = get_user_model().objects.create_user("buyer", "buyer@example.com", "password123")
@@ -37,3 +39,19 @@ class CartOrderApiTests(APITestCase):
         self.assertEqual(order_response.data["payment_method"], "cod")
         self.assertEqual(order_response.data["total"], "20.00")
         self.assertIsNone(Order.objects.get(pk=order_response.data["id"]).user)
+
+    def test_admin_can_update_order_status_without_create_validation(self):
+        admin = get_user_model().objects.create_superuser("admin", "admin@example.com", "password123")
+        order = Order.objects.create(
+            user=self.user,
+            shipping_address="123 Main St",
+            total="20.00",
+            status=Order.Status.PENDING,
+        )
+
+        self.client.force_authenticate(admin)
+        response = self.client.patch(f"/api/orders/{order.id}/", {"status": Order.Status.PROCESSING}, format="json")
+
+        self.assertEqual(response.status_code, 200)
+        order.refresh_from_db()
+        self.assertEqual(order.status, Order.Status.PROCESSING)

@@ -62,6 +62,7 @@ class Product(SoftDeleteModel):
     category = models.ForeignKey(Category, related_name="products", on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=180)
     slug = models.SlugField(max_length=200, unique=True)
+    sort_order = models.PositiveIntegerField(default=0, db_index=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     compare_at_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     stock = models.PositiveIntegerField(default=0)
@@ -77,7 +78,7 @@ class Product(SoftDeleteModel):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ["-created_at"]
+        ordering = ["sort_order", "-created_at"]
 
     def __str__(self):
         return self.name

@@ -81,6 +81,9 @@ class OrderSerializer(serializers.ModelSerializer):
         read_only_fields = ("id", "total", "discount_amount", "coupon", "stripe_session_id", "items", "is_deleted", "deleted_at", "created_at")
 
     def validate(self, attrs):
+        if self.instance is not None:
+            return attrs
+
         request = self.context["request"]
         user = request.user if request.user and request.user.is_authenticated else None
         payment_method = attrs.get("payment_method") or Order.PaymentMethod.COD

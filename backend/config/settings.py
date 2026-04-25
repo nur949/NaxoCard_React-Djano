@@ -3,6 +3,7 @@ from datetime import timedelta
 from pathlib import Path
 from urllib.parse import urlparse
 
+import cloudinary
 from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -10,7 +11,10 @@ load_dotenv(BASE_DIR / ".env")
 
 SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-key")
 DEBUG = os.getenv("DEBUG", "True").lower() == "true"
-ALLOWED_HOSTS = [h.strip() for h in os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",") if h.strip()]
+ALLOWED_HOSTS = list(dict.fromkeys(
+    [h.strip() for h in os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",") if h.strip()]
+    + ["localhost", "127.0.0.1"]
+))
 render_hostname = os.getenv("RENDER_EXTERNAL_HOSTNAME", "").strip()
 if render_hostname and render_hostname not in ALLOWED_HOSTS:
     ALLOWED_HOSTS.append(render_hostname)
@@ -32,7 +36,10 @@ DEFAULT_CSRF_TRUSTED_ORIGINS = ",".join([
     "https://*.vercel.app",
 ])
 
-CSRF_TRUSTED_ORIGINS = parse_origin_list("CSRF_TRUSTED_ORIGINS", DEFAULT_CSRF_TRUSTED_ORIGINS)
+CSRF_TRUSTED_ORIGINS = list(dict.fromkeys(
+    parse_origin_list("CSRF_TRUSTED_ORIGINS", DEFAULT_CSRF_TRUSTED_ORIGINS)
+    + parse_origin_list("_LOCAL_CSRF_TRUSTED_ORIGINS", LOCAL_FRONTEND_ORIGINS)
+))
 
 INSTALLED_APPS = [
     "jazzmin",
@@ -135,6 +142,12 @@ CLOUDINARY_STORAGE = {
 }
 
 if CLOUDINARY_STORAGE["CLOUD_NAME"] and CLOUDINARY_STORAGE["API_KEY"] and CLOUDINARY_STORAGE["API_SECRET"]:
+    cloudinary.config(
+        cloud_name=CLOUDINARY_STORAGE["CLOUD_NAME"],
+        api_key=CLOUDINARY_STORAGE["API_KEY"],
+        api_secret=CLOUDINARY_STORAGE["API_SECRET"],
+        secure=True,
+    )
     DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
 REST_FRAMEWORK = {
@@ -163,7 +176,10 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
-CORS_ALLOWED_ORIGINS = parse_origin_list("CORS_ALLOWED_ORIGINS", LOCAL_FRONTEND_ORIGINS)
+CORS_ALLOWED_ORIGINS = list(dict.fromkeys(
+    parse_origin_list("CORS_ALLOWED_ORIGINS", LOCAL_FRONTEND_ORIGINS)
+    + parse_origin_list("_LOCAL_CORS_ALLOWED_ORIGINS", LOCAL_FRONTEND_ORIGINS)
+))
 CORS_ALLOWED_ORIGIN_REGEXES = [
     r"^https:\/\/.*\.vercel\.app$",
 ]

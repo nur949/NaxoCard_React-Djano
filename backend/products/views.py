@@ -1,6 +1,7 @@
+from django.db import transaction
 from django.db.models import Avg, F, Q
 from django_filters import rest_framework as filters
-from rest_framework import decorators, permissions, response, status, viewsets
+from rest_framework import decorators, parsers, permissions, response, status, viewsets
 
 from users.models import AdminActivityLog
 
@@ -91,9 +92,10 @@ class CategoryViewSet(viewsets.ModelViewSet):
 class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     permission_classes = [IsAdminOrReadOnly]
+    parser_classes = [parsers.JSONParser, parsers.FormParser, parsers.MultiPartParser]
     filterset_class = ProductFilter
     search_fields = ["name", "description", "category__name"]
-    ordering_fields = ["price", "rating", "created_at"]
+    ordering_fields = ["sort_order", "price", "rating", "created_at"]
     lookup_field = "slug"
 
     def get_queryset(self):
@@ -143,8 +145,36 @@ class ProductViewSet(viewsets.ModelViewSet):
 
     @decorators.action(detail=False, methods=["get"])
     def featured(self, request):
-        products = self.get_queryset().filter(Q(is_featured=True) | Q(sales_count__gt=0)).order_by("-is_featured", "-sales_count", "-rating")[:12]
+        products = self.get_queryset().filter(Q(is_featured=True) | Q(sales_count__gt=0)).order_by("sort_order", "-is_featured", "-sales_count", "-rating")[:12]
         return response.Response(self.get_serializer(products, many=True).data)
+
+    @decorators.action(detail=False, methods=["post"], permission_classes=[permissions.IsAdminUser])
+    def reorder(self, request):
+        ordered_slugs = request.data.get("ordered_slugs")
+        if not isinstance(ordered_slugs, list) or not ordered_slugs:
+            return response.Response({"ordered_slugs": ["Provide a non-empty product slug list."]}, status=status.HTTP_400_BAD_REQUEST)
+
+        products = list(Product.all_objects.filter(slug__in=ordered_slugs))
+        if len(products) != len(ordered_slugs):
+            return response.Response({"ordered_slugs": ["One or more product slugs are invalid."]}, status=status.HTTP_400_BAD_REQUEST)
+
+        product_map = {product.slug: product for product in products}
+        with transaction.atomic():
+            for position, slug in enumerate(ordered_slugs, start=1):
+                product = product_map[slug]
+                if product.sort_order != position:
+                    product.sort_order = position
+                    product.save(update_fields=["sort_order", "updated_at"])
+
+        log_admin_activity(
+            request,
+            "product.reordered",
+            "product",
+            f"Reordered {len(ordered_slugs)} products",
+            metadata={"ordered_slugs": ordered_slugs},
+        )
+        ordered_products = Product.objects.filter(slug__in=ordered_slugs).select_related("category")
+        return response.Response(self.get_serializer(ordered_products, many=True).data)
 
     @decorators.action(detail=False, methods=["get"])
     def suggest(self, request):

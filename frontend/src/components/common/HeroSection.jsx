@@ -14,7 +14,7 @@ const heroProducts = [
     ],
     name: "Aero Sprint",
     caption: "Mauris porta",
-    image: "https://pngimg.com/d/running_shoes_PNG5818.png",
+    image: "/hero/sneaker-blue.svg",
     accent: "from-[#ff5f6d] to-[#ffc371]",
   },
   {
@@ -27,7 +27,7 @@ const heroProducts = [
     ],
     name: "Volt Runner",
     caption: "Mauris porta",
-    image: "https://pngimg.com/d/running_shoes_PNG5827.png",
+    image: "/hero/sneaker-black.svg",
     accent: "from-[#ff9966] to-[#ff5e62]",
   },
   {
@@ -40,7 +40,7 @@ const heroProducts = [
     ],
     name: "Street Dash",
     caption: "Mauris porta",
-    image: "https://pngimg.com/d/running_shoes_PNG5816.png",
+    image: "/hero/sneaker-white.svg",
     accent: "from-[#e0eafc] to-[#cfdef3]",
   },
 ];
@@ -117,24 +117,24 @@ export default function HeroSection() {
 
         <div className="lg:col-span-2 lg:-mt-2">
           <div className="mx-auto flex w-fit items-center justify-center gap-3 rounded-full border border-white/20 bg-white/10 px-4 py-2.5 shadow-[0_18px_48px_rgba(15,23,42,0.12)] backdrop-blur">
-          {heroProducts.map((product, index) => {
-            const active = product.id === activeProduct.id;
-            return (
-              <motion.button
-                key={product.id}
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.22 + index * 0.08, duration: 0.4 }}
-                onClick={() => setActiveId(product.id)}
-                whileHover={{ y: -2, scale: active ? 1.1 : 1.04 }}
-                whileTap={{ scale: 0.97 }}
-                className={`grid h-14 w-14 place-items-center overflow-hidden rounded-full border transition-all duration-300 ${active ? "scale-110 border-white/80 bg-white shadow-[0_12px_22px_rgba(17,24,39,0.18)]" : "border-white/30 bg-white/70 hover:bg-white/90"}`}
-                aria-label={product.name}
-              >
-                <img src={product.image} alt={product.name} className="h-9 w-9 object-contain object-center" loading="lazy" />
-              </motion.button>
-            );
-          })}
+            {heroProducts.map((product, index) => {
+              const active = product.id === activeProduct.id;
+              return (
+                <motion.button
+                  key={product.id}
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.22 + index * 0.08, duration: 0.4 }}
+                  onClick={() => setActiveId(product.id)}
+                  whileHover={{ y: -2, scale: active ? 1.1 : 1.04 }}
+                  whileTap={{ scale: 0.97 }}
+                  className={`grid h-14 w-14 place-items-center overflow-hidden rounded-full border transition-all duration-300 ${active ? "scale-110 border-white/80 bg-white shadow-[0_12px_22px_rgba(17,24,39,0.18)]" : "border-white/30 bg-white/70 hover:bg-white/90"}`}
+                  aria-label={product.name}
+                >
+                  <img src={product.image} alt={product.name} className="h-9 w-9 object-contain object-center" loading="lazy" />
+                </motion.button>
+              );
+            })}
           </div>
         </div>
       </div>

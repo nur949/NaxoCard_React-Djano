@@ -1,9 +1,16 @@
 from decimal import Decimal
+from pathlib import Path
 
 from django.core.management.base import BaseCommand
+from django.conf import settings
 from django.utils.text import slugify
 
 from products.models import Category, Product, ProductVariant
+
+try:
+    import cloudinary.uploader
+except Exception:  # pragma: no cover
+    cloudinary = None
 
 
 DEFAULT_CATEGORIES = [
@@ -61,70 +68,69 @@ CATALOG = {
 }
 
 DEMO_ASSET_URL_BASE = "/static/demo-products"
+DEMO_ASSET_DIR = Path(settings.BASE_DIR) / "static" / "demo-products"
+DEMO_CLOUDINARY_FOLDER = "naxocard-demo-products"
+DEMO_ASSET_FILENAMES = [
+    "kids-black.svg",
+    "kids-blue.svg",
+    "kids-pink.svg",
+    "kids-white.svg",
+    "loafer-black.svg",
+    "loafer-brown.svg",
+    "loafer-white.svg",
+    "mens-black.svg",
+    "mens-brown.svg",
+    "mens-white.svg",
+    "sandal-black.svg",
+    "sandal-brown.svg",
+    "sandal-white.svg",
+    "sneaker-black.svg",
+    "sneaker-blue.svg",
+    "sneaker-white.svg",
+    "women-black.svg",
+    "women-pink.svg",
+    "women-white.svg",
+]
 
 IMAGE_POOLS = {
-        "mens-shoes": [
-        f"{DEMO_ASSET_URL_BASE}/mens-black.svg",
-        f"{DEMO_ASSET_URL_BASE}/mens-brown.svg",
-        f"{DEMO_ASSET_URL_BASE}/mens-white.svg",
-    ],
-    "womens-shoes": [
-        f"{DEMO_ASSET_URL_BASE}/women-black.svg",
-        f"{DEMO_ASSET_URL_BASE}/women-pink.svg",
-        f"{DEMO_ASSET_URL_BASE}/women-white.svg",
-    ],
-    "kids-shoes": [
-        f"{DEMO_ASSET_URL_BASE}/kids-black.svg",
-        f"{DEMO_ASSET_URL_BASE}/kids-blue.svg",
-        f"{DEMO_ASSET_URL_BASE}/kids-pink.svg",
-    ],
-    "sneakers": [
-        f"{DEMO_ASSET_URL_BASE}/sneaker-black.svg",
-        f"{DEMO_ASSET_URL_BASE}/sneaker-blue.svg",
-        f"{DEMO_ASSET_URL_BASE}/sneaker-white.svg",
-    ],
-    "sandals": [
-        f"{DEMO_ASSET_URL_BASE}/sandal-black.svg",
-        f"{DEMO_ASSET_URL_BASE}/sandal-brown.svg",
-        f"{DEMO_ASSET_URL_BASE}/sandal-white.svg",
-    ],
-    "loafers": [
-        f"{DEMO_ASSET_URL_BASE}/loafer-black.svg",
-        f"{DEMO_ASSET_URL_BASE}/loafer-brown.svg",
-        f"{DEMO_ASSET_URL_BASE}/loafer-white.svg",
-    ],
+    "mens-shoes": ["mens-black.svg", "mens-brown.svg", "mens-white.svg"],
+    "womens-shoes": ["women-black.svg", "women-pink.svg", "women-white.svg"],
+    "kids-shoes": ["kids-black.svg", "kids-blue.svg", "kids-pink.svg"],
+    "sneakers": ["sneaker-black.svg", "sneaker-blue.svg", "sneaker-white.svg"],
+    "sandals": ["sandal-black.svg", "sandal-brown.svg", "sandal-white.svg"],
+    "loafers": ["loafer-black.svg", "loafer-brown.svg", "loafer-white.svg"],
 }
 
 COLOR_IMAGE_POOLS = {
     "mens-shoes": {
-        "Black": [f"{DEMO_ASSET_URL_BASE}/mens-black.svg", f"{DEMO_ASSET_URL_BASE}/loafer-black.svg"],
-        "Brown": [f"{DEMO_ASSET_URL_BASE}/mens-brown.svg", f"{DEMO_ASSET_URL_BASE}/loafer-brown.svg"],
-        "White": [f"{DEMO_ASSET_URL_BASE}/mens-white.svg", f"{DEMO_ASSET_URL_BASE}/sneaker-white.svg"],
+        "Black": ["mens-black.svg", "loafer-black.svg"],
+        "Brown": ["mens-brown.svg", "loafer-brown.svg"],
+        "White": ["mens-white.svg", "sneaker-white.svg"],
     },
     "womens-shoes": {
-        "Black": [f"{DEMO_ASSET_URL_BASE}/women-black.svg", f"{DEMO_ASSET_URL_BASE}/women-white.svg"],
-        "Pink": [f"{DEMO_ASSET_URL_BASE}/women-pink.svg", f"{DEMO_ASSET_URL_BASE}/women-white.svg"],
-        "White": [f"{DEMO_ASSET_URL_BASE}/women-white.svg", f"{DEMO_ASSET_URL_BASE}/women-black.svg"],
+        "Black": ["women-black.svg", "women-white.svg"],
+        "Pink": ["women-pink.svg", "women-white.svg"],
+        "White": ["women-white.svg", "women-black.svg"],
     },
     "kids-shoes": {
-        "Black": [f"{DEMO_ASSET_URL_BASE}/kids-black.svg", f"{DEMO_ASSET_URL_BASE}/kids-blue.svg"],
-        "Blue": [f"{DEMO_ASSET_URL_BASE}/kids-blue.svg", f"{DEMO_ASSET_URL_BASE}/kids-black.svg"],
-        "Pink": [f"{DEMO_ASSET_URL_BASE}/kids-pink.svg", f"{DEMO_ASSET_URL_BASE}/kids-white.svg"],
+        "Black": ["kids-black.svg", "kids-blue.svg"],
+        "Blue": ["kids-blue.svg", "kids-black.svg"],
+        "Pink": ["kids-pink.svg", "kids-white.svg"],
     },
     "sneakers": {
-        "Black": [f"{DEMO_ASSET_URL_BASE}/sneaker-black.svg", f"{DEMO_ASSET_URL_BASE}/sneaker-blue.svg"],
-        "Blue": [f"{DEMO_ASSET_URL_BASE}/sneaker-blue.svg", f"{DEMO_ASSET_URL_BASE}/sneaker-white.svg"],
-        "White": [f"{DEMO_ASSET_URL_BASE}/sneaker-white.svg", f"{DEMO_ASSET_URL_BASE}/sneaker-black.svg"],
+        "Black": ["sneaker-black.svg", "sneaker-blue.svg"],
+        "Blue": ["sneaker-blue.svg", "sneaker-white.svg"],
+        "White": ["sneaker-white.svg", "sneaker-black.svg"],
     },
     "sandals": {
-        "Black": [f"{DEMO_ASSET_URL_BASE}/sandal-black.svg", f"{DEMO_ASSET_URL_BASE}/sandal-brown.svg"],
-        "Brown": [f"{DEMO_ASSET_URL_BASE}/sandal-brown.svg", f"{DEMO_ASSET_URL_BASE}/sandal-white.svg"],
-        "White": [f"{DEMO_ASSET_URL_BASE}/sandal-white.svg", f"{DEMO_ASSET_URL_BASE}/sandal-black.svg"],
+        "Black": ["sandal-black.svg", "sandal-brown.svg"],
+        "Brown": ["sandal-brown.svg", "sandal-white.svg"],
+        "White": ["sandal-white.svg", "sandal-black.svg"],
     },
     "loafers": {
-        "Black": [f"{DEMO_ASSET_URL_BASE}/loafer-black.svg", f"{DEMO_ASSET_URL_BASE}/loafer-brown.svg"],
-        "Brown": [f"{DEMO_ASSET_URL_BASE}/loafer-brown.svg", f"{DEMO_ASSET_URL_BASE}/loafer-white.svg"],
-        "White": [f"{DEMO_ASSET_URL_BASE}/loafer-white.svg", f"{DEMO_ASSET_URL_BASE}/loafer-black.svg"],
+        "Black": ["loafer-black.svg", "loafer-brown.svg"],
+        "Brown": ["loafer-brown.svg", "loafer-white.svg"],
+        "White": ["loafer-white.svg", "loafer-black.svg"],
     },
 }
 
@@ -148,6 +154,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         per_category = max(4, options["per_category"])
+        asset_urls = self.build_demo_asset_urls()
 
         if not Category.all_objects.exists():
             for name, slug in DEFAULT_CATEGORIES:
@@ -163,7 +170,7 @@ class Command(BaseCommand):
         for category in categories:
             category_slug = category.slug
             products = CATALOG.get(category_slug) or build_generic_products(category, per_category)
-            image_pool = IMAGE_POOLS.get(category_slug) or IMAGE_POOLS["sneakers"]
+            image_pool = self.resolve_assets(IMAGE_POOLS.get(category_slug) or IMAGE_POOLS["sneakers"], asset_urls)
 
             for index, item in enumerate(products[:per_category]):
                 name, description, price, compare_at_price, rating, review_count, sales_count = item
@@ -191,13 +198,13 @@ class Command(BaseCommand):
                 )
                 created += int(was_created)
                 updated += int(not was_created)
-                self.seed_variants(product, category_slug, index)
+                self.seed_variants(product, category_slug, index, asset_urls)
 
         self.stdout.write(self.style.SUCCESS(
             f"Seed complete: {len(categories)} categories, {created} products created, {updated} products updated."
         ))
 
-    def seed_variants(self, product, category_slug, index):
+    def seed_variants(self, product, category_slug, index, asset_urls=None):
         if category_slug == "kids-shoes":
             variants = [("Size", value, 10 + index) for value in ("28", "30", "32", "34")]
             variants += [("Color", value, 12 + index) for value in ("Black", "Blue", "Pink")]
@@ -220,6 +227,42 @@ class Command(BaseCommand):
                 value=value,
                 defaults={
                     "stock": stock,
-                    "gallery": COLOR_IMAGE_POOLS.get(category_slug, {}).get(value, [])[:2] if name == "Color" else [],
+                    "gallery": self.resolve_assets(COLOR_IMAGE_POOLS.get(category_slug, {}).get(value, [])[:2], asset_urls) if name == "Color" else [],
                 },
             )
+
+    def resolve_assets(self, filenames, asset_urls):
+        return [asset_urls.get(filename, f"{DEMO_ASSET_URL_BASE}/{filename}") for filename in filenames]
+
+    def build_demo_asset_urls(self):
+        if not self.can_use_cloudinary():
+            return {filename: f"{DEMO_ASSET_URL_BASE}/{filename}" for filename in DEMO_ASSET_FILENAMES}
+
+        asset_urls = {}
+        for filename in DEMO_ASSET_FILENAMES:
+            local_path = DEMO_ASSET_DIR / filename
+            if not local_path.exists():
+                asset_urls[filename] = f"{DEMO_ASSET_URL_BASE}/{filename}"
+                continue
+
+            upload_result = cloudinary.uploader.upload(
+                str(local_path),
+                folder=DEMO_CLOUDINARY_FOLDER,
+                public_id=local_path.stem,
+                overwrite=True,
+                invalidate=True,
+                resource_type="image",
+                unique_filename=False,
+                use_filename=True,
+            )
+            asset_urls[filename] = upload_result.get("secure_url") or f"{DEMO_ASSET_URL_BASE}/{filename}"
+
+        return asset_urls
+
+    def can_use_cloudinary(self):
+        return bool(
+            cloudinary
+            and settings.CLOUDINARY_STORAGE.get("CLOUD_NAME")
+            and settings.CLOUDINARY_STORAGE.get("API_KEY")
+            and settings.CLOUDINARY_STORAGE.get("API_SECRET")
+        )

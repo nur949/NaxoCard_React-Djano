@@ -37,7 +37,7 @@ function PrivateRoute({ children, adminOnly = false }) {
 const app = (
   <React.StrictMode>
     <MantisThemeProvider>
-      <BrowserRouter>
+      <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <AuthProvider>
           <ToastProvider>
             <CartProvider>

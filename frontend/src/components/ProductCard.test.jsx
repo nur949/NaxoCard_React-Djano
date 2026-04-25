@@ -10,7 +10,7 @@ vi.mock("../context/CartContext.jsx", () => ({ useCart: () => ({ add: vi.fn() })
 describe("ProductCard", () => {
   it("renders product name and price", () => {
     render(
-      <MemoryRouter>
+      <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <ProductCard product={{ id: 1, name: "Runner", slug: "runner", price: "49.99", description: "Light shoes", rating: "4.50", stock: 5 }} />
       </MemoryRouter>
     );

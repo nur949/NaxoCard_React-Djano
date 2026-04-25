@@ -60,8 +60,7 @@ CATALOG = {
     ],
 }
 
-DEMO_ASSET_URL_BASE = "/media/demo-products"
-DEMO_ASSET_STORAGE_BASE = "demo-products"
+DEMO_ASSET_URL_BASE = "/static/demo-products"
 
 IMAGE_POOLS = {
         "mens-shoes": [
@@ -170,7 +169,6 @@ class Command(BaseCommand):
                 name, description, price, compare_at_price, rating, review_count, sales_count = item
                 slug = slugify(name)
                 gallery = [image_pool[index % len(image_pool)], image_pool[(index + 1) % len(image_pool)]]
-                image_name = gallery[0].split("/")[-1]
                 product, was_created = Product.all_objects.update_or_create(
                     slug=slug,
                     defaults={
@@ -179,8 +177,8 @@ class Command(BaseCommand):
                         "price": Decimal(price),
                         "compare_at_price": Decimal(compare_at_price),
                         "stock": 18 + (index * 7),
-                        "image": f"{DEMO_ASSET_STORAGE_BASE}/{image_name}",
-                        "gallery": gallery[1:],
+                        "image": "",
+                        "gallery": gallery,
                         "description": description,
                         "rating": Decimal(str(rating)),
                         "review_count": review_count,

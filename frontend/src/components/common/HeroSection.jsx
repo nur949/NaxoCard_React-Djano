@@ -60,7 +60,7 @@ export default function HeroSection() {
         transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
         className="absolute left-[7%] top-[17%] text-[4.5rem] font-black uppercase leading-none tracking-[-0.08em] text-white/20 sm:text-[6.5rem] lg:text-[10rem]"
       >
-        Shoe
+        NaxoCard
       </motion.div>
       <motion.div
         animate={{ scale: [1, 1.06, 1], opacity: [0.2, 0.28, 0.2] }}
@@ -70,14 +70,8 @@ export default function HeroSection() {
       <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-b from-transparent to-black/5" />
 
       <div className="section relative z-10 grid min-h-[520px] items-center gap-6 pb-6 pt-24 sm:pb-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-8 lg:pt-24">
-        <motion.div
-          key={activeProduct.id + "-content"}
-          initial={{ opacity: 0, y: 26 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, ease: "easeOut" }}
-          className="relative max-w-lg py-1 lg:-mt-8"
-        >
-          <div className="mt-32 flex items-center gap-4 lg:mt-40">
+        <div className="relative max-w-lg py-1 lg:-mt-8">
+          <div className="mt-32 flex min-h-[88px] items-center gap-4 lg:mt-40">
             <Link
               to="/products"
               className="inline-flex items-center gap-4 rounded-full border border-white/40 bg-white/75 px-8 py-4 text-sm font-black uppercase tracking-[0.12em] text-slate-900 shadow-[0_18px_40px_rgba(15,23,42,0.14)] backdrop-blur transition hover:-translate-y-0.5 hover:scale-[1.02] hover:bg-white hover:shadow-[0_22px_48px_rgba(208,236,239,0.3)] sm:px-9 sm:text-base"
@@ -86,12 +80,22 @@ export default function HeroSection() {
               <ChevronRight size={20} />
             </Link>
 
-            <div className="hidden text-sm text-white/75 sm:block">
-              <p className="font-semibold text-white">{activeProduct.name}</p>
-              <p>{activeProduct.caption}</p>
+            <div className="hidden min-w-[170px] text-sm text-white/75 sm:block">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeProduct.id + "-cta-copy"}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.25, ease: "easeOut" }}
+                >
+                  <p className="font-semibold text-white">{activeProduct.name}</p>
+                  <p>{activeProduct.caption}</p>
+                </motion.div>
+              </AnimatePresence>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         <div className="relative flex h-[280px] items-center justify-center sm:h-[340px] lg:h-[390px]">
           <div className={`absolute left-1/2 top-1/2 h-[52%] w-[50%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-br ${activeProduct.accent} opacity-25 blur-3xl transition-all duration-500`} />

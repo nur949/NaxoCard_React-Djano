@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework.test import APITestCase
 
+from orders.models import Order
 from products.models import Category, Product
 
 
@@ -17,3 +18,22 @@ class CartOrderApiTests(APITestCase):
         order_response = self.client.post("/api/orders/", {"shipping_address": "123 Main St"})
         self.assertEqual(order_response.status_code, 201)
         self.assertEqual(order_response.data["total"], "40.00")
+
+    def test_guest_can_create_cod_order_without_auth(self):
+        self.client.force_authenticate(user=None)
+        order_response = self.client.post(
+            "/api/orders/",
+            {
+                "guest_name": "Guest Buyer",
+                "guest_email": "guest@example.com",
+                "guest_phone": "01700000000",
+                "shipping_address": "House 10, Road 5, Dhaka",
+                "payment_method": "cod",
+                "items_payload": [{"product_id": self.product.id, "quantity": 1}],
+            },
+            format="json",
+        )
+        self.assertEqual(order_response.status_code, 201)
+        self.assertEqual(order_response.data["payment_method"], "cod")
+        self.assertEqual(order_response.data["total"], "20.00")
+        self.assertIsNone(Order.objects.get(pk=order_response.data["id"]).user)

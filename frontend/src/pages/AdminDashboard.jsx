@@ -51,6 +51,14 @@ const sections = [
 ];
 
 const chartColors = ["#4f7cff", "#19a48f", "#ff9f43", "#ef5d60", "#7c5cff"];
+const createVariantRow = (variant = {}) => ({
+  upload_key: variant.upload_key || `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+  name: variant.name || "",
+  value: variant.value || "",
+  stock: variant.stock || "",
+  gallery: Array.isArray(variant.gallery) ? variant.gallery : [],
+  gallery_files: [],
+});
 const emptyProduct = {
   name: "",
   slug: "",
@@ -62,7 +70,7 @@ const emptyProduct = {
   is_featured: false,
   image_file: null,
   gallery_files: [],
-  variants: [{ name: "", value: "", stock: "" }],
+  variants: [createVariantRow()],
 };
 const emptyCategory = { name: "", slug: "" };
 const emptyCoupon = {
@@ -142,11 +150,16 @@ export default function AdminDashboard() {
       Array.from(productForm.gallery_files || []).slice(0, 4).forEach((file) => payload.append("gallery_files", file));
       payload.append("variants_input", JSON.stringify(
         (productForm.variants || []).filter((item) => item.name.trim() && item.value.trim()).map((item) => ({
+          upload_key: item.upload_key,
           name: item.name.trim(),
           value: item.value.trim(),
           stock: Number(item.stock || 0),
+          gallery: item.gallery || [],
         }))
       ));
+      (productForm.variants || []).forEach((item) => {
+        Array.from(item.gallery_files || []).slice(0, 5).forEach((file) => payload.append(`variant_gallery_files_${item.upload_key}`, file));
+      });
       if (productEditing) await api.patch(`/products/${productEditing}/`, payload, { headers: { "Content-Type": "multipart/form-data" } });
       else await api.post("/products/", payload, { headers: { "Content-Type": "multipart/form-data" } });
       setProductForm(emptyProduct);
@@ -247,11 +260,7 @@ export default function AdminDashboard() {
       is_featured: Boolean(product.is_featured),
       image_file: null,
       gallery_files: [],
-      variants: product.variants?.length ? product.variants.map((variant) => ({
-        name: variant.name || "",
-        value: variant.value || "",
-        stock: variant.stock || "",
-      })) : [{ name: "", value: "", stock: "" }],
+      variants: product.variants?.length ? product.variants.map((variant) => createVariantRow(variant)) : [createVariantRow()],
     });
   }
 
@@ -267,7 +276,7 @@ export default function AdminDashboard() {
   function addProductVariantRow() {
     setProductForm((current) => ({
       ...current,
-      variants: [...current.variants, { name: "", value: "", stock: "" }],
+      variants: [...current.variants, createVariantRow()],
     }));
   }
 
@@ -275,7 +284,7 @@ export default function AdminDashboard() {
     setProductForm((current) => ({
       ...current,
       variants: current.variants.length === 1
-        ? [{ name: "", value: "", stock: "" }]
+        ? [createVariantRow()]
         : current.variants.filter((_, variantIndex) => variantIndex !== index),
     }));
   }
@@ -327,7 +336,7 @@ export default function AdminDashboard() {
           </nav>
           <div className="mt-5 rounded-xl bg-muted p-4 text-sm text-muted-foreground">
             <p className="font-bold text-foreground">Real-time ready</p>
-            <p className="mt-2">Current structure is API-driven and ready for websockets or polling upgrades.</p>
+            <p className="mt-2">Current structure is API-driven and ready for a shoes-only catalog with color-wise PNG image updates.</p>
           </div>
         </aside>
 
@@ -516,7 +525,7 @@ export default function AdminDashboard() {
                       <div className="grid gap-3 rounded-xl border p-3">
                         <div>
                           <p className="text-sm font-black">Product images</p>
-                          <p className="mt-1 text-xs text-muted-foreground">1 cover + up to 4 more images. Total 5.</p>
+                          <p className="mt-1 text-xs text-muted-foreground">Use background-free PNG shoe images. 1 cover + up to 4 more images. Total 5.</p>
                         </div>
                         <input className="input" type="file" accept="image/*" onChange={(e) => setProductForm({ ...productForm, image_file: e.target.files?.[0] || null })} />
                         <input className="input" type="file" accept="image/*" multiple onChange={(e) => setProductForm({ ...productForm, gallery_files: Array.from(e.target.files || []).slice(0, 4) })} />
@@ -528,17 +537,32 @@ export default function AdminDashboard() {
                         <div className="flex items-center justify-between gap-3">
                           <div>
                             <p className="text-sm font-black">Variations</p>
-                            <p className="mt-1 text-xs text-muted-foreground">Example: Size 42, Color Red</p>
+                            <p className="mt-1 text-xs text-muted-foreground">Example: Size 42, Color Black. Add multiple PNG images for each color row.</p>
                           </div>
                           <Button type="button" variant="outline" onClick={addProductVariantRow}>Add row</Button>
                         </div>
                         <div className="grid gap-3">
                           {productForm.variants.map((variant, index) => (
-                            <div key={`${index}-${productEditing || "new"}`} className="grid gap-2 rounded-lg border p-3 sm:grid-cols-[1fr_1fr_110px_auto]">
+                            <div key={variant.upload_key} className="grid gap-2 rounded-lg border p-3">
+                              <div className="grid gap-2 sm:grid-cols-[1fr_1fr_110px_auto]">
                               <input className="input" placeholder="Type" value={variant.name} onChange={(e) => updateProductVariant(index, "name", e.target.value)} />
                               <input className="input" placeholder="Value" value={variant.value} onChange={(e) => updateProductVariant(index, "value", e.target.value)} />
                               <input className="input" placeholder="Stock" value={variant.stock} onChange={(e) => updateProductVariant(index, "stock", e.target.value)} />
                               <Button type="button" variant="outline" onClick={() => removeProductVariantRow(index)}><Trash2 size={16} /></Button>
+                              </div>
+                              <div className="grid gap-2">
+                                <input
+                                  className="input"
+                                  type="file"
+                                  accept="image/*"
+                                  multiple
+                                  onChange={(e) => updateProductVariant(index, "gallery_files", Array.from(e.target.files || []).slice(0, 5))}
+                                />
+                                <p className="text-xs text-muted-foreground">
+                                  {variant.gallery?.length ? `${variant.gallery.length} existing color image.` : "No existing color image."}{" "}
+                                  {variant.gallery_files?.length ? `${variant.gallery_files.length} new PNG image selected.` : "No new image selected."}
+                                </p>
+                              </div>
                             </div>
                           ))}
                         </div>

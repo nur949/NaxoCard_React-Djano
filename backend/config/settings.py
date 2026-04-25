@@ -14,7 +14,20 @@ ALLOWED_HOSTS = [h.strip() for h in os.getenv("ALLOWED_HOSTS", "localhost,127.0.
 render_hostname = os.getenv("RENDER_EXTERNAL_HOSTNAME", "").strip()
 if render_hostname and render_hostname not in ALLOWED_HOSTS:
     ALLOWED_HOSTS.append(render_hostname)
-CSRF_TRUSTED_ORIGINS = [o.strip() for o in os.getenv("CSRF_TRUSTED_ORIGINS", "http://localhost:5173").split(",") if o.strip()]
+
+
+def parse_origin_list(env_name, default):
+    return [o.strip() for o in os.getenv(env_name, default).split(",") if o.strip()]
+
+
+LOCAL_FRONTEND_ORIGINS = ",".join([
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:5174",
+    "http://127.0.0.1:5174",
+])
+
+CSRF_TRUSTED_ORIGINS = parse_origin_list("CSRF_TRUSTED_ORIGINS", LOCAL_FRONTEND_ORIGINS)
 
 INSTALLED_APPS = [
     "jazzmin",
@@ -134,11 +147,11 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
-CORS_ALLOWED_ORIGINS = [o.strip() for o in os.getenv("CORS_ALLOWED_ORIGINS", "http://localhost:5173").split(",")]
+CORS_ALLOWED_ORIGINS = parse_origin_list("CORS_ALLOWED_ORIGINS", LOCAL_FRONTEND_ORIGINS)
 CORS_ALLOW_CREDENTIALS = True
 STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY", "")
 STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET", "")
-FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173")
+FRONTEND_URL = os.getenv("FRONTEND_URL", "http://127.0.0.1:5174")
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 

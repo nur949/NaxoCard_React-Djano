@@ -51,6 +51,10 @@ class CartItem(models.Model):
 
 
 class Order(models.Model):
+    class PaymentMethod(models.TextChoices):
+        COD = "cod", "Cash on delivery"
+        STRIPE = "stripe", "Stripe"
+
     class Status(models.TextChoices):
         PENDING = "pending", "Pending"
         PAID = "paid", "Paid"
@@ -59,8 +63,12 @@ class Order(models.Model):
         DELIVERED = "delivered", "Delivered"
         CANCELED = "canceled", "Canceled"
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="orders", on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="orders", on_delete=models.CASCADE, null=True, blank=True)
     coupon = models.ForeignKey("Coupon", related_name="orders", on_delete=models.SET_NULL, null=True, blank=True)
+    guest_name = models.CharField(max_length=160, blank=True)
+    guest_email = models.EmailField(blank=True)
+    guest_phone = models.CharField(max_length=40, blank=True)
+    payment_method = models.CharField(max_length=20, choices=PaymentMethod.choices, default=PaymentMethod.COD)
     status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING)
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     discount_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)

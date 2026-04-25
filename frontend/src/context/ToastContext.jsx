@@ -2,6 +2,9 @@ import { createContext, useCallback, useContext, useMemo, useState } from "react
 import { X } from "lucide-react";
 
 const ToastContext = createContext(null);
+const defaultToastContext = {
+  pushToast: () => {},
+};
 
 export function ToastProvider({ children }) {
   const [toasts, setToasts] = useState([]);
@@ -39,4 +42,4 @@ export function ToastProvider({ children }) {
   );
 }
 
-export const useToast = () => useContext(ToastContext);
+export const useToast = () => useContext(ToastContext) || defaultToastContext;

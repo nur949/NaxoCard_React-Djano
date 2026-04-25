@@ -43,24 +43,94 @@ class OrderItemSerializer(serializers.ModelSerializer):
         fields = ("id", "product", "product_name", "price", "quantity", "subtotal")
 
 
+class OrderCreateItemSerializer(serializers.Serializer):
+    product_id = serializers.PrimaryKeyRelatedField(queryset=Product.objects.filter(is_active=True), source="product")
+    quantity = serializers.IntegerField(min_value=1)
+
+
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True, read_only=True)
+    items_payload = OrderCreateItemSerializer(many=True, write_only=True, required=False)
     coupon_code = serializers.CharField(write_only=True, required=False, allow_blank=True)
     coupon = serializers.StringRelatedField(read_only=True)
+    guest_name = serializers.CharField(required=False, allow_blank=True)
+    guest_email = serializers.EmailField(required=False, allow_blank=True)
+    guest_phone = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:
         model = Order
-        fields = ("id", "status", "total", "discount_amount", "coupon", "coupon_code", "shipping_address", "stripe_session_id", "items", "is_deleted", "deleted_at", "created_at")
+        fields = (
+            "id",
+            "status",
+            "total",
+            "discount_amount",
+            "coupon",
+            "coupon_code",
+            "shipping_address",
+            "guest_name",
+            "guest_email",
+            "guest_phone",
+            "payment_method",
+            "stripe_session_id",
+            "items",
+            "items_payload",
+            "is_deleted",
+            "deleted_at",
+            "created_at",
+        )
         read_only_fields = ("id", "total", "discount_amount", "coupon", "stripe_session_id", "items", "is_deleted", "deleted_at", "created_at")
+
+    def validate(self, attrs):
+        request = self.context["request"]
+        user = request.user if request.user and request.user.is_authenticated else None
+        payment_method = attrs.get("payment_method") or Order.PaymentMethod.COD
+        items_payload = attrs.get("items_payload") or []
+
+        if payment_method == Order.PaymentMethod.STRIPE and not user:
+            raise serializers.ValidationError({"payment_method": "Login is required for Stripe checkout."})
+
+        if user:
+            has_server_cart = Cart.objects.filter(user=user, items__isnull=False).exists()
+            if not has_server_cart and not items_payload:
+                raise serializers.ValidationError({"items_payload": "Cart is empty."})
+        elif not items_payload:
+            raise serializers.ValidationError({"items_payload": "Add at least one product before checkout."})
+
+        if not user:
+            if not attrs.get("guest_name", "").strip():
+                raise serializers.ValidationError({"guest_name": "Name is required for guest checkout."})
+            if not attrs.get("guest_email", "").strip():
+                raise serializers.ValidationError({"guest_email": "Email is required for guest checkout."})
+            if not attrs.get("guest_phone", "").strip():
+                raise serializers.ValidationError({"guest_phone": "Phone is required for guest checkout."})
+
+        return attrs
 
     @transaction.atomic
     def create(self, validated_data):
-        user = self.context["request"].user
-        cart = Cart.objects.prefetch_related("items__product").get(user=user)
-        if not cart.items.exists():
-            raise serializers.ValidationError("Cart is empty.")
+        request = self.context["request"]
+        user = request.user if request.user and request.user.is_authenticated else None
+        items_payload = validated_data.pop("items_payload", [])
         coupon_code = validated_data.pop("coupon_code", "").strip().upper()
-        subtotal = cart.total
+        cart = None
+
+        if user and not items_payload:
+            cart = Cart.objects.prefetch_related("items__product").filter(user=user).first()
+            if not cart or not cart.items.exists():
+                raise serializers.ValidationError("Cart is empty.")
+            line_items = [{"product": item.product, "quantity": item.quantity} for item in cart.items.all()]
+            subtotal = cart.total
+        else:
+            line_items = []
+            subtotal = 0
+            for item in items_payload:
+                product = item["product"]
+                quantity = item["quantity"]
+                if quantity > product.stock:
+                    raise serializers.ValidationError(f"{product.name} has insufficient stock.")
+                line_items.append({"product": product, "quantity": quantity})
+                subtotal += product.price * quantity
+
         coupon = None
         discount_amount = 0
         if coupon_code:
@@ -75,23 +145,21 @@ class OrderSerializer(serializers.ModelSerializer):
             coupon=coupon,
             **validated_data,
         )
-        for item in cart.items.all():
-            product = item.product
-            if item.quantity > product.stock:
-                raise serializers.ValidationError(f"{product.name} has insufficient stock.")
+        for item in line_items:
+            product = item["product"]
+            quantity = item["quantity"]
             OrderItem.objects.create(
                 order=order,
                 product=product,
                 product_name=product.name,
                 price=product.price,
-                quantity=item.quantity,
+                quantity=quantity,
             )
-            product.stock -= item.quantity
-            product.save(update_fields=["stock"])
-            product.sales_count += item.quantity
-            product.save(update_fields=["sales_count"])
+            product.stock -= quantity
+            product.sales_count += quantity
+            product.save(update_fields=["stock", "sales_count"])
         earned_points = int(order.total)
-        if earned_points > 0:
+        if user and earned_points > 0:
             user.loyalty_points += earned_points
             user.lifetime_points += earned_points
             user.update_loyalty_tier()
@@ -106,7 +174,12 @@ class OrderSerializer(serializers.ModelSerializer):
         if coupon:
             coupon.used_count += 1
             coupon.save(update_fields=["used_count"])
-        cart.items.all().delete()
+        if cart:
+            cart.items.all().delete()
+        elif user:
+            user_cart = Cart.objects.filter(user=user).first()
+            if user_cart:
+                user_cart.items.all().delete()
         return order
 
 

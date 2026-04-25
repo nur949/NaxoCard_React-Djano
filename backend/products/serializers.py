@@ -15,7 +15,7 @@ class CategorySerializer(serializers.ModelSerializer):
 class ProductVariantSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductVariant
-        fields = ("id", "name", "value", "stock")
+        fields = ("id", "name", "value", "stock", "gallery")
 
 
 class ProductReviewSerializer(serializers.ModelSerializer):
@@ -96,6 +96,8 @@ class ProductSerializer(serializers.ModelSerializer):
                 "name": name,
                 "value": value,
                 "stock": max(int(stock or 0), 0),
+                "gallery": row.get("gallery", []) if isinstance(row.get("gallery", []), list) else [],
+                "upload_key": str(row.get("upload_key", "")).strip(),
             })
         return cleaned
 
@@ -139,6 +141,20 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def _sync_variants(self, product, variants):
         product.variants.all().delete()
-        ProductVariant.objects.bulk_create(
-            [ProductVariant(product=product, **variant) for variant in variants]
-        )
+        request = self.context.get("request")
+        rows = []
+        for variant in variants:
+            uploaded_gallery = []
+            if request and variant.get("upload_key"):
+                files = request.FILES.getlist(f"variant_gallery_files_{variant['upload_key']}")
+                for file in files[:5]:
+                    path = default_storage.save(f"products/variants/{file.name}", file)
+                    uploaded_gallery.append(default_storage.url(path))
+            rows.append(ProductVariant(
+                product=product,
+                name=variant["name"],
+                value=variant["value"],
+                stock=variant["stock"],
+                gallery=uploaded_gallery or variant.get("gallery", [])[:5],
+            ))
+        ProductVariant.objects.bulk_create(rows)

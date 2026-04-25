@@ -20,6 +20,11 @@ const Orders = lazy(() => import("./pages/Orders.jsx"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard.jsx"));
 const OrderConfirmation = lazy(() => import("./pages/OrderConfirmation.jsx"));
 const Contact = lazy(() => import("./pages/Contact.jsx"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy.jsx"));
+const TermsAndConditions = lazy(() => import("./pages/TermsAndConditions.jsx"));
+const RefundPolicy = lazy(() => import("./pages/RefundPolicy.jsx"));
+const StoreLocator = lazy(() => import("./pages/StoreLocator.jsx"));
+const ReturnsExchange = lazy(() => import("./pages/ReturnsExchange.jsx"));
 
 function PrivateRoute({ children, adminOnly = false }) {
   const { user, loading } = useAuth();
@@ -29,7 +34,7 @@ function PrivateRoute({ children, adminOnly = false }) {
   return children;
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+const app = (
   <React.StrictMode>
     <MantisThemeProvider>
       <BrowserRouter>
@@ -42,13 +47,18 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                     <Route path="/" element={<Home />} />
                     <Route path="/products" element={<Products />} />
                     <Route path="/products/:slug" element={<ProductDetails />} />
-                    <Route path="/cart" element={<PrivateRoute><Cart /></PrivateRoute>} />
-                    <Route path="/checkout" element={<PrivateRoute><Checkout /></PrivateRoute>} />
+                    <Route path="/cart" element={<Cart />} />
+                    <Route path="/checkout" element={<Checkout />} />
                     <Route path="/auth" element={<Auth />} />
                     <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
                     <Route path="/orders" element={<PrivateRoute><Orders /></PrivateRoute>} />
-                    <Route path="/order-confirmation" element={<PrivateRoute><OrderConfirmation /></PrivateRoute>} />
+                    <Route path="/order-confirmation" element={<OrderConfirmation />} />
                     <Route path="/contact" element={<Contact />} />
+                    <Route path="/privacy" element={<PrivacyPolicy />} />
+                    <Route path="/terms" element={<TermsAndConditions />} />
+                    <Route path="/refund-policy" element={<RefundPolicy />} />
+                    <Route path="/store-locator" element={<StoreLocator />} />
+                    <Route path="/returns-exchange" element={<ReturnsExchange />} />
                     <Route path="/admin" element={<PrivateRoute adminOnly><AdminDashboard /></PrivateRoute>} />
                   </Route>
                 </Routes>
@@ -60,3 +70,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     </MantisThemeProvider>
   </React.StrictMode>
 );
+
+const rootElement = document.getElementById("root");
+const root = globalThis.__myshopRoot || ReactDOM.createRoot(rootElement);
+globalThis.__myshopRoot = root;
+root.render(app);

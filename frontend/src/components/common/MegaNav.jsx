@@ -5,7 +5,7 @@ const menus = [
   {
     label: "MEN",
     columns: [
-      ["ALL SHOES", "Casual Shoes", "Formal Shoes", "Mens Sandal", "Sports", "Loafer"],
+      ["ALL SHOES", "Casual Shoes", "Formal Shoes", "Loafers", "Sneakers", "Sandals"],
       ["BRANDS", "Power", "North Star", "Hush Puppies", "Weinbrenner", "Bata"],
       ["BY PRICE", "Under Tk.1000", "Tk.1001 - Tk.1500", "Tk.1501 - Tk.3000", "Above Tk.5000"],
     ],
@@ -13,7 +13,7 @@ const menus = [
   {
     label: "WOMEN",
     columns: [
-      ["ALL SHOES", "Ladies Sandals", "Ladies Heel", "Ladies Sports", "Closed Shoes"],
+      ["ALL SHOES", "Heels", "Flats", "Ladies Sandals", "Ladies Sneakers", "Closed Shoes"],
       ["BRANDS", "Bata", "Marie Claire", "Power", "Scholl"],
       ["BY COLOR", "Black", "Brown", "Red", "Pink", "White"],
     ],
@@ -21,24 +21,25 @@ const menus = [
   {
     label: "CHILDREN",
     columns: [
-      ["BOYS", "Sandal", "Sports", "Kids Casuals"],
-      ["GIRLS", "Sandal", "Sports", "School Shoes"],
+      ["BOYS", "Sandals", "Sneakers", "School Shoes"],
+      ["GIRLS", "Sandals", "Sneakers", "School Shoes"],
       ["BY SIZE", "1", "2", "3", "4", "5", "6"],
     ],
   },
   {
-    label: "ACCESSORIES",
+    label: "SNEAKERS",
     columns: [
-      ["BAG", "Backpack", "Ladies Handbags"],
-      ["OTHERS", "Belts", "Wallets", "Shoe Care"],
-      ["SHOP", "New Arrivals", "Best Seller", "Gift Cards"],
+      ["STYLE", "Running Shoes", "Street Sneakers", "Training Shoes", "Chunky Sneakers"],
+      ["BY USE", "Daily Wear", "Travel", "Gym", "Weekend Outfits"],
+      ["SHOP", "New Arrivals", "Best Sellers", "Featured Shoes"],
     ],
   },
   {
-    label: "BATA CLUB",
+    label: "SANDALS",
     columns: [
-      ["MEMBERSHIP", "Check points", "Register", "Benefits"],
-      ["OFFERS", "Member deals", "Season sale", "Store rewards"],
+      ["MEN", "Leather Sandals", "Slides", "Outdoor Sandals"],
+      ["WOMEN", "Comfort Sandals", "Heeled Sandals", "Daily Sandals"],
+      ["KIDS", "School Sandals", "Play Sandals", "Easy Strap"],
     ],
   },
 ];
@@ -47,8 +48,8 @@ export default function MegaNav() {
   return (
     <nav className="hidden border-y bg-background lg:block">
       <div className="section flex h-12 items-center justify-center gap-10">
-        <Link to="/products" className="text-sm font-bold uppercase tracking-wide hover:text-primary">New Arrivals</Link>
-        <Link to="/products" className="text-sm font-bold uppercase tracking-wide hover:text-primary">Best Sellers</Link>
+        <Link to="/products?sort=newest" className="text-sm font-bold uppercase tracking-wide hover:text-primary">New Arrivals</Link>
+        <Link to="/products?ordering=-sales_count" className="text-sm font-bold uppercase tracking-wide hover:text-primary">Best Sellers</Link>
         {menus.map((menu) => (
           <div key={menu.label} className="group relative h-full">
             <Link to="/products" className="flex h-full items-center gap-1 text-sm font-bold uppercase tracking-wide hover:text-primary">

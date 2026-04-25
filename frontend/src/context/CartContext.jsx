@@ -6,8 +6,21 @@ import { useToast } from "./ToastContext.jsx";
 const CartContext = createContext(null);
 
 const emptyCart = { items: [], total: "0.00" };
+const defaultCartContext = {
+  cart: emptyCart,
+  loading: false,
+  count: 0,
+  drawerOpen: false,
+  setDrawerOpen: () => {},
+  loadCart: async () => {},
+  add: async () => false,
+  update: async () => false,
+  remove: async () => false,
+  clear: () => {},
+};
 const CART_SYNC_KEY = "myshop:cart-sync";
 const CART_SYNC_INTERVAL = 15000;
+const GUEST_CART_KEY = "myshop:guest-cart";
 
 function recalc(cart) {
   const total = cart.items.reduce((sum, item) => sum + Number(item.product.price || 0) * item.quantity, 0);
@@ -19,6 +32,25 @@ function recalc(cart) {
       subtotal: (Number(item.product.price || 0) * item.quantity).toFixed(2),
     })),
   };
+}
+
+function readGuestCart() {
+  try {
+    const raw = localStorage.getItem(GUEST_CART_KEY);
+    if (!raw) return emptyCart;
+    const parsed = JSON.parse(raw);
+    return recalc({ items: Array.isArray(parsed?.items) ? parsed.items : [] });
+  } catch {
+    return emptyCart;
+  }
+}
+
+function persistGuestCart(cart) {
+  try {
+    localStorage.setItem(GUEST_CART_KEY, JSON.stringify({ items: cart.items }));
+  } catch {
+    // ignore storage errors in restricted browser contexts
+  }
 }
 
 export function CartProvider({ children }) {
@@ -33,7 +65,7 @@ export function CartProvider({ children }) {
 
   const loadCart = useCallback(async ({ silent = false } = {}) => {
     if (!user) {
-      setCart(emptyCart);
+      setCart(readGuestCart());
       return;
     }
     if (!silent) setLoading(true);
@@ -103,8 +135,34 @@ export function CartProvider({ children }) {
 
   async function add(productId, quantity = 1, product = null) {
     if (!user) {
-      pushToast("Login required to add items to cart.", "error");
-      return false;
+      if (!product?.id) return false;
+      const nextCart = recalc((() => {
+        const current = readGuestCart();
+        const existing = current.items.find((item) => item.product.id === productId);
+        if (existing) {
+          return {
+            ...current,
+            items: current.items.map((item) =>
+              item.product.id === productId
+                ? { ...item, quantity: Math.min((item.product.stock || 1), item.quantity + quantity) }
+                : item
+            ),
+          };
+        }
+        return {
+          ...current,
+          items: [
+            { id: `guest-${productId}`, product, quantity: Math.min((product.stock || 1), quantity), subtotal: product.price },
+            ...current.items,
+          ],
+        };
+      })());
+      persistGuestCart(nextCart);
+      setCart(nextCart);
+      setDrawerOpen(true);
+      broadcastCartSync("guest-add");
+      pushToast(`${product.name || "Product"} added to cart.`);
+      return true;
     }
     if (pendingRef.current.has(`add-${productId}`)) return false;
     pendingRef.current.add(`add-${productId}`);
@@ -141,6 +199,18 @@ export function CartProvider({ children }) {
 
   async function update(itemId, quantity) {
     if (quantity < 1) return false;
+    if (!user) {
+      const nextCart = recalc({
+        ...readGuestCart(),
+        items: readGuestCart().items.map((item) =>
+          item.id === itemId ? { ...item, quantity: Math.min(item.product.stock || quantity, quantity) } : item
+        ),
+      });
+      persistGuestCart(nextCart);
+      setCart(nextCart);
+      broadcastCartSync("guest-update");
+      return true;
+    }
     const previous = cart;
     setCart((current) => recalc({ ...current, items: current.items.map((item) => item.id === itemId ? { ...item, quantity } : item) }));
 
@@ -167,6 +237,14 @@ export function CartProvider({ children }) {
   }
 
   async function remove(itemId) {
+    if (!user) {
+      const nextCart = recalc({ ...readGuestCart(), items: readGuestCart().items.filter((item) => item.id !== itemId) });
+      persistGuestCart(nextCart);
+      setCart(nextCart);
+      broadcastCartSync("guest-remove");
+      pushToast("Item removed from cart.");
+      return true;
+    }
     if (pendingRef.current.has(`remove-${itemId}`)) return false;
     pendingRef.current.add(`remove-${itemId}`);
     const previous = cart;
@@ -187,6 +265,21 @@ export function CartProvider({ children }) {
     }
   }
 
+  function clear() {
+    if (!user) {
+      persistGuestCart(emptyCart);
+      setCart(emptyCart);
+      broadcastCartSync("guest-clear");
+      return;
+    }
+    api.delete("/cart/clear/").then(({ data }) => {
+      setCart(data);
+      broadcastCartSync("clear");
+    }).catch(() => {
+      setCart(emptyCart);
+    });
+  }
+
   const count = cart.items.reduce((sum, item) => sum + item.quantity, 0);
   const value = useMemo(() => ({
     cart,
@@ -198,9 +291,10 @@ export function CartProvider({ children }) {
     add,
     update,
     remove,
+    clear,
   }), [cart, loading, count, drawerOpen, loadCart]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
 
-export const useCart = () => useContext(CartContext);
+export const useCart = () => useContext(CartContext) || defaultCartContext;

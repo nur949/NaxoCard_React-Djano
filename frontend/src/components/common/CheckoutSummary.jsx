@@ -24,9 +24,9 @@ export default function CheckoutSummary({ items = [], total = "0.00" }) {
           <span className="text-primary">Tk {total}</span>
         </div>
         <div className="grid gap-2 rounded-md bg-muted p-3 text-xs text-muted-foreground">
-          <span className="flex items-center gap-2"><Lock size={14} /> Stripe secure test checkout</span>
+          <span className="flex items-center gap-2"><Lock size={14} /> Guest checkout supported</span>
           <span className="flex items-center gap-2"><Truck size={14} /> Delivery status tracked after order</span>
-          <span className="flex items-center gap-2"><PackageCheck size={14} /> Easy order history from profile</span>
+          <span className="flex items-center gap-2"><PackageCheck size={14} /> Cash on delivery available</span>
         </div>
       </CardContent>
     </Card>

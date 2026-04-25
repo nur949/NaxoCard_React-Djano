@@ -3,11 +3,11 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import { useCart } from "../context/CartContext.jsx";
-import CartPreview from "./common/CartPreview.jsx";
 import Footer from "./common/Footer.jsx";
 import MegaNav from "./common/MegaNav.jsx";
 import MiniCartDrawer from "./common/MiniCartDrawer.jsx";
 import UserMenu from "./common/UserMenu.jsx";
+import WhatsAppButton from "./common/WhatsAppButton.jsx";
 import { Button } from "./ui/button.jsx";
 
 const primaryNav = [
@@ -21,15 +21,20 @@ export default function Layout() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { user } = useAuth();
-  const { count } = useCart();
+  const { count, setDrawerOpen } = useCart();
   const location = useLocation();
 
   const isHome = location.pathname === "/";
   const heroMode = isHome && !scrolled;
+  const showSecondaryNav = scrolled;
+  const hidePrimaryHeader = showSecondaryNav;
 
   useEffect(() => {
     function onScroll() {
-      setScrolled(window.scrollY > 40);
+      setScrolled((current) => {
+        const nextY = window.scrollY;
+        return current ? nextY > 24 : nextY > 60;
+      });
     }
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -62,13 +67,13 @@ export default function Layout() {
 
   return (
     <div className="min-h-screen">
-      <header className={`fixed inset-x-0 top-0 z-40 transition-all duration-300 ${navTone.header}`}>
+      <header className={`fixed inset-x-0 top-0 z-40 transition-[transform,opacity,background-color,border-color,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${hidePrimaryHeader ? "-translate-y-full opacity-0 pointer-events-none" : "translate-y-0 opacity-100"} ${navTone.header}`}>
         <div className="section flex min-h-24 items-center justify-between gap-4 py-4">
           <Link to="/" className={`flex items-center gap-3 text-3xl font-black tracking-tight ${navTone.logo}`}>
             <span className="grid h-11 w-11 place-items-center rounded-full bg-white/12 backdrop-blur hero-safe-icon">
               <Footprints size={22} />
             </span>
-            <span className="text-[2rem] leading-none">Shoe</span>
+            <span className="text-[2rem] leading-none">NaxoCard</span>
           </Link>
 
           <nav className="hidden items-center gap-10 lg:flex">
@@ -92,12 +97,10 @@ export default function Layout() {
             <Button asChild variant="outline" size="icon" className={navTone.iconButton} title="Wishlist">
               <Link to="/products?wishlist=1"><Heart size={18} /></Link>
             </Button>
-            <CartPreview>
-              <Button variant="outline" size="icon" className={`${navTone.iconButton} relative`} title="Cart">
-                <ShoppingCart size={18} />
-                {count > 0 && <span className="absolute -right-1 -top-1 rounded-full bg-accent px-1.5 text-[10px] font-bold text-accent-foreground">{count}</span>}
-              </Button>
-            </CartPreview>
+            <Button variant="outline" size="icon" className={`${navTone.iconButton} relative`} title="Cart" onClick={() => setDrawerOpen(true)}>
+              <ShoppingCart size={18} />
+              {count > 0 && <span className="absolute -right-1 -top-1 rounded-full bg-accent px-1.5 text-[10px] font-bold text-accent-foreground">{count}</span>}
+            </Button>
             {user ? (
               <UserMenu>
                 <Button variant="outline" size="icon" className={navTone.iconButton} title="Profile">
@@ -125,7 +128,16 @@ export default function Layout() {
                 </Link>
               ))}
               <Link to="/products?wishlist=1" className="rounded-xl px-4 py-3 text-sm font-bold uppercase tracking-[0.12em] hover:bg-white/10">Wishlist</Link>
-              <Link to="/cart" className="rounded-xl px-4 py-3 text-sm font-bold uppercase tracking-[0.12em] hover:bg-white/10">Cart</Link>
+              <button
+                className="rounded-xl px-4 py-3 text-left text-sm font-bold uppercase tracking-[0.12em] hover:bg-white/10"
+                onClick={() => {
+                  setOpen(false);
+                  setDrawerOpen(true);
+                }}
+                type="button"
+              >
+                Cart
+              </button>
               <Link to={user ? "/profile" : "/auth"} className="rounded-xl px-4 py-3 text-sm font-bold uppercase tracking-[0.12em] hover:bg-white/10">
                 {user ? "Profile" : "Login"}
               </Link>
@@ -134,11 +146,17 @@ export default function Layout() {
         )}
       </header>
 
-      {!isHome && <div className="pt-24"><MegaNav /></div>}
-      <main className={isHome ? "" : ""}>
+      <div className={`pointer-events-none fixed inset-x-0 top-0 z-30 hidden transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] lg:block ${showSecondaryNav ? "translate-y-0 opacity-100" : "-translate-y-6 opacity-0"}`}>
+        <div className="pointer-events-auto">
+          <MegaNav />
+        </div>
+      </div>
+      {showSecondaryNav ? <div className="hidden h-12 lg:block" /> : null}
+      <main className={isHome ? "" : "pt-24"}>
         <Outlet />
       </main>
       <MiniCartDrawer />
+      <WhatsAppButton />
       <Footer />
     </div>
   );

@@ -3,6 +3,14 @@ import api from "../api/client.js";
 
 const AuthContext = createContext(null);
 const AUTH_SYNC_KEY = "myshop:auth-sync";
+const defaultAuthContext = {
+  user: null,
+  loading: false,
+  login: async () => {},
+  register: async () => {},
+  logout: () => {},
+  loadProfile: async () => {},
+};
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -85,4 +93,4 @@ export function AuthProvider({ children }) {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => useContext(AuthContext) || defaultAuthContext;

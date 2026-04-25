@@ -2,9 +2,9 @@ import { Star } from "lucide-react";
 import { Card } from "../ui/card.jsx";
 
 const testimonials = [
-  ["Clean storefront, fast cart, and checkout was simple.", "Ari, repeat buyer"],
-  ["Product filters and wishlist make comparisons easy.", "Mina, lifestyle shopper"],
-  ["Order tracking is straightforward and reliable.", "Sam, tech buyer"],
+  ["Clean storefront, fast cart, and checkout was simple for ordering shoes.", "Ari, repeat buyer"],
+  ["Color-wise images made it easy to compare pairs before buying.", "Mina, lifestyle shopper"],
+  ["Size selection and delivery flow felt straightforward and reliable.", "Sam, sneaker buyer"],
 ];
 
 export default function Testimonials() {

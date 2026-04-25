@@ -94,6 +94,7 @@ class ProductVariant(models.Model):
     name = models.CharField(max_length=80)
     value = models.CharField(max_length=80)
     stock = models.PositiveIntegerField(default=0)
+    gallery = models.JSONField(default=list, blank=True)
 
     class Meta:
         ordering = ["name", "value"]

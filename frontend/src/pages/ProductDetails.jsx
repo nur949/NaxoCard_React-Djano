@@ -4,10 +4,52 @@ import { useParams } from "react-router-dom";
 import api, { mediaUrl, productImage } from "../api/client.js";
 import ErrorBox from "../components/ErrorBox.jsx";
 import ProductCarousel from "../components/common/ProductCarousel.jsx";
+import ProductSeoContent from "../components/common/ProductSeoContent.jsx";
 import Skeleton from "../components/Skeleton.jsx";
 import { Badge } from "../components/ui/badge.jsx";
 import { Button } from "../components/ui/button.jsx";
 import { useCart } from "../context/CartContext.jsx";
+
+function buildDefaultVariants(item) {
+  const defaults = {};
+  item?.variants?.forEach((variant) => {
+    if (defaults[variant.name] || variant.stock < 1) return;
+    defaults[variant.name] = variant.value;
+  });
+  return defaults;
+}
+
+function isColorVariant(name) {
+  return String(name || "").trim().toLowerCase() === "color";
+}
+
+function colorSwatch(value) {
+  const normalized = String(value || "").trim().toLowerCase();
+  const palette = {
+    black: "#111827",
+    white: "#ffffff",
+    brown: "#8b5e3c",
+    red: "#dc2626",
+    blue: "#2563eb",
+    green: "#16a34a",
+    yellow: "#eab308",
+    pink: "#ec4899",
+    gray: "#9ca3af",
+    grey: "#9ca3af",
+    navy: "#1e3a8a",
+    beige: "#d6c1a3",
+    cream: "#f5f1e8",
+    orange: "#f97316",
+    purple: "#7c3aed",
+    silver: "#cbd5e1",
+    gold: "#d4af37",
+  };
+  return palette[normalized] || value;
+}
+
+function variantGallery(variant) {
+  return Array.isArray(variant?.gallery) ? variant.gallery.map(mediaUrl).filter(Boolean) : [];
+}
 
 export default function ProductDetails() {
   const { slug } = useParams();
@@ -21,6 +63,8 @@ export default function ProductDetails() {
   const [reviewLoading, setReviewLoading] = useState(false);
   const [reviewMessage, setReviewMessage] = useState("");
   const [activeTab, setActiveTab] = useState("description");
+  const [zoomActive, setZoomActive] = useState(false);
+  const [zoomPosition, setZoomPosition] = useState({ x: 50, y: 50 });
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -32,9 +76,11 @@ export default function ProductDetails() {
         setProduct(item);
         setRelated(relatedResponse.data);
         setSelectedImage(productImage(item, gallery[0] || ""));
-        setSelectedVariants({});
+        setSelectedVariants(buildDefaultVariants(item));
         setQuantity(1);
         setActiveTab("description");
+        setZoomActive(false);
+        setZoomPosition({ x: 50, y: 50 });
       })
       .catch(() => setError("Product not found."));
   }, [slug]);
@@ -53,10 +99,26 @@ export default function ProductDetails() {
     return groups;
   }, [product]);
 
+  const activeColorVariant = useMemo(() => {
+    const colorName = Object.keys(variantGroups).find(isColorVariant);
+    if (!colorName) return null;
+    return (variantGroups[colorName] || []).find((variant) => selectedVariants[colorName] === variant.value) || null;
+  }, [selectedVariants, variantGroups]);
+
+  const displayedImages = useMemo(() => {
+    const colorImages = variantGallery(activeColorVariant);
+    return colorImages.length ? colorImages : images;
+  }, [activeColorVariant, images]);
+
+  useEffect(() => {
+    if (!displayedImages.length) return;
+    setSelectedImage((current) => (displayedImages.includes(current) ? current : displayedImages[0]));
+  }, [displayedImages]);
+
   if (error) return <section className="section py-8"><ErrorBox message={error} /></section>;
   if (!product) return <section className="section py-8"><Skeleton lines={12} /></section>;
 
-  const heroImage = selectedImage || images[0] || "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=80";
+  const heroImage = selectedImage || displayedImages[0] || "https://pngimg.com/d/running_shoes_PNG5818.png";
   const inStock = product.stock > 0;
   const requiredVariantNames = Object.keys(variantGroups);
   const variantsSelected = requiredVariantNames.every((name) => selectedVariants[name]);
@@ -66,6 +128,16 @@ export default function ProductDetails() {
   function changeQuantity(nextQuantity) {
     const next = Math.max(1, Math.min(product.stock || 1, Number(nextQuantity) || 1));
     setQuantity(next);
+  }
+
+  function handleImageZoom(event) {
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const x = ((event.clientX - bounds.left) / bounds.width) * 100;
+    const y = ((event.clientY - bounds.top) / bounds.height) * 100;
+    setZoomPosition({
+      x: Math.max(0, Math.min(100, x)),
+      y: Math.max(0, Math.min(100, y)),
+    });
   }
 
   async function submitReview(event) {
@@ -129,14 +201,30 @@ export default function ProductDetails() {
         <div>
           <div className="grid gap-4 lg:grid-cols-[92px_1fr]">
             <div className="order-2 flex gap-3 overflow-x-auto lg:order-1 lg:grid lg:content-start">
-              {(images.length ? images : [heroImage]).map((image) => (
+              {(displayedImages.length ? displayedImages : [heroImage]).map((image) => (
                 <button key={image} className={`h-20 w-20 shrink-0 overflow-hidden bg-white shadow-sm transition-all ${selectedImage === image ? "ring-2 ring-primary/40" : "hover:shadow-md"}`} onClick={() => setSelectedImage(image)} aria-label="View product image">
                   <img src={image} alt="" className="h-full w-full object-contain" loading="lazy" />
                 </button>
               ))}
             </div>
-            <div className="order-1 overflow-hidden bg-white shadow-sm lg:order-2">
-              <img className="h-[440px] w-full object-contain transition-transform duration-300 hover:scale-[1.02] sm:h-[560px]" src={heroImage} alt={product.name} />
+            <div
+              className={`order-1 overflow-hidden bg-white shadow-sm lg:order-2 ${zoomActive ? "cursor-zoom-out" : "cursor-zoom-in"}`}
+              onMouseEnter={() => setZoomActive(true)}
+              onMouseLeave={() => {
+                setZoomActive(false);
+                setZoomPosition({ x: 50, y: 50 });
+              }}
+              onMouseMove={handleImageZoom}
+            >
+              <img
+                className="h-[440px] w-full object-contain transition-transform duration-200 ease-out sm:h-[560px]"
+                src={heroImage}
+                alt={product.name}
+                style={{
+                  transformOrigin: `${zoomPosition.x}% ${zoomPosition.y}%`,
+                  transform: zoomActive ? "scale(2.35)" : "scale(1)",
+                }}
+              />
             </div>
           </div>
           <p className="mt-3 text-center text-xs font-semibold text-muted-foreground">Roll over or click image to zoom in</p>
@@ -178,15 +266,32 @@ export default function ProductDetails() {
               <p className="mb-3 text-sm font-black uppercase">{name} *</p>
               <div className="flex flex-wrap gap-2">
                 {values.map((variant) => (
-                  <button
-                    key={variant.id}
-                    type="button"
-                    className={`min-w-14 border px-4 py-2 text-sm font-bold transition-colors ${selectedVariants[name] === variant.value ? "border-foreground bg-foreground text-background" : "border-border bg-background hover:border-foreground"} disabled:cursor-not-allowed disabled:opacity-40`}
-                    onClick={() => setSelectedVariants({ ...selectedVariants, [name]: variant.value })}
-                    disabled={variant.stock < 1}
-                  >
-                    {variant.value}
-                  </button>
+                  isColorVariant(name) ? (
+                    <button
+                      key={variant.id}
+                      type="button"
+                      className={`flex min-w-[110px] items-center gap-3 border px-3 py-2 text-sm font-bold transition-all ${selectedVariants[name] === variant.value ? "border-foreground bg-foreground text-background shadow-sm" : "border-border bg-background hover:border-foreground"} disabled:cursor-not-allowed disabled:opacity-40`}
+                      onClick={() => setSelectedVariants({ ...selectedVariants, [name]: variant.value })}
+                      disabled={variant.stock < 1}
+                    >
+                      <span
+                        className="h-5 w-5 shrink-0 rounded-full border border-slate-300"
+                        style={{ backgroundColor: colorSwatch(variant.value) }}
+                        aria-hidden="true"
+                      />
+                      <span>{variant.value}</span>
+                    </button>
+                  ) : (
+                    <button
+                      key={variant.id}
+                      type="button"
+                      className={`min-w-14 border px-4 py-2 text-sm font-bold transition-colors ${selectedVariants[name] === variant.value ? "border-foreground bg-foreground text-background" : "border-border bg-background hover:border-foreground"} disabled:cursor-not-allowed disabled:opacity-40`}
+                      onClick={() => setSelectedVariants({ ...selectedVariants, [name]: variant.value })}
+                      disabled={variant.stock < 1}
+                    >
+                      {variant.value}
+                    </button>
+                  )
                 ))}
               </div>
             </div>
@@ -259,7 +364,11 @@ export default function ProductDetails() {
         </div>
       </section>
 
-      <ProductCarousel title="Related products" subtitle="More items from the same collection." products={related} />
+      <ProductSeoContent product={product} />
+
+      <div className="pb-24 lg:pb-0">
+        <ProductCarousel title="Related products" subtitle="More items from the same collection." products={related} />
+      </div>
       <div className="fixed inset-x-0 bottom-0 z-40 border-t bg-card p-3 shadow-premium lg:hidden">
         <div className="flex items-center gap-3">
           <div className="min-w-0 flex-1">

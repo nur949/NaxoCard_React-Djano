@@ -82,6 +82,8 @@ class OrderViewSet(viewsets.ModelViewSet):
     ordering_fields = ["created_at", "status"]
 
     def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return Order.objects.none()
         base = Order.all_objects if self.action in ["trash", "restore", "clean_trash"] else Order.objects
         queryset = base.prefetch_related("items").all()
         status_filter = self.request.query_params.get("status")
@@ -92,6 +94,8 @@ class OrderViewSet(viewsets.ModelViewSet):
         return queryset
 
     def get_permissions(self):
+        if self.action == "create":
+            return [permissions.AllowAny()]
         if self.action in ["update", "partial_update", "destroy"]:
             return [permissions.IsAdminUser()]
         return super().get_permissions()
@@ -175,7 +179,7 @@ class CouponViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action in ["list", "retrieve", "validate"]:
-            return [permissions.IsAuthenticated()]
+            return [permissions.AllowAny()]
         return [permissions.IsAdminUser()]
 
     def get_queryset(self):
@@ -198,7 +202,7 @@ class CouponViewSet(viewsets.ModelViewSet):
         instance.delete()
         log_admin_activity(self.request, "coupon.deleted", "coupon", f"Deleted coupon {code}", target_id=coupon_id)
 
-    @decorators.action(detail=False, methods=["post"], permission_classes=[permissions.IsAuthenticated])
+    @decorators.action(detail=False, methods=["post"], permission_classes=[permissions.AllowAny])
     def validate(self, request):
         code = request.data.get("code", "").strip().upper()
         subtotal = request.data.get("subtotal") or 0

@@ -1,9 +1,8 @@
 import { motion } from "framer-motion";
 import { Heart, ShoppingCart, Star } from "lucide-react";
 import { memo } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { productImage as resolveProductImage } from "../api/client.js";
-import { useAuth } from "../context/AuthContext.jsx";
 import { useCart } from "../context/CartContext.jsx";
 import { cn } from "../lib/utils.js";
 
@@ -16,7 +15,7 @@ function buildProductCardProps(props) {
     ...rest,
     product,
     href: href || `/products/${product.slug}`,
-    image: image || resolveProductImage(product, "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=80"),
+    image: image || resolveProductImage(product, "https://pngimg.com/d/running_shoes_PNG5818.png"),
     title: title || product.name,
     price: price ?? product.price,
     oldPrice: oldPrice ?? product.compare_at_price,
@@ -49,8 +48,8 @@ function ProductCardComponent(rawProps) {
     loading = false,
   } = buildProductCardProps(rawProps);
 
-  const { user } = useAuth();
   const { add } = useCart();
+  const navigate = useNavigate();
 
   if (loading) {
     return (
@@ -86,16 +85,40 @@ function ProductCardComponent(rawProps) {
   const hasDiscount = Number(discount) > 0;
   const numericRating = Number(rating || 0);
 
+  function openProductDetails() {
+    if (href) navigate(href);
+  }
+
+  function handleCardClick(event) {
+    if (event.target.closest("button, a")) return;
+    openProductDetails();
+  }
+
+  function handleCardKeyDown(event) {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      openProductDetails();
+    }
+  }
+
   return (
     <motion.article
-      whileHover={{ scale: 1.03, y: -4 }}
-      transition={{ duration: 0.22, ease: "easeOut" }}
+      onClick={handleCardClick}
+      onKeyDown={handleCardKeyDown}
+      role="link"
+      tabIndex={0}
       className={cn("group relative overflow-hidden rounded-xl border border-border bg-card shadow-soft transition-shadow hover:shadow-lg", className)}
     >
-      <Link to={href} className="absolute inset-0 z-10" aria-label={title} />
-
-      <div className="relative z-20 p-4">
-        <div className="relative overflow-hidden rounded-xl bg-muted/60">
+      <div className="p-4">
+        <div className="relative overflow-hidden rounded-xl border border-slate-100 bg-white">
+          <Link to={href} className="block overflow-hidden" aria-label={title}>
+            <img
+              src={image}
+              alt={title}
+              loading="lazy"
+              className="aspect-square w-full object-contain p-4 transition duration-300 ease-out hover:scale-[1.05]"
+            />
+          </Link>
           <div className="absolute left-3 top-3 z-20 flex items-center gap-2">
             {hasDiscount ? (
               <span className="rounded-full bg-destructive px-2.5 py-1 text-xs font-bold text-destructive-foreground">
@@ -112,20 +135,15 @@ function ProductCardComponent(rawProps) {
           >
             <Heart size={18} fill={wishlisted ? "currentColor" : "none"} />
           </button>
-
-          <img
-            src={image}
-            alt={title}
-            loading="lazy"
-            className="aspect-square w-full object-cover transition duration-300 group-hover:scale-110"
-          />
         </div>
 
         <div className="mt-4 space-y-3">
           <div className="flex items-start justify-between gap-3">
-            <h3 className="line-clamp-2 min-h-[3.25rem] text-base font-semibold leading-6 text-foreground">
-              {title}
-            </h3>
+            <Link to={href} className="min-w-0">
+              <h3 className="line-clamp-2 min-h-[3.25rem] text-base font-semibold leading-6 text-foreground transition-colors hover:text-primary">
+                {title}
+              </h3>
+            </Link>
             <span
               className={cn(
                 "shrink-0 rounded-full px-2.5 py-1 text-[11px] font-bold",
@@ -166,7 +184,7 @@ function ProductCardComponent(rawProps) {
           <motion.button
             type="button"
             onClick={handleAddToCart}
-            disabled={stock < 1 || (!user && !onAddToCart && !product?.id)}
+            disabled={stock < 1 || (!onAddToCart && !product?.id)}
             initial={{ y: 10, opacity: 0.92 }}
             whileHover={{ y: 0 }}
             className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-foreground px-4 text-sm font-semibold text-background transition hover:bg-primary disabled:cursor-not-allowed disabled:opacity-60"

@@ -10,9 +10,9 @@ DEFAULT_CATEGORIES = [
     ("Men's Shoes", "mens-shoes"),
     ("Women's Shoes", "womens-shoes"),
     ("Kids' Shoes", "kids-shoes"),
-    ("Sports Sneakers", "sports-sneakers"),
+    ("Sneakers", "sneakers"),
     ("Sandals", "sandals"),
-    ("Accessories", "accessories"),
+    ("Loafers", "loafers"),
 ]
 
 CATALOG = {
@@ -37,7 +37,7 @@ CATALOG = {
         ("Bubblegummers Light-Up Trainer", "Fun light-up sneakers with padded heel and non-marking sole.", "2790.00", "3290.00", 4.7, 174, 121),
         ("Bata Kids Canvas Classic", "Breathable canvas shoes with rubber toe guard and reliable grip.", "1490.00", "1790.00", 4.3, 68, 44),
     ],
-    "sports-sneakers": [
+    "sneakers": [
         ("Power Nitro Running Shoe", "Responsive running shoes with mesh ventilation and shock-absorbing midsole.", "4490.00", "5290.00", 4.8, 214, 158),
         ("Power Court Pro Sneaker", "Court-inspired sneakers with lateral support and durable rubber traction.", "3990.00", "4690.00", 4.6, 137, 93),
         ("North Star Street Runner", "Street-ready sneaker with layered upper, soft collar, and bold outsole.", "3190.00", "3790.00", 4.5, 118, 82),
@@ -51,39 +51,68 @@ CATALOG = {
         ("Bata Daily Comfort Sandal", "Everyday sandal with padded upper and flexible anti-slip outsole.", "1790.00", "2190.00", 4.3, 88, 59),
         ("Weinbrenner Outdoor Sandal", "Rugged outdoor sandal with secure straps and durable treaded outsole.", "3290.00", "3890.00", 4.6, 122, 86),
     ],
-    "accessories": [
-        ("Bata Premium Shoe Care Kit", "Complete shoe care kit with polish, brush, cloth, and quick-clean sponge.", "990.00", "1190.00", 4.6, 142, 96),
-        ("Comfit Memory Foam Insole", "Trim-to-fit memory foam insoles for extra comfort in daily footwear.", "790.00", "950.00", 4.5, 119, 83),
-        ("North Star Cotton Crew Socks", "Pack of breathable crew socks with reinforced heel and toe zones.", "690.00", "850.00", 4.4, 101, 74),
-        ("Bata Travel Shoe Bag", "Lightweight zip shoe bag that keeps pairs protected inside luggage.", "590.00", "750.00", 4.3, 64, 41),
-        ("Waterproof Sneaker Protector Spray", "Protective spray for sneakers, leather, and canvas against light rain and stains.", "1190.00", "1490.00", 4.7, 156, 108),
+    "loafers": [
+        ("North Star Penny Loafer", "Smart casual penny loafer with clean lines, soft lining, and easy slip-on comfort.", "2890.00", "3490.00", 4.4, 104, 69),
+        ("Bata Comfit Tassel Loafer", "Comfort-driven tassel loafer for office, travel, and polished daily wear.", "3290.00", "3890.00", 4.5, 116, 77),
+        ("Hush Puppies Softwalk Loafer", "Cushioned moc-style loafer with flexible sole and premium finish.", "5890.00", "6690.00", 4.8, 148, 103),
+        ("Power Street Slip Loafer", "Modern casual loafer with sporty base and all-day walkable support.", "2590.00", "3090.00", 4.3, 81, 58),
+        ("Bata Weekend Driver Loafer", "Relaxed driver loafer with grip outsole and soft footbed for long days out.", "3090.00", "3690.00", 4.6, 122, 84),
     ],
 }
 
 IMAGE_POOLS = {
     "mens-shoes": [
-        "https://images.unsplash.com/photo-1614252369475-531eba835eb1?auto=format&fit=crop&w=1200&q=80",
-        "https://images.unsplash.com/photo-1610398752800-146f269dfcc8?auto=format&fit=crop&w=1200&q=80",
+        "https://pngimg.com/d/shoes_PNG7475.png",
+        "https://pngimg.com/d/shoes_PNG7490.png",
+        "https://pngimg.com/d/shoes_PNG7479.png",
     ],
     "womens-shoes": [
-        "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=1200&q=80",
-        "https://images.unsplash.com/photo-1515347619252-60a4bf4fff4f?auto=format&fit=crop&w=1200&q=80",
+        "https://pngimg.com/d/women_shoes_PNG7486.png",
+        "https://pngimg.com/d/women_shoes_PNG7470.png",
+        "https://pngimg.com/d/women_shoes_PNG7494.png",
     ],
     "kids-shoes": [
-        "https://images.unsplash.com/photo-1520639888713-7851133b1ed0?auto=format&fit=crop&w=1200&q=80",
-        "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=1200&q=80",
+        "https://pngimg.com/d/running_shoes_PNG5818.png",
+        "https://pngimg.com/d/running_shoes_PNG5827.png",
+        "https://pngimg.com/d/running_shoes_PNG5816.png",
     ],
-    "sports-sneakers": [
-        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=80",
-        "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=1200&q=80",
+    "sneakers": [
+        "https://pngimg.com/d/running_shoes_PNG5824.png",
+        "https://pngimg.com/d/running_shoes_PNG5814.png",
+        "https://pngimg.com/d/running_shoes_PNG5817.png",
     ],
     "sandals": [
-        "https://images.unsplash.com/photo-1603487742131-4160ec999306?auto=format&fit=crop&w=1200&q=80",
-        "https://images.unsplash.com/photo-1562273138-f46be4ebdf33?auto=format&fit=crop&w=1200&q=80",
+        "https://pngimg.com/d/sandal_PNG1.png",
+        "https://pngimg.com/d/sandal_PNG26.png",
+        "https://pngimg.com/d/sandal_PNG49.png",
     ],
-    "accessories": [
-        "https://images.unsplash.com/photo-1560343090-f0409e92791a?auto=format&fit=crop&w=1200&q=80",
-        "https://images.unsplash.com/photo-1511556820780-d912e42b4980?auto=format&fit=crop&w=1200&q=80",
+    "loafers": [
+        "https://pngimg.com/d/shoes_PNG7468.png",
+        "https://pngimg.com/d/shoes_PNG7487.png",
+        "https://pngimg.com/d/shoes_PNG7493.png",
+    ],
+}
+
+COLOR_IMAGE_POOLS = {
+    "Black": [
+        "https://pngimg.com/d/shoes_PNG7468.png",
+        "https://pngimg.com/d/running_shoes_PNG5817.png",
+    ],
+    "Brown": [
+        "https://pngimg.com/d/shoes_PNG7475.png",
+        "https://pngimg.com/d/shoes_PNG7487.png",
+    ],
+    "White": [
+        "https://pngimg.com/d/running_shoes_PNG5814.png",
+        "https://pngimg.com/d/running_shoes_PNG5816.png",
+    ],
+    "Blue": [
+        "https://pngimg.com/d/running_shoes_PNG5827.png",
+        "https://pngimg.com/d/women_shoes_PNG7486.png",
+    ],
+    "Pink": [
+        "https://pngimg.com/d/women_shoes_PNG7470.png",
+        "https://pngimg.com/d/women_shoes_PNG7494.png",
     ],
 }
 
@@ -122,7 +151,7 @@ class Command(BaseCommand):
         for category in categories:
             category_slug = category.slug
             products = CATALOG.get(category_slug) or build_generic_products(category, per_category)
-            image_pool = IMAGE_POOLS.get(category_slug) or IMAGE_POOLS["sports-sneakers"]
+            image_pool = IMAGE_POOLS.get(category_slug) or IMAGE_POOLS["sneakers"]
 
             for index, item in enumerate(products[:per_category]):
                 name, description, price, compare_at_price, rating, review_count, sales_count = item
@@ -157,9 +186,7 @@ class Command(BaseCommand):
         ))
 
     def seed_variants(self, product, category_slug, index):
-        if category_slug == "accessories":
-            variants = [("Color", value, 20 + index) for value in ("Black", "Tan", "Navy")]
-        elif category_slug == "kids-shoes":
+        if category_slug == "kids-shoes":
             variants = [("Size", value, 10 + index) for value in ("28", "30", "32", "34")]
             variants += [("Color", value, 12 + index) for value in ("Black", "Blue", "Pink")]
         else:
@@ -171,5 +198,8 @@ class Command(BaseCommand):
                 product=product,
                 name=name,
                 value=value,
-                defaults={"stock": stock},
+                defaults={
+                    "stock": stock,
+                    "gallery": COLOR_IMAGE_POOLS.get(value, [])[:2] if name == "Color" else [],
+                },
             )

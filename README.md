@@ -28,6 +28,9 @@
 ---
 
 ## 🎬 Live Preview
+Note: 
+step 1: must run https://naxocard-react-djano.onrender.com
+then 
 https://naxo-card-react-djano.vercel.app/
 <p align="center">
   <img src="https://readme-typing-svg.herokuapp.com?size=22&duration=3000&color=00C6FF&center=true&vCenter=true&width=700&lines=Modern+eCommerce+Starter;Django+%2B+React+Architecture;Production+Ready+System;Launch+Your+Startup+Faster" />

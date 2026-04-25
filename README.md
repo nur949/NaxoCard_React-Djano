@@ -138,6 +138,9 @@ Database (PostgreSQL)
 ## 🚀 Quick Start
 
 ```bash id="y7a4qm"
+# Full stack with PostgreSQL
+docker compose up -d db
+
 # Backend
 cd backend
 pip install -r requirements.txt
@@ -145,7 +148,7 @@ python manage.py migrate
 python manage.py runserver
 
 # Frontend
-cd frontend
+cd ../frontend
 npm install
 npm run dev
 ```

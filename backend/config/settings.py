@@ -76,7 +76,18 @@ TEMPLATES = [
 ]
 WSGI_APPLICATION = "config.wsgi.application"
 
-database_url = os.getenv("DATABASE_URL")
+database_url = os.getenv("DATABASE_URL", "").strip()
+use_postgres = os.getenv("USE_POSTGRES", "").lower() in {"1", "true", "yes"}
+
+if not database_url and use_postgres:
+    database_url = (
+        f"postgresql://{os.getenv('POSTGRES_USER', 'postgres')}:"
+        f"{os.getenv('POSTGRES_PASSWORD', 'postgres')}@"
+        f"{os.getenv('POSTGRES_HOST', '127.0.0.1')}:"
+        f"{os.getenv('POSTGRES_PORT', '5432')}/"
+        f"{os.getenv('POSTGRES_DB', 'myshop')}"
+    )
+
 if database_url:
     parsed = urlparse(database_url)
     DATABASES = {

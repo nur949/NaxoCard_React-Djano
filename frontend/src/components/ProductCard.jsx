@@ -15,7 +15,7 @@ function buildProductCardProps(props) {
     ...rest,
     product,
     href: href || `/products/${product.slug}`,
-    image: image || resolveProductImage(product, "https://pngimg.com/d/running_shoes_PNG5818.png"),
+    image: image || resolveProductImage(product, "/media/demo-products/sneaker-black.svg"),
     title: title || product.name,
     price: price ?? product.price,
     oldPrice: oldPrice ?? product.compare_at_price,

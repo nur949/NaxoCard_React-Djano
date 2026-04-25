@@ -118,7 +118,7 @@ export default function ProductDetails() {
   if (error) return <section className="section py-8"><ErrorBox message={error} /></section>;
   if (!product) return <section className="section py-8"><Skeleton lines={12} /></section>;
 
-  const heroImage = selectedImage || displayedImages[0] || "https://pngimg.com/d/running_shoes_PNG5818.png";
+  const heroImage = selectedImage || displayedImages[0] || mediaUrl("/media/demo-products/sneaker-black.svg");
   const inStock = product.stock > 0;
   const requiredVariantNames = Object.keys(variantGroups);
   const variantsSelected = requiredVariantNames.every((name) => selectedVariants[name]);

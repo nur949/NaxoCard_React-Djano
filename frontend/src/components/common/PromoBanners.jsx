@@ -14,9 +14,7 @@ export default function PromoBanners() {
             <p className="mt-2 text-sm text-secondary-foreground/75">Save more on bestselling shoes, comfort pairs, and weekly new arrivals.</p>
             <Button asChild className="mt-5" variant="secondary"><Link to="/products">Explore deals <ArrowRight size={16} /></Link></Button>
           </div>
-          <div className="flex h-40 w-full items-center justify-center rounded-md bg-white/80 p-4">
-            <img className="h-full w-full object-contain" src="https://pngimg.com/d/running_shoes_PNG5817.png" alt="Featured sneaker" loading="lazy" />
-          </div>
+          <img className="h-40 w-full rounded-md object-cover" src="https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?auto=format&fit=crop&w=600&q=80" alt="Shopping bags" loading="lazy" />
         </div>
       </Card>
       <Card className="overflow-hidden">
@@ -27,9 +25,7 @@ export default function PromoBanners() {
             <p className="mt-2 text-sm text-muted-foreground">Transparent PNG shoe galleries, color-wise images, guest checkout, and clear returns.</p>
             <Button asChild className="mt-5" variant="outline"><Link to="/products">Start shopping <ArrowRight size={16} /></Link></Button>
           </div>
-          <div className="flex h-40 w-full items-center justify-center rounded-md bg-muted/60 p-4">
-            <img className="h-full w-full object-contain" src="https://pngimg.com/d/shoes_PNG7493.png" alt="Shoe product preview" loading="lazy" />
-          </div>
+          <img className="h-40 w-full rounded-md object-cover" src="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?auto=format&fit=crop&w=600&q=80" alt="Secure payment" loading="lazy" />
         </div>
       </Card>
     </section>

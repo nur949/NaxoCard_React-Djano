@@ -1,0 +1,3932 @@
+[
+{
+  "model": "sessions.session",
+  "pk": "v4dn254ldtkt1ttz8iyr817hrvijgydc",
+  "fields": {
+    "session_data": ".eJxVjLsOwjAMAP_FM4qaNG6Sjux8Q-XYLi2gROpjQvw7qtQB1rvTvWGgfZuGfdVlmAV6sHD5ZZn4qeUQ8qByr4Zr2ZY5myMxp13NrYq-rmf7N5honaCHJqTMHNKYbKMYlbxy1LZL6AQ5EzKit633FNB24-gkRIzZWudan1Tg8wXjETeD:1wFsdF:gqqs-B3hJnkK4VZ1drISHZcJHsyuKyiM0OyaE_Ircw0",
+    "expire_date": "2026-05-07T11:54:09.391Z"
+  }
+},
+{
+  "model": "users.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$CUrSaPjW80ehI9NMV97c4S$ltNj7sYJxV17KrBUXgaw030H4ZwguaBqwxYoVQtHeR8=",
+    "last_login": "2026-04-23T11:54:09.385Z",
+    "is_superuser": true,
+    "username": "nurjamalbabu949",
+    "first_name": "Md. Nur Jamal",
+    "last_name": "Miah",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-04-23T11:53:38.812Z",
+    "email": "nurjamalbabu949@gmail.com",
+    "phone": "01739391331",
+    "avatar": "",
+    "address": "",
+    "city": "",
+    "postal_code": "",
+    "country": "",
+    "loyalty_points": 0,
+    "lifetime_points": 0,
+    "loyalty_tier": "bronze",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "products.category",
+  "pk": 1,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "name": "Men's Shoes",
+    "slug": "mens-shoes"
+  }
+},
+{
+  "model": "products.category",
+  "pk": 2,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "name": "Women's Shoes",
+    "slug": "womens-shoes"
+  }
+},
+{
+  "model": "products.category",
+  "pk": 3,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "name": "Kids' Shoes",
+    "slug": "kids-shoes"
+  }
+},
+{
+  "model": "products.category",
+  "pk": 4,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "name": "Sneakers",
+    "slug": "sneakers"
+  }
+},
+{
+  "model": "products.category",
+  "pk": 5,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "name": "Sandals",
+    "slug": "sandals"
+  }
+},
+{
+  "model": "products.category",
+  "pk": 7,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "name": "Loafers",
+    "slug": "loafers"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 6,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "category": 3,
+    "name": "Bubblegummers School Shoe",
+    "slug": "bubblegummers-school-shoe",
+    "price": "1890.00",
+    "compare_at_price": "2190.00",
+    "stock": 18,
+    "image": "demo-products/kids-black.svg",
+    "gallery": [
+      "/media/demo-products/kids-blue.svg"
+    ],
+    "description": "Durable black school shoes with easy-clean upper and cushioned collar.",
+    "rating": "4.50",
+    "review_count": 126,
+    "sales_count": 88,
+    "is_featured": true,
+    "is_active": true,
+    "created_at": "2026-04-23T13:02:22.161Z",
+    "updated_at": "2026-04-25T16:11:40.636Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 7,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "category": 3,
+    "name": "Power Kids Sport Runner",
+    "slug": "power-kids-sport-runner",
+    "price": "2290.00",
+    "compare_at_price": "2690.00",
+    "stock": 25,
+    "image": "demo-products/kids-blue.svg",
+    "gallery": [
+      "/media/demo-products/kids-pink.svg"
+    ],
+    "description": "Flexible sport shoes with hook-and-loop strap for quick everyday wear.",
+    "rating": "4.60",
+    "review_count": 138,
+    "sales_count": 102,
+    "is_featured": true,
+    "is_active": true,
+    "created_at": "2026-04-23T13:02:22.199Z",
+    "updated_at": "2026-04-25T16:11:40.716Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 8,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "category": 3,
+    "name": "North Star Junior Sneaker",
+    "slug": "north-star-junior-sneaker",
+    "price": "1990.00",
+    "compare_at_price": "2490.00",
+    "stock": 32,
+    "image": "demo-products/kids-pink.svg",
+    "gallery": [
+      "/media/demo-products/kids-black.svg"
+    ],
+    "description": "Colorful lace-up sneakers with lightweight outsole for play and school.",
+    "rating": "4.40",
+    "review_count": 92,
+    "sales_count": 66,
+    "is_featured": false,
+    "is_active": true,
+    "created_at": "2026-04-23T13:02:22.235Z",
+    "updated_at": "2026-04-25T16:11:40.772Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 9,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "category": 3,
+    "name": "Bubblegummers Light-Up Trainer",
+    "slug": "bubblegummers-light-up-trainer",
+    "price": "2790.00",
+    "compare_at_price": "3290.00",
+    "stock": 39,
+    "image": "demo-products/kids-black.svg",
+    "gallery": [
+      "/media/demo-products/kids-blue.svg"
+    ],
+    "description": "Fun light-up sneakers with padded heel and non-marking sole.",
+    "rating": "4.70",
+    "review_count": 174,
+    "sales_count": 121,
+    "is_featured": false,
+    "is_active": true,
+    "created_at": "2026-04-23T13:02:22.271Z",
+    "updated_at": "2026-04-25T16:11:40.836Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 10,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "category": 3,
+    "name": "Bata Kids Canvas Classic",
+    "slug": "bata-kids-canvas-classic",
+    "price": "1490.00",
+    "compare_at_price": "1790.00",
+    "stock": 46,
+    "image": "demo-products/kids-blue.svg",
+    "gallery": [
+      "/media/demo-products/kids-pink.svg"
+    ],
+    "description": "Breathable canvas shoes with rubber toe guard and reliable grip.",
+    "rating": "4.30",
+    "review_count": 68,
+    "sales_count": 44,
+    "is_featured": false,
+    "is_active": true,
+    "created_at": "2026-04-23T13:02:22.304Z",
+    "updated_at": "2026-04-25T16:11:40.885Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 11,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "category": 1,
+    "name": "Bata Comfit Leather Derby",
+    "slug": "bata-comfit-leather-derby",
+    "price": "3990.00",
+    "compare_at_price": "4590.00",
+    "stock": 18,
+    "image": "demo-products/mens-black.svg",
+    "gallery": [
+      "/media/demo-products/mens-brown.svg"
+    ],
+    "description": "Polished leather derby shoes with cushioned footbed for office and formal wear.",
+    "rating": "4.70",
+    "review_count": 132,
+    "sales_count": 84,
+    "is_featured": true,
+    "is_active": true,
+    "created_at": "2026-04-23T13:02:22.337Z",
+    "updated_at": "2026-04-25T16:11:41.282Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 12,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "category": 1,
+    "name": "Power Flex Walk Trainer",
+    "slug": "power-flex-walk-trainer",
+    "price": "3290.00",
+    "compare_at_price": "3790.00",
+    "stock": 25,
+    "image": "demo-products/mens-brown.svg",
+    "gallery": [
+      "/media/demo-products/mens-white.svg"
+    ],
+    "description": "Lightweight lace-up walking shoes with breathable mesh and flexible outsole.",
+    "rating": "4.50",
+    "review_count": 96,
+    "sales_count": 73,
+    "is_featured": true,
+    "is_active": true,
+    "created_at": "2026-04-23T13:02:22.379Z",
+    "updated_at": "2026-04-25T16:11:41.340Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 13,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "category": 1,
+    "name": "North Star Urban Loafer",
+    "slug": "north-star-urban-loafer",
+    "price": "2490.00",
+    "compare_at_price": "2990.00",
+    "stock": 32,
+    "image": "demo-products/mens-white.svg",
+    "gallery": [
+      "/media/demo-products/mens-black.svg"
+    ],
+    "description": "Slip-on casual loafer with soft lining, grip sole, and everyday styling.",
+    "rating": "4.30",
+    "review_count": 74,
+    "sales_count": 51,
+    "is_featured": false,
+    "is_active": true,
+    "created_at": "2026-04-23T13:02:22.414Z",
+    "updated_at": "2026-04-25T16:11:41.432Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 14,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "category": 1,
+    "name": "Hush Puppies Classic Moc Toe",
+    "slug": "hush-puppies-classic-moc-toe",
+    "price": "6490.00",
+    "compare_at_price": "7290.00",
+    "stock": 39,
+    "image": "demo-products/mens-black.svg",
+    "gallery": [
+      "/media/demo-products/mens-brown.svg"
+    ],
+    "description": "Premium moc-toe casual shoes made for all-day comfort and smart weekends.",
+    "rating": "4.80",
+    "review_count": 188,
+    "sales_count": 120,
+    "is_featured": false,
+    "is_active": true,
+    "created_at": "2026-04-23T13:02:22.451Z",
+    "updated_at": "2026-04-25T16:11:41.504Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 15,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "category": 1,
+    "name": "Bata Red Label Formal Oxford",
+    "slug": "bata-red-label-formal-oxford",
+    "price": "3490.00",
+    "compare_at_price": "4090.00",
+    "stock": 46,
+    "image": "demo-products/mens-brown.svg",
+    "gallery": [
+      "/media/demo-products/mens-white.svg"
+    ],
+    "description": "Sharp cap-toe oxford shoes with durable synthetic leather finish.",
+    "rating": "4.40",
+    "review_count": 83,
+    "sales_count": 62,
+    "is_featured": false,
+    "is_active": true,
+    "created_at": "2026-04-23T13:02:22.491Z",
+    "updated_at": "2026-04-25T16:11:41.577Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 16,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "category": 5,
+    "name": "Bata Comfit Leather Sandal",
+    "slug": "bata-comfit-leather-sandal",
+    "price": "2490.00",
+    "compare_at_price": "2990.00",
+    "stock": 18,
+    "image": "demo-products/sandal-black.svg",
+    "gallery": [
+      "/media/demo-products/sandal-brown.svg"
+    ],
+    "description": "Soft leather sandal with adjustable straps and cushioned walking sole.",
+    "rating": "4.50",
+    "review_count": 106,
+    "sales_count": 75,
+    "is_featured": true,
+    "is_active": true,
+    "created_at": "2026-04-23T13:02:22.530Z",
+    "updated_at": "2026-04-25T16:11:41.657Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 17,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "category": 5,
+    "name": "Power Active Slide",
+    "slug": "power-active-slide",
+    "price": "1290.00",
+    "compare_at_price": "1590.00",
+    "stock": 25,
+    "image": "demo-products/sandal-brown.svg",
+    "gallery": [
+      "/media/demo-products/sandal-white.svg"
+    ],
+    "description": "Quick-dry sport slides with contoured footbed and textured grip.",
+    "rating": "4.40",
+    "review_count": 95,
+    "sales_count": 71,
+    "is_featured": true,
+    "is_active": true,
+    "created_at": "2026-04-23T13:02:22.566Z",
+    "updated_at": "2026-04-25T16:11:41.698Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 18,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "category": 5,
+    "name": "North Star Casual Flip-Flop",
+    "slug": "north-star-casual-flip-flop",
+    "price": "890.00",
+    "compare_at_price": "1090.00",
+    "stock": 32,
+    "image": "demo-products/sandal-white.svg",
+    "gallery": [
+      "/media/demo-products/sandal-black.svg"
+    ],
+    "description": "Lightweight flip-flops for casual days, travel, and indoor comfort.",
+    "rating": "4.20",
+    "review_count": 77,
+    "sales_count": 52,
+    "is_featured": false,
+    "is_active": true,
+    "created_at": "2026-04-23T13:02:22.602Z",
+    "updated_at": "2026-04-25T16:11:41.730Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 19,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "category": 5,
+    "name": "Bata Daily Comfort Sandal",
+    "slug": "bata-daily-comfort-sandal",
+    "price": "1790.00",
+    "compare_at_price": "2190.00",
+    "stock": 39,
+    "image": "demo-products/sandal-black.svg",
+    "gallery": [
+      "/media/demo-products/sandal-brown.svg"
+    ],
+    "description": "Everyday sandal with padded upper and flexible anti-slip outsole.",
+    "rating": "4.30",
+    "review_count": 88,
+    "sales_count": 59,
+    "is_featured": false,
+    "is_active": true,
+    "created_at": "2026-04-23T13:02:22.637Z",
+    "updated_at": "2026-04-25T16:11:41.767Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 20,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "category": 5,
+    "name": "Weinbrenner Outdoor Sandal",
+    "slug": "weinbrenner-outdoor-sandal",
+    "price": "3290.00",
+    "compare_at_price": "3890.00",
+    "stock": 46,
+    "image": "demo-products/sandal-brown.svg",
+    "gallery": [
+      "/media/demo-products/sandal-white.svg"
+    ],
+    "description": "Rugged outdoor sandal with secure straps and durable treaded outsole.",
+    "rating": "4.60",
+    "review_count": 122,
+    "sales_count": 86,
+    "is_featured": false,
+    "is_active": true,
+    "created_at": "2026-04-23T13:02:22.681Z",
+    "updated_at": "2026-04-25T16:11:41.805Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 21,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "category": 4,
+    "name": "Power Nitro Running Shoe",
+    "slug": "power-nitro-running-shoe",
+    "price": "4490.00",
+    "compare_at_price": "5290.00",
+    "stock": 18,
+    "image": "demo-products/sneaker-black.svg",
+    "gallery": [
+      "/media/demo-products/sneaker-blue.svg"
+    ],
+    "description": "Responsive running shoes with mesh ventilation and shock-absorbing midsole.",
+    "rating": "4.80",
+    "review_count": 214,
+    "sales_count": 158,
+    "is_featured": true,
+    "is_active": true,
+    "created_at": "2026-04-23T13:02:22.720Z",
+    "updated_at": "2026-04-25T16:11:41.843Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 22,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "category": 4,
+    "name": "Power Court Pro Sneaker",
+    "slug": "power-court-pro-sneaker",
+    "price": "3990.00",
+    "compare_at_price": "4690.00",
+    "stock": 25,
+    "image": "demo-products/sneaker-blue.svg",
+    "gallery": [
+      "/media/demo-products/sneaker-white.svg"
+    ],
+    "description": "Court-inspired sneakers with lateral support and durable rubber traction.",
+    "rating": "4.60",
+    "review_count": 137,
+    "sales_count": 93,
+    "is_featured": true,
+    "is_active": true,
+    "created_at": "2026-04-23T13:02:22.764Z",
+    "updated_at": "2026-04-25T16:11:41.884Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 23,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "category": 4,
+    "name": "North Star Street Runner",
+    "slug": "north-star-street-runner",
+    "price": "3190.00",
+    "compare_at_price": "3790.00",
+    "stock": 32,
+    "image": "demo-products/sneaker-white.svg",
+    "gallery": [
+      "/media/demo-products/sneaker-black.svg"
+    ],
+    "description": "Street-ready sneaker with layered upper, soft collar, and bold outsole.",
+    "rating": "4.50",
+    "review_count": 118,
+    "sales_count": 82,
+    "is_featured": false,
+    "is_active": true,
+    "created_at": "2026-04-23T13:02:22.804Z",
+    "updated_at": "2026-04-25T16:11:41.923Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 24,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "category": 4,
+    "name": "Power Gym Flex Trainer",
+    "slug": "power-gym-flex-trainer",
+    "price": "3690.00",
+    "compare_at_price": "4290.00",
+    "stock": 39,
+    "image": "demo-products/sneaker-black.svg",
+    "gallery": [
+      "/media/demo-products/sneaker-blue.svg"
+    ],
+    "description": "Stable training shoes for gym sessions, walking, and daily active use.",
+    "rating": "4.40",
+    "review_count": 104,
+    "sales_count": 71,
+    "is_featured": false,
+    "is_active": true,
+    "created_at": "2026-04-23T13:02:22.844Z",
+    "updated_at": "2026-04-25T16:11:41.984Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 25,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "category": 4,
+    "name": "Power Trail Grip Sneaker",
+    "slug": "power-trail-grip-sneaker",
+    "price": "4990.00",
+    "compare_at_price": "5790.00",
+    "stock": 46,
+    "image": "demo-products/sneaker-blue.svg",
+    "gallery": [
+      "/media/demo-products/sneaker-white.svg"
+    ],
+    "description": "Outdoor-ready sneaker with rugged sole pattern and reinforced toe bumper.",
+    "rating": "4.70",
+    "review_count": 163,
+    "sales_count": 112,
+    "is_featured": false,
+    "is_active": true,
+    "created_at": "2026-04-23T13:02:22.882Z",
+    "updated_at": "2026-04-25T16:11:42.063Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 26,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "category": 2,
+    "name": "Marie Claire Block Heel Pump",
+    "slug": "marie-claire-block-heel-pump",
+    "price": "3790.00",
+    "compare_at_price": "4490.00",
+    "stock": 18,
+    "image": "demo-products/women-black.svg",
+    "gallery": [
+      "/media/demo-products/women-pink.svg"
+    ],
+    "description": "Comfortable block heel pump with padded insole and stable heel support.",
+    "rating": "4.60",
+    "review_count": 117,
+    "sales_count": 78,
+    "is_featured": true,
+    "is_active": true,
+    "created_at": "2026-04-23T13:02:22.918Z",
+    "updated_at": "2026-04-25T16:11:42.167Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 27,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "category": 2,
+    "name": "Bata Comfit Ballet Flat",
+    "slug": "bata-comfit-ballet-flat",
+    "price": "1990.00",
+    "compare_at_price": "2390.00",
+    "stock": 25,
+    "image": "demo-products/women-pink.svg",
+    "gallery": [
+      "/media/demo-products/women-white.svg"
+    ],
+    "description": "Soft round-toe flats built for daily office, campus, and commute wear.",
+    "rating": "4.40",
+    "review_count": 102,
+    "sales_count": 69,
+    "is_featured": true,
+    "is_active": true,
+    "created_at": "2026-04-23T13:02:22.960Z",
+    "updated_at": "2026-04-25T16:11:42.263Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 28,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "category": 2,
+    "name": "Weinbrenner Casual Slip-On",
+    "slug": "weinbrenner-casual-slip-on",
+    "price": "2990.00",
+    "compare_at_price": "3590.00",
+    "stock": 32,
+    "image": "demo-products/women-white.svg",
+    "gallery": [
+      "/media/demo-products/women-black.svg"
+    ],
+    "description": "Textured slip-on shoes with flexible outsole and a clean weekend profile.",
+    "rating": "4.50",
+    "review_count": 91,
+    "sales_count": 55,
+    "is_featured": false,
+    "is_active": true,
+    "created_at": "2026-04-23T13:02:23.003Z",
+    "updated_at": "2026-04-25T16:11:42.362Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 29,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "category": 2,
+    "name": "Power Knit Walking Shoe",
+    "slug": "power-knit-walking-shoe",
+    "price": "3590.00",
+    "compare_at_price": "4290.00",
+    "stock": 39,
+    "image": "demo-products/women-black.svg",
+    "gallery": [
+      "/media/demo-products/women-pink.svg"
+    ],
+    "description": "Breathable knit upper with responsive cushioning for active daily movement.",
+    "rating": "4.70",
+    "review_count": 146,
+    "sales_count": 98,
+    "is_featured": false,
+    "is_active": true,
+    "created_at": "2026-04-23T13:02:23.037Z",
+    "updated_at": "2026-04-25T16:11:42.457Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 30,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "category": 2,
+    "name": "Bata Rose Gold Party Heel",
+    "slug": "bata-rose-gold-party-heel",
+    "price": "4290.00",
+    "compare_at_price": "4990.00",
+    "stock": 46,
+    "image": "demo-products/women-pink.svg",
+    "gallery": [
+      "/media/demo-products/women-white.svg"
+    ],
+    "description": "Elegant low party heel with metallic finish and soft ankle support.",
+    "rating": "4.60",
+    "review_count": 87,
+    "sales_count": 47,
+    "is_featured": false,
+    "is_active": true,
+    "created_at": "2026-04-23T13:02:23.074Z",
+    "updated_at": "2026-04-25T16:11:42.546Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 31,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "category": 7,
+    "name": "North Star Penny Loafer",
+    "slug": "north-star-penny-loafer",
+    "price": "2890.00",
+    "compare_at_price": "3490.00",
+    "stock": 18,
+    "image": "demo-products/loafer-black.svg",
+    "gallery": [
+      "/media/demo-products/loafer-brown.svg"
+    ],
+    "description": "Smart casual penny loafer with clean lines, soft lining, and easy slip-on comfort.",
+    "rating": "4.40",
+    "review_count": 104,
+    "sales_count": 69,
+    "is_featured": true,
+    "is_active": true,
+    "created_at": "2026-04-25T12:40:34.074Z",
+    "updated_at": "2026-04-25T16:11:40.938Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 32,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "category": 7,
+    "name": "Bata Comfit Tassel Loafer",
+    "slug": "bata-comfit-tassel-loafer",
+    "price": "3290.00",
+    "compare_at_price": "3890.00",
+    "stock": 25,
+    "image": "demo-products/loafer-brown.svg",
+    "gallery": [
+      "/media/demo-products/loafer-white.svg"
+    ],
+    "description": "Comfort-driven tassel loafer for office, travel, and polished daily wear.",
+    "rating": "4.50",
+    "review_count": 116,
+    "sales_count": 77,
+    "is_featured": true,
+    "is_active": true,
+    "created_at": "2026-04-25T12:40:34.122Z",
+    "updated_at": "2026-04-25T16:11:40.998Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 33,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "category": 7,
+    "name": "Hush Puppies Softwalk Loafer",
+    "slug": "hush-puppies-softwalk-loafer",
+    "price": "5890.00",
+    "compare_at_price": "6690.00",
+    "stock": 32,
+    "image": "demo-products/loafer-white.svg",
+    "gallery": [
+      "/media/demo-products/loafer-black.svg"
+    ],
+    "description": "Cushioned moc-style loafer with flexible sole and premium finish.",
+    "rating": "4.80",
+    "review_count": 148,
+    "sales_count": 103,
+    "is_featured": false,
+    "is_active": true,
+    "created_at": "2026-04-25T12:40:34.169Z",
+    "updated_at": "2026-04-25T16:11:41.053Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 34,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "category": 7,
+    "name": "Power Street Slip Loafer",
+    "slug": "power-street-slip-loafer",
+    "price": "2590.00",
+    "compare_at_price": "3090.00",
+    "stock": 39,
+    "image": "demo-products/loafer-black.svg",
+    "gallery": [
+      "/media/demo-products/loafer-brown.svg"
+    ],
+    "description": "Modern casual loafer with sporty base and all-day walkable support.",
+    "rating": "4.30",
+    "review_count": 81,
+    "sales_count": 58,
+    "is_featured": false,
+    "is_active": true,
+    "created_at": "2026-04-25T12:40:34.221Z",
+    "updated_at": "2026-04-25T16:11:41.135Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 35,
+  "fields": {
+    "is_deleted": false,
+    "deleted_at": null,
+    "category": 7,
+    "name": "Bata Weekend Driver Loafer",
+    "slug": "bata-weekend-driver-loafer",
+    "price": "3090.00",
+    "compare_at_price": "3690.00",
+    "stock": 46,
+    "image": "demo-products/loafer-brown.svg",
+    "gallery": [
+      "/media/demo-products/loafer-white.svg"
+    ],
+    "description": "Relaxed driver loafer with grip outsole and soft footbed for long days out.",
+    "rating": "4.60",
+    "review_count": 122,
+    "sales_count": 84,
+    "is_featured": false,
+    "is_active": true,
+    "created_at": "2026-04-25T12:40:34.270Z",
+    "updated_at": "2026-04-25T16:11:41.208Z"
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 1,
+  "fields": {
+    "product": 1,
+    "name": "Color",
+    "value": "Black",
+    "stock": 20,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 2,
+  "fields": {
+    "product": 1,
+    "name": "Color",
+    "value": "Tan",
+    "stock": 20,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 3,
+  "fields": {
+    "product": 1,
+    "name": "Color",
+    "value": "Navy",
+    "stock": 20,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 4,
+  "fields": {
+    "product": 2,
+    "name": "Color",
+    "value": "Black",
+    "stock": 21,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 5,
+  "fields": {
+    "product": 2,
+    "name": "Color",
+    "value": "Tan",
+    "stock": 21,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 6,
+  "fields": {
+    "product": 2,
+    "name": "Color",
+    "value": "Navy",
+    "stock": 21,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 7,
+  "fields": {
+    "product": 3,
+    "name": "Color",
+    "value": "Black",
+    "stock": 22,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 8,
+  "fields": {
+    "product": 3,
+    "name": "Color",
+    "value": "Tan",
+    "stock": 22,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 9,
+  "fields": {
+    "product": 3,
+    "name": "Color",
+    "value": "Navy",
+    "stock": 22,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 10,
+  "fields": {
+    "product": 4,
+    "name": "Color",
+    "value": "Black",
+    "stock": 23,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 11,
+  "fields": {
+    "product": 4,
+    "name": "Color",
+    "value": "Tan",
+    "stock": 23,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 12,
+  "fields": {
+    "product": 4,
+    "name": "Color",
+    "value": "Navy",
+    "stock": 23,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 13,
+  "fields": {
+    "product": 5,
+    "name": "Color",
+    "value": "Black",
+    "stock": 24,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 14,
+  "fields": {
+    "product": 5,
+    "name": "Color",
+    "value": "Tan",
+    "stock": 24,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 15,
+  "fields": {
+    "product": 5,
+    "name": "Color",
+    "value": "Navy",
+    "stock": 24,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 511,
+  "fields": {
+    "product": 6,
+    "name": "Size",
+    "value": "28",
+    "stock": 10,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 512,
+  "fields": {
+    "product": 6,
+    "name": "Size",
+    "value": "30",
+    "stock": 10,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 513,
+  "fields": {
+    "product": 6,
+    "name": "Size",
+    "value": "32",
+    "stock": 10,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 514,
+  "fields": {
+    "product": 6,
+    "name": "Size",
+    "value": "34",
+    "stock": 10,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 515,
+  "fields": {
+    "product": 6,
+    "name": "Color",
+    "value": "Black",
+    "stock": 12,
+    "gallery": [
+      "/media/demo-products/kids-black.svg",
+      "/media/demo-products/kids-blue.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 516,
+  "fields": {
+    "product": 6,
+    "name": "Color",
+    "value": "Blue",
+    "stock": 12,
+    "gallery": [
+      "/media/demo-products/kids-blue.svg",
+      "/media/demo-products/kids-black.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 517,
+  "fields": {
+    "product": 6,
+    "name": "Color",
+    "value": "Pink",
+    "stock": 12,
+    "gallery": [
+      "/media/demo-products/kids-pink.svg",
+      "/media/demo-products/kids-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 518,
+  "fields": {
+    "product": 7,
+    "name": "Size",
+    "value": "28",
+    "stock": 11,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 519,
+  "fields": {
+    "product": 7,
+    "name": "Size",
+    "value": "30",
+    "stock": 11,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 520,
+  "fields": {
+    "product": 7,
+    "name": "Size",
+    "value": "32",
+    "stock": 11,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 521,
+  "fields": {
+    "product": 7,
+    "name": "Size",
+    "value": "34",
+    "stock": 11,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 522,
+  "fields": {
+    "product": 7,
+    "name": "Color",
+    "value": "Black",
+    "stock": 13,
+    "gallery": [
+      "/media/demo-products/kids-black.svg",
+      "/media/demo-products/kids-blue.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 523,
+  "fields": {
+    "product": 7,
+    "name": "Color",
+    "value": "Blue",
+    "stock": 13,
+    "gallery": [
+      "/media/demo-products/kids-blue.svg",
+      "/media/demo-products/kids-black.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 524,
+  "fields": {
+    "product": 7,
+    "name": "Color",
+    "value": "Pink",
+    "stock": 13,
+    "gallery": [
+      "/media/demo-products/kids-pink.svg",
+      "/media/demo-products/kids-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 525,
+  "fields": {
+    "product": 8,
+    "name": "Size",
+    "value": "28",
+    "stock": 12,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 526,
+  "fields": {
+    "product": 8,
+    "name": "Size",
+    "value": "30",
+    "stock": 12,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 527,
+  "fields": {
+    "product": 8,
+    "name": "Size",
+    "value": "32",
+    "stock": 12,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 528,
+  "fields": {
+    "product": 8,
+    "name": "Size",
+    "value": "34",
+    "stock": 12,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 529,
+  "fields": {
+    "product": 8,
+    "name": "Color",
+    "value": "Black",
+    "stock": 14,
+    "gallery": [
+      "/media/demo-products/kids-black.svg",
+      "/media/demo-products/kids-blue.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 530,
+  "fields": {
+    "product": 8,
+    "name": "Color",
+    "value": "Blue",
+    "stock": 14,
+    "gallery": [
+      "/media/demo-products/kids-blue.svg",
+      "/media/demo-products/kids-black.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 531,
+  "fields": {
+    "product": 8,
+    "name": "Color",
+    "value": "Pink",
+    "stock": 14,
+    "gallery": [
+      "/media/demo-products/kids-pink.svg",
+      "/media/demo-products/kids-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 532,
+  "fields": {
+    "product": 9,
+    "name": "Size",
+    "value": "28",
+    "stock": 13,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 533,
+  "fields": {
+    "product": 9,
+    "name": "Size",
+    "value": "30",
+    "stock": 13,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 534,
+  "fields": {
+    "product": 9,
+    "name": "Size",
+    "value": "32",
+    "stock": 13,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 535,
+  "fields": {
+    "product": 9,
+    "name": "Size",
+    "value": "34",
+    "stock": 13,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 536,
+  "fields": {
+    "product": 9,
+    "name": "Color",
+    "value": "Black",
+    "stock": 15,
+    "gallery": [
+      "/media/demo-products/kids-black.svg",
+      "/media/demo-products/kids-blue.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 537,
+  "fields": {
+    "product": 9,
+    "name": "Color",
+    "value": "Blue",
+    "stock": 15,
+    "gallery": [
+      "/media/demo-products/kids-blue.svg",
+      "/media/demo-products/kids-black.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 538,
+  "fields": {
+    "product": 9,
+    "name": "Color",
+    "value": "Pink",
+    "stock": 15,
+    "gallery": [
+      "/media/demo-products/kids-pink.svg",
+      "/media/demo-products/kids-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 539,
+  "fields": {
+    "product": 10,
+    "name": "Size",
+    "value": "28",
+    "stock": 14,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 540,
+  "fields": {
+    "product": 10,
+    "name": "Size",
+    "value": "30",
+    "stock": 14,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 541,
+  "fields": {
+    "product": 10,
+    "name": "Size",
+    "value": "32",
+    "stock": 14,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 542,
+  "fields": {
+    "product": 10,
+    "name": "Size",
+    "value": "34",
+    "stock": 14,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 543,
+  "fields": {
+    "product": 10,
+    "name": "Color",
+    "value": "Black",
+    "stock": 16,
+    "gallery": [
+      "/media/demo-products/kids-black.svg",
+      "/media/demo-products/kids-blue.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 544,
+  "fields": {
+    "product": 10,
+    "name": "Color",
+    "value": "Blue",
+    "stock": 16,
+    "gallery": [
+      "/media/demo-products/kids-blue.svg",
+      "/media/demo-products/kids-black.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 545,
+  "fields": {
+    "product": 10,
+    "name": "Color",
+    "value": "Pink",
+    "stock": 16,
+    "gallery": [
+      "/media/demo-products/kids-pink.svg",
+      "/media/demo-products/kids-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 546,
+  "fields": {
+    "product": 31,
+    "name": "Size",
+    "value": "39",
+    "stock": 8,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 547,
+  "fields": {
+    "product": 31,
+    "name": "Size",
+    "value": "40",
+    "stock": 8,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 548,
+  "fields": {
+    "product": 31,
+    "name": "Size",
+    "value": "41",
+    "stock": 8,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 549,
+  "fields": {
+    "product": 31,
+    "name": "Size",
+    "value": "42",
+    "stock": 8,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 550,
+  "fields": {
+    "product": 31,
+    "name": "Size",
+    "value": "43",
+    "stock": 8,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 551,
+  "fields": {
+    "product": 31,
+    "name": "Color",
+    "value": "Black",
+    "stock": 10,
+    "gallery": [
+      "/media/demo-products/loafer-black.svg",
+      "/media/demo-products/loafer-brown.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 552,
+  "fields": {
+    "product": 31,
+    "name": "Color",
+    "value": "Brown",
+    "stock": 10,
+    "gallery": [
+      "/media/demo-products/loafer-brown.svg",
+      "/media/demo-products/loafer-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 553,
+  "fields": {
+    "product": 31,
+    "name": "Color",
+    "value": "White",
+    "stock": 10,
+    "gallery": [
+      "/media/demo-products/loafer-white.svg",
+      "/media/demo-products/loafer-black.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 554,
+  "fields": {
+    "product": 32,
+    "name": "Size",
+    "value": "39",
+    "stock": 9,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 555,
+  "fields": {
+    "product": 32,
+    "name": "Size",
+    "value": "40",
+    "stock": 9,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 556,
+  "fields": {
+    "product": 32,
+    "name": "Size",
+    "value": "41",
+    "stock": 9,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 557,
+  "fields": {
+    "product": 32,
+    "name": "Size",
+    "value": "42",
+    "stock": 9,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 558,
+  "fields": {
+    "product": 32,
+    "name": "Size",
+    "value": "43",
+    "stock": 9,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 559,
+  "fields": {
+    "product": 32,
+    "name": "Color",
+    "value": "Black",
+    "stock": 11,
+    "gallery": [
+      "/media/demo-products/loafer-black.svg",
+      "/media/demo-products/loafer-brown.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 560,
+  "fields": {
+    "product": 32,
+    "name": "Color",
+    "value": "Brown",
+    "stock": 11,
+    "gallery": [
+      "/media/demo-products/loafer-brown.svg",
+      "/media/demo-products/loafer-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 561,
+  "fields": {
+    "product": 32,
+    "name": "Color",
+    "value": "White",
+    "stock": 11,
+    "gallery": [
+      "/media/demo-products/loafer-white.svg",
+      "/media/demo-products/loafer-black.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 562,
+  "fields": {
+    "product": 33,
+    "name": "Size",
+    "value": "39",
+    "stock": 10,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 563,
+  "fields": {
+    "product": 33,
+    "name": "Size",
+    "value": "40",
+    "stock": 10,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 564,
+  "fields": {
+    "product": 33,
+    "name": "Size",
+    "value": "41",
+    "stock": 10,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 565,
+  "fields": {
+    "product": 33,
+    "name": "Size",
+    "value": "42",
+    "stock": 10,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 566,
+  "fields": {
+    "product": 33,
+    "name": "Size",
+    "value": "43",
+    "stock": 10,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 567,
+  "fields": {
+    "product": 33,
+    "name": "Color",
+    "value": "Black",
+    "stock": 12,
+    "gallery": [
+      "/media/demo-products/loafer-black.svg",
+      "/media/demo-products/loafer-brown.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 568,
+  "fields": {
+    "product": 33,
+    "name": "Color",
+    "value": "Brown",
+    "stock": 12,
+    "gallery": [
+      "/media/demo-products/loafer-brown.svg",
+      "/media/demo-products/loafer-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 569,
+  "fields": {
+    "product": 33,
+    "name": "Color",
+    "value": "White",
+    "stock": 12,
+    "gallery": [
+      "/media/demo-products/loafer-white.svg",
+      "/media/demo-products/loafer-black.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 570,
+  "fields": {
+    "product": 34,
+    "name": "Size",
+    "value": "39",
+    "stock": 11,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 571,
+  "fields": {
+    "product": 34,
+    "name": "Size",
+    "value": "40",
+    "stock": 11,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 572,
+  "fields": {
+    "product": 34,
+    "name": "Size",
+    "value": "41",
+    "stock": 11,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 573,
+  "fields": {
+    "product": 34,
+    "name": "Size",
+    "value": "42",
+    "stock": 11,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 574,
+  "fields": {
+    "product": 34,
+    "name": "Size",
+    "value": "43",
+    "stock": 11,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 575,
+  "fields": {
+    "product": 34,
+    "name": "Color",
+    "value": "Black",
+    "stock": 13,
+    "gallery": [
+      "/media/demo-products/loafer-black.svg",
+      "/media/demo-products/loafer-brown.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 576,
+  "fields": {
+    "product": 34,
+    "name": "Color",
+    "value": "Brown",
+    "stock": 13,
+    "gallery": [
+      "/media/demo-products/loafer-brown.svg",
+      "/media/demo-products/loafer-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 577,
+  "fields": {
+    "product": 34,
+    "name": "Color",
+    "value": "White",
+    "stock": 13,
+    "gallery": [
+      "/media/demo-products/loafer-white.svg",
+      "/media/demo-products/loafer-black.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 578,
+  "fields": {
+    "product": 35,
+    "name": "Size",
+    "value": "39",
+    "stock": 12,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 579,
+  "fields": {
+    "product": 35,
+    "name": "Size",
+    "value": "40",
+    "stock": 12,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 580,
+  "fields": {
+    "product": 35,
+    "name": "Size",
+    "value": "41",
+    "stock": 12,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 581,
+  "fields": {
+    "product": 35,
+    "name": "Size",
+    "value": "42",
+    "stock": 12,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 582,
+  "fields": {
+    "product": 35,
+    "name": "Size",
+    "value": "43",
+    "stock": 12,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 583,
+  "fields": {
+    "product": 35,
+    "name": "Color",
+    "value": "Black",
+    "stock": 14,
+    "gallery": [
+      "/media/demo-products/loafer-black.svg",
+      "/media/demo-products/loafer-brown.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 584,
+  "fields": {
+    "product": 35,
+    "name": "Color",
+    "value": "Brown",
+    "stock": 14,
+    "gallery": [
+      "/media/demo-products/loafer-brown.svg",
+      "/media/demo-products/loafer-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 585,
+  "fields": {
+    "product": 35,
+    "name": "Color",
+    "value": "White",
+    "stock": 14,
+    "gallery": [
+      "/media/demo-products/loafer-white.svg",
+      "/media/demo-products/loafer-black.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 586,
+  "fields": {
+    "product": 11,
+    "name": "Size",
+    "value": "39",
+    "stock": 8,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 587,
+  "fields": {
+    "product": 11,
+    "name": "Size",
+    "value": "40",
+    "stock": 8,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 588,
+  "fields": {
+    "product": 11,
+    "name": "Size",
+    "value": "41",
+    "stock": 8,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 589,
+  "fields": {
+    "product": 11,
+    "name": "Size",
+    "value": "42",
+    "stock": 8,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 590,
+  "fields": {
+    "product": 11,
+    "name": "Size",
+    "value": "43",
+    "stock": 8,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 591,
+  "fields": {
+    "product": 11,
+    "name": "Color",
+    "value": "Black",
+    "stock": 10,
+    "gallery": [
+      "/media/demo-products/mens-black.svg",
+      "/media/demo-products/loafer-black.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 592,
+  "fields": {
+    "product": 11,
+    "name": "Color",
+    "value": "Brown",
+    "stock": 10,
+    "gallery": [
+      "/media/demo-products/mens-brown.svg",
+      "/media/demo-products/loafer-brown.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 593,
+  "fields": {
+    "product": 11,
+    "name": "Color",
+    "value": "White",
+    "stock": 10,
+    "gallery": [
+      "/media/demo-products/mens-white.svg",
+      "/media/demo-products/sneaker-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 594,
+  "fields": {
+    "product": 12,
+    "name": "Size",
+    "value": "39",
+    "stock": 9,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 595,
+  "fields": {
+    "product": 12,
+    "name": "Size",
+    "value": "40",
+    "stock": 9,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 596,
+  "fields": {
+    "product": 12,
+    "name": "Size",
+    "value": "41",
+    "stock": 9,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 597,
+  "fields": {
+    "product": 12,
+    "name": "Size",
+    "value": "42",
+    "stock": 9,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 598,
+  "fields": {
+    "product": 12,
+    "name": "Size",
+    "value": "43",
+    "stock": 9,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 599,
+  "fields": {
+    "product": 12,
+    "name": "Color",
+    "value": "Black",
+    "stock": 11,
+    "gallery": [
+      "/media/demo-products/mens-black.svg",
+      "/media/demo-products/loafer-black.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 600,
+  "fields": {
+    "product": 12,
+    "name": "Color",
+    "value": "Brown",
+    "stock": 11,
+    "gallery": [
+      "/media/demo-products/mens-brown.svg",
+      "/media/demo-products/loafer-brown.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 601,
+  "fields": {
+    "product": 12,
+    "name": "Color",
+    "value": "White",
+    "stock": 11,
+    "gallery": [
+      "/media/demo-products/mens-white.svg",
+      "/media/demo-products/sneaker-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 602,
+  "fields": {
+    "product": 13,
+    "name": "Size",
+    "value": "39",
+    "stock": 10,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 603,
+  "fields": {
+    "product": 13,
+    "name": "Size",
+    "value": "40",
+    "stock": 10,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 604,
+  "fields": {
+    "product": 13,
+    "name": "Size",
+    "value": "41",
+    "stock": 10,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 605,
+  "fields": {
+    "product": 13,
+    "name": "Size",
+    "value": "42",
+    "stock": 10,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 606,
+  "fields": {
+    "product": 13,
+    "name": "Size",
+    "value": "43",
+    "stock": 10,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 607,
+  "fields": {
+    "product": 13,
+    "name": "Color",
+    "value": "Black",
+    "stock": 12,
+    "gallery": [
+      "/media/demo-products/mens-black.svg",
+      "/media/demo-products/loafer-black.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 608,
+  "fields": {
+    "product": 13,
+    "name": "Color",
+    "value": "Brown",
+    "stock": 12,
+    "gallery": [
+      "/media/demo-products/mens-brown.svg",
+      "/media/demo-products/loafer-brown.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 609,
+  "fields": {
+    "product": 13,
+    "name": "Color",
+    "value": "White",
+    "stock": 12,
+    "gallery": [
+      "/media/demo-products/mens-white.svg",
+      "/media/demo-products/sneaker-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 610,
+  "fields": {
+    "product": 14,
+    "name": "Size",
+    "value": "39",
+    "stock": 11,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 611,
+  "fields": {
+    "product": 14,
+    "name": "Size",
+    "value": "40",
+    "stock": 11,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 612,
+  "fields": {
+    "product": 14,
+    "name": "Size",
+    "value": "41",
+    "stock": 11,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 613,
+  "fields": {
+    "product": 14,
+    "name": "Size",
+    "value": "42",
+    "stock": 11,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 614,
+  "fields": {
+    "product": 14,
+    "name": "Size",
+    "value": "43",
+    "stock": 11,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 615,
+  "fields": {
+    "product": 14,
+    "name": "Color",
+    "value": "Black",
+    "stock": 13,
+    "gallery": [
+      "/media/demo-products/mens-black.svg",
+      "/media/demo-products/loafer-black.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 616,
+  "fields": {
+    "product": 14,
+    "name": "Color",
+    "value": "Brown",
+    "stock": 13,
+    "gallery": [
+      "/media/demo-products/mens-brown.svg",
+      "/media/demo-products/loafer-brown.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 617,
+  "fields": {
+    "product": 14,
+    "name": "Color",
+    "value": "White",
+    "stock": 13,
+    "gallery": [
+      "/media/demo-products/mens-white.svg",
+      "/media/demo-products/sneaker-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 618,
+  "fields": {
+    "product": 15,
+    "name": "Size",
+    "value": "39",
+    "stock": 12,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 619,
+  "fields": {
+    "product": 15,
+    "name": "Size",
+    "value": "40",
+    "stock": 12,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 620,
+  "fields": {
+    "product": 15,
+    "name": "Size",
+    "value": "41",
+    "stock": 12,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 621,
+  "fields": {
+    "product": 15,
+    "name": "Size",
+    "value": "42",
+    "stock": 12,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 622,
+  "fields": {
+    "product": 15,
+    "name": "Size",
+    "value": "43",
+    "stock": 12,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 623,
+  "fields": {
+    "product": 15,
+    "name": "Color",
+    "value": "Black",
+    "stock": 14,
+    "gallery": [
+      "/media/demo-products/mens-black.svg",
+      "/media/demo-products/loafer-black.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 624,
+  "fields": {
+    "product": 15,
+    "name": "Color",
+    "value": "Brown",
+    "stock": 14,
+    "gallery": [
+      "/media/demo-products/mens-brown.svg",
+      "/media/demo-products/loafer-brown.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 625,
+  "fields": {
+    "product": 15,
+    "name": "Color",
+    "value": "White",
+    "stock": 14,
+    "gallery": [
+      "/media/demo-products/mens-white.svg",
+      "/media/demo-products/sneaker-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 626,
+  "fields": {
+    "product": 16,
+    "name": "Size",
+    "value": "39",
+    "stock": 8,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 627,
+  "fields": {
+    "product": 16,
+    "name": "Size",
+    "value": "40",
+    "stock": 8,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 628,
+  "fields": {
+    "product": 16,
+    "name": "Size",
+    "value": "41",
+    "stock": 8,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 629,
+  "fields": {
+    "product": 16,
+    "name": "Size",
+    "value": "42",
+    "stock": 8,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 630,
+  "fields": {
+    "product": 16,
+    "name": "Size",
+    "value": "43",
+    "stock": 8,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 631,
+  "fields": {
+    "product": 16,
+    "name": "Color",
+    "value": "Black",
+    "stock": 10,
+    "gallery": [
+      "/media/demo-products/sandal-black.svg",
+      "/media/demo-products/sandal-brown.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 632,
+  "fields": {
+    "product": 16,
+    "name": "Color",
+    "value": "Brown",
+    "stock": 10,
+    "gallery": [
+      "/media/demo-products/sandal-brown.svg",
+      "/media/demo-products/sandal-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 633,
+  "fields": {
+    "product": 16,
+    "name": "Color",
+    "value": "White",
+    "stock": 10,
+    "gallery": [
+      "/media/demo-products/sandal-white.svg",
+      "/media/demo-products/sandal-black.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 634,
+  "fields": {
+    "product": 17,
+    "name": "Size",
+    "value": "39",
+    "stock": 9,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 635,
+  "fields": {
+    "product": 17,
+    "name": "Size",
+    "value": "40",
+    "stock": 9,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 636,
+  "fields": {
+    "product": 17,
+    "name": "Size",
+    "value": "41",
+    "stock": 9,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 637,
+  "fields": {
+    "product": 17,
+    "name": "Size",
+    "value": "42",
+    "stock": 9,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 638,
+  "fields": {
+    "product": 17,
+    "name": "Size",
+    "value": "43",
+    "stock": 9,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 639,
+  "fields": {
+    "product": 17,
+    "name": "Color",
+    "value": "Black",
+    "stock": 11,
+    "gallery": [
+      "/media/demo-products/sandal-black.svg",
+      "/media/demo-products/sandal-brown.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 640,
+  "fields": {
+    "product": 17,
+    "name": "Color",
+    "value": "Brown",
+    "stock": 11,
+    "gallery": [
+      "/media/demo-products/sandal-brown.svg",
+      "/media/demo-products/sandal-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 641,
+  "fields": {
+    "product": 17,
+    "name": "Color",
+    "value": "White",
+    "stock": 11,
+    "gallery": [
+      "/media/demo-products/sandal-white.svg",
+      "/media/demo-products/sandal-black.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 642,
+  "fields": {
+    "product": 18,
+    "name": "Size",
+    "value": "39",
+    "stock": 10,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 643,
+  "fields": {
+    "product": 18,
+    "name": "Size",
+    "value": "40",
+    "stock": 10,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 644,
+  "fields": {
+    "product": 18,
+    "name": "Size",
+    "value": "41",
+    "stock": 10,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 645,
+  "fields": {
+    "product": 18,
+    "name": "Size",
+    "value": "42",
+    "stock": 10,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 646,
+  "fields": {
+    "product": 18,
+    "name": "Size",
+    "value": "43",
+    "stock": 10,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 647,
+  "fields": {
+    "product": 18,
+    "name": "Color",
+    "value": "Black",
+    "stock": 12,
+    "gallery": [
+      "/media/demo-products/sandal-black.svg",
+      "/media/demo-products/sandal-brown.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 648,
+  "fields": {
+    "product": 18,
+    "name": "Color",
+    "value": "Brown",
+    "stock": 12,
+    "gallery": [
+      "/media/demo-products/sandal-brown.svg",
+      "/media/demo-products/sandal-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 649,
+  "fields": {
+    "product": 18,
+    "name": "Color",
+    "value": "White",
+    "stock": 12,
+    "gallery": [
+      "/media/demo-products/sandal-white.svg",
+      "/media/demo-products/sandal-black.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 650,
+  "fields": {
+    "product": 19,
+    "name": "Size",
+    "value": "39",
+    "stock": 11,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 651,
+  "fields": {
+    "product": 19,
+    "name": "Size",
+    "value": "40",
+    "stock": 11,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 652,
+  "fields": {
+    "product": 19,
+    "name": "Size",
+    "value": "41",
+    "stock": 11,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 653,
+  "fields": {
+    "product": 19,
+    "name": "Size",
+    "value": "42",
+    "stock": 11,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 654,
+  "fields": {
+    "product": 19,
+    "name": "Size",
+    "value": "43",
+    "stock": 11,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 655,
+  "fields": {
+    "product": 19,
+    "name": "Color",
+    "value": "Black",
+    "stock": 13,
+    "gallery": [
+      "/media/demo-products/sandal-black.svg",
+      "/media/demo-products/sandal-brown.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 656,
+  "fields": {
+    "product": 19,
+    "name": "Color",
+    "value": "Brown",
+    "stock": 13,
+    "gallery": [
+      "/media/demo-products/sandal-brown.svg",
+      "/media/demo-products/sandal-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 657,
+  "fields": {
+    "product": 19,
+    "name": "Color",
+    "value": "White",
+    "stock": 13,
+    "gallery": [
+      "/media/demo-products/sandal-white.svg",
+      "/media/demo-products/sandal-black.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 658,
+  "fields": {
+    "product": 20,
+    "name": "Size",
+    "value": "39",
+    "stock": 12,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 659,
+  "fields": {
+    "product": 20,
+    "name": "Size",
+    "value": "40",
+    "stock": 12,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 660,
+  "fields": {
+    "product": 20,
+    "name": "Size",
+    "value": "41",
+    "stock": 12,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 661,
+  "fields": {
+    "product": 20,
+    "name": "Size",
+    "value": "42",
+    "stock": 12,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 662,
+  "fields": {
+    "product": 20,
+    "name": "Size",
+    "value": "43",
+    "stock": 12,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 663,
+  "fields": {
+    "product": 20,
+    "name": "Color",
+    "value": "Black",
+    "stock": 14,
+    "gallery": [
+      "/media/demo-products/sandal-black.svg",
+      "/media/demo-products/sandal-brown.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 664,
+  "fields": {
+    "product": 20,
+    "name": "Color",
+    "value": "Brown",
+    "stock": 14,
+    "gallery": [
+      "/media/demo-products/sandal-brown.svg",
+      "/media/demo-products/sandal-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 665,
+  "fields": {
+    "product": 20,
+    "name": "Color",
+    "value": "White",
+    "stock": 14,
+    "gallery": [
+      "/media/demo-products/sandal-white.svg",
+      "/media/demo-products/sandal-black.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 666,
+  "fields": {
+    "product": 21,
+    "name": "Size",
+    "value": "39",
+    "stock": 8,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 667,
+  "fields": {
+    "product": 21,
+    "name": "Size",
+    "value": "40",
+    "stock": 8,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 668,
+  "fields": {
+    "product": 21,
+    "name": "Size",
+    "value": "41",
+    "stock": 8,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 669,
+  "fields": {
+    "product": 21,
+    "name": "Size",
+    "value": "42",
+    "stock": 8,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 670,
+  "fields": {
+    "product": 21,
+    "name": "Size",
+    "value": "43",
+    "stock": 8,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 671,
+  "fields": {
+    "product": 21,
+    "name": "Color",
+    "value": "Black",
+    "stock": 10,
+    "gallery": [
+      "/media/demo-products/sneaker-black.svg",
+      "/media/demo-products/sneaker-blue.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 672,
+  "fields": {
+    "product": 21,
+    "name": "Color",
+    "value": "Blue",
+    "stock": 10,
+    "gallery": [
+      "/media/demo-products/sneaker-blue.svg",
+      "/media/demo-products/sneaker-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 673,
+  "fields": {
+    "product": 21,
+    "name": "Color",
+    "value": "White",
+    "stock": 10,
+    "gallery": [
+      "/media/demo-products/sneaker-white.svg",
+      "/media/demo-products/sneaker-black.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 674,
+  "fields": {
+    "product": 22,
+    "name": "Size",
+    "value": "39",
+    "stock": 9,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 675,
+  "fields": {
+    "product": 22,
+    "name": "Size",
+    "value": "40",
+    "stock": 9,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 676,
+  "fields": {
+    "product": 22,
+    "name": "Size",
+    "value": "41",
+    "stock": 9,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 677,
+  "fields": {
+    "product": 22,
+    "name": "Size",
+    "value": "42",
+    "stock": 9,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 678,
+  "fields": {
+    "product": 22,
+    "name": "Size",
+    "value": "43",
+    "stock": 9,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 679,
+  "fields": {
+    "product": 22,
+    "name": "Color",
+    "value": "Black",
+    "stock": 11,
+    "gallery": [
+      "/media/demo-products/sneaker-black.svg",
+      "/media/demo-products/sneaker-blue.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 680,
+  "fields": {
+    "product": 22,
+    "name": "Color",
+    "value": "Blue",
+    "stock": 11,
+    "gallery": [
+      "/media/demo-products/sneaker-blue.svg",
+      "/media/demo-products/sneaker-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 681,
+  "fields": {
+    "product": 22,
+    "name": "Color",
+    "value": "White",
+    "stock": 11,
+    "gallery": [
+      "/media/demo-products/sneaker-white.svg",
+      "/media/demo-products/sneaker-black.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 682,
+  "fields": {
+    "product": 23,
+    "name": "Size",
+    "value": "39",
+    "stock": 10,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 683,
+  "fields": {
+    "product": 23,
+    "name": "Size",
+    "value": "40",
+    "stock": 10,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 684,
+  "fields": {
+    "product": 23,
+    "name": "Size",
+    "value": "41",
+    "stock": 10,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 685,
+  "fields": {
+    "product": 23,
+    "name": "Size",
+    "value": "42",
+    "stock": 10,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 686,
+  "fields": {
+    "product": 23,
+    "name": "Size",
+    "value": "43",
+    "stock": 10,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 687,
+  "fields": {
+    "product": 23,
+    "name": "Color",
+    "value": "Black",
+    "stock": 12,
+    "gallery": [
+      "/media/demo-products/sneaker-black.svg",
+      "/media/demo-products/sneaker-blue.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 688,
+  "fields": {
+    "product": 23,
+    "name": "Color",
+    "value": "Blue",
+    "stock": 12,
+    "gallery": [
+      "/media/demo-products/sneaker-blue.svg",
+      "/media/demo-products/sneaker-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 689,
+  "fields": {
+    "product": 23,
+    "name": "Color",
+    "value": "White",
+    "stock": 12,
+    "gallery": [
+      "/media/demo-products/sneaker-white.svg",
+      "/media/demo-products/sneaker-black.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 690,
+  "fields": {
+    "product": 24,
+    "name": "Size",
+    "value": "39",
+    "stock": 11,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 691,
+  "fields": {
+    "product": 24,
+    "name": "Size",
+    "value": "40",
+    "stock": 11,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 692,
+  "fields": {
+    "product": 24,
+    "name": "Size",
+    "value": "41",
+    "stock": 11,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 693,
+  "fields": {
+    "product": 24,
+    "name": "Size",
+    "value": "42",
+    "stock": 11,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 694,
+  "fields": {
+    "product": 24,
+    "name": "Size",
+    "value": "43",
+    "stock": 11,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 695,
+  "fields": {
+    "product": 24,
+    "name": "Color",
+    "value": "Black",
+    "stock": 13,
+    "gallery": [
+      "/media/demo-products/sneaker-black.svg",
+      "/media/demo-products/sneaker-blue.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 696,
+  "fields": {
+    "product": 24,
+    "name": "Color",
+    "value": "Blue",
+    "stock": 13,
+    "gallery": [
+      "/media/demo-products/sneaker-blue.svg",
+      "/media/demo-products/sneaker-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 697,
+  "fields": {
+    "product": 24,
+    "name": "Color",
+    "value": "White",
+    "stock": 13,
+    "gallery": [
+      "/media/demo-products/sneaker-white.svg",
+      "/media/demo-products/sneaker-black.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 698,
+  "fields": {
+    "product": 25,
+    "name": "Size",
+    "value": "39",
+    "stock": 12,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 699,
+  "fields": {
+    "product": 25,
+    "name": "Size",
+    "value": "40",
+    "stock": 12,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 700,
+  "fields": {
+    "product": 25,
+    "name": "Size",
+    "value": "41",
+    "stock": 12,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 701,
+  "fields": {
+    "product": 25,
+    "name": "Size",
+    "value": "42",
+    "stock": 12,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 702,
+  "fields": {
+    "product": 25,
+    "name": "Size",
+    "value": "43",
+    "stock": 12,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 703,
+  "fields": {
+    "product": 25,
+    "name": "Color",
+    "value": "Black",
+    "stock": 14,
+    "gallery": [
+      "/media/demo-products/sneaker-black.svg",
+      "/media/demo-products/sneaker-blue.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 704,
+  "fields": {
+    "product": 25,
+    "name": "Color",
+    "value": "Blue",
+    "stock": 14,
+    "gallery": [
+      "/media/demo-products/sneaker-blue.svg",
+      "/media/demo-products/sneaker-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 705,
+  "fields": {
+    "product": 25,
+    "name": "Color",
+    "value": "White",
+    "stock": 14,
+    "gallery": [
+      "/media/demo-products/sneaker-white.svg",
+      "/media/demo-products/sneaker-black.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 706,
+  "fields": {
+    "product": 26,
+    "name": "Size",
+    "value": "36",
+    "stock": 8,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 707,
+  "fields": {
+    "product": 26,
+    "name": "Size",
+    "value": "37",
+    "stock": 8,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 708,
+  "fields": {
+    "product": 26,
+    "name": "Size",
+    "value": "38",
+    "stock": 8,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 709,
+  "fields": {
+    "product": 26,
+    "name": "Size",
+    "value": "39",
+    "stock": 8,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 710,
+  "fields": {
+    "product": 26,
+    "name": "Size",
+    "value": "40",
+    "stock": 8,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 711,
+  "fields": {
+    "product": 26,
+    "name": "Color",
+    "value": "Black",
+    "stock": 10,
+    "gallery": [
+      "/media/demo-products/women-black.svg",
+      "/media/demo-products/women-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 712,
+  "fields": {
+    "product": 26,
+    "name": "Color",
+    "value": "Pink",
+    "stock": 10,
+    "gallery": [
+      "/media/demo-products/women-pink.svg",
+      "/media/demo-products/women-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 713,
+  "fields": {
+    "product": 26,
+    "name": "Color",
+    "value": "White",
+    "stock": 10,
+    "gallery": [
+      "/media/demo-products/women-white.svg",
+      "/media/demo-products/women-black.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 714,
+  "fields": {
+    "product": 27,
+    "name": "Size",
+    "value": "36",
+    "stock": 9,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 715,
+  "fields": {
+    "product": 27,
+    "name": "Size",
+    "value": "37",
+    "stock": 9,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 716,
+  "fields": {
+    "product": 27,
+    "name": "Size",
+    "value": "38",
+    "stock": 9,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 717,
+  "fields": {
+    "product": 27,
+    "name": "Size",
+    "value": "39",
+    "stock": 9,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 718,
+  "fields": {
+    "product": 27,
+    "name": "Size",
+    "value": "40",
+    "stock": 9,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 719,
+  "fields": {
+    "product": 27,
+    "name": "Color",
+    "value": "Black",
+    "stock": 11,
+    "gallery": [
+      "/media/demo-products/women-black.svg",
+      "/media/demo-products/women-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 720,
+  "fields": {
+    "product": 27,
+    "name": "Color",
+    "value": "Pink",
+    "stock": 11,
+    "gallery": [
+      "/media/demo-products/women-pink.svg",
+      "/media/demo-products/women-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 721,
+  "fields": {
+    "product": 27,
+    "name": "Color",
+    "value": "White",
+    "stock": 11,
+    "gallery": [
+      "/media/demo-products/women-white.svg",
+      "/media/demo-products/women-black.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 722,
+  "fields": {
+    "product": 28,
+    "name": "Size",
+    "value": "36",
+    "stock": 10,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 723,
+  "fields": {
+    "product": 28,
+    "name": "Size",
+    "value": "37",
+    "stock": 10,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 724,
+  "fields": {
+    "product": 28,
+    "name": "Size",
+    "value": "38",
+    "stock": 10,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 725,
+  "fields": {
+    "product": 28,
+    "name": "Size",
+    "value": "39",
+    "stock": 10,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 726,
+  "fields": {
+    "product": 28,
+    "name": "Size",
+    "value": "40",
+    "stock": 10,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 727,
+  "fields": {
+    "product": 28,
+    "name": "Color",
+    "value": "Black",
+    "stock": 12,
+    "gallery": [
+      "/media/demo-products/women-black.svg",
+      "/media/demo-products/women-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 728,
+  "fields": {
+    "product": 28,
+    "name": "Color",
+    "value": "Pink",
+    "stock": 12,
+    "gallery": [
+      "/media/demo-products/women-pink.svg",
+      "/media/demo-products/women-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 729,
+  "fields": {
+    "product": 28,
+    "name": "Color",
+    "value": "White",
+    "stock": 12,
+    "gallery": [
+      "/media/demo-products/women-white.svg",
+      "/media/demo-products/women-black.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 730,
+  "fields": {
+    "product": 29,
+    "name": "Size",
+    "value": "36",
+    "stock": 11,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 731,
+  "fields": {
+    "product": 29,
+    "name": "Size",
+    "value": "37",
+    "stock": 11,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 732,
+  "fields": {
+    "product": 29,
+    "name": "Size",
+    "value": "38",
+    "stock": 11,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 733,
+  "fields": {
+    "product": 29,
+    "name": "Size",
+    "value": "39",
+    "stock": 11,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 734,
+  "fields": {
+    "product": 29,
+    "name": "Size",
+    "value": "40",
+    "stock": 11,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 735,
+  "fields": {
+    "product": 29,
+    "name": "Color",
+    "value": "Black",
+    "stock": 13,
+    "gallery": [
+      "/media/demo-products/women-black.svg",
+      "/media/demo-products/women-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 736,
+  "fields": {
+    "product": 29,
+    "name": "Color",
+    "value": "Pink",
+    "stock": 13,
+    "gallery": [
+      "/media/demo-products/women-pink.svg",
+      "/media/demo-products/women-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 737,
+  "fields": {
+    "product": 29,
+    "name": "Color",
+    "value": "White",
+    "stock": 13,
+    "gallery": [
+      "/media/demo-products/women-white.svg",
+      "/media/demo-products/women-black.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 738,
+  "fields": {
+    "product": 30,
+    "name": "Size",
+    "value": "36",
+    "stock": 12,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 739,
+  "fields": {
+    "product": 30,
+    "name": "Size",
+    "value": "37",
+    "stock": 12,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 740,
+  "fields": {
+    "product": 30,
+    "name": "Size",
+    "value": "38",
+    "stock": 12,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 741,
+  "fields": {
+    "product": 30,
+    "name": "Size",
+    "value": "39",
+    "stock": 12,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 742,
+  "fields": {
+    "product": 30,
+    "name": "Size",
+    "value": "40",
+    "stock": 12,
+    "gallery": []
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 743,
+  "fields": {
+    "product": 30,
+    "name": "Color",
+    "value": "Black",
+    "stock": 14,
+    "gallery": [
+      "/media/demo-products/women-black.svg",
+      "/media/demo-products/women-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 744,
+  "fields": {
+    "product": 30,
+    "name": "Color",
+    "value": "Pink",
+    "stock": 14,
+    "gallery": [
+      "/media/demo-products/women-pink.svg",
+      "/media/demo-products/women-white.svg"
+    ]
+  }
+},
+{
+  "model": "products.productvariant",
+  "pk": 745,
+  "fields": {
+    "product": 30,
+    "name": "Color",
+    "value": "White",
+    "stock": 14,
+    "gallery": [
+      "/media/demo-products/women-white.svg",
+      "/media/demo-products/women-black.svg"
+    ]
+  }
+},
+{
+  "model": "products.wishlist",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "product": 19,
+    "created_at": "2026-04-23T13:04:02.997Z"
+  }
+},
+{
+  "model": "orders.cart",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "updated_at": "2026-04-23T11:57:50.535Z"
+  }
+},
+{
+  "model": "orders.cartitem",
+  "pk": 8,
+  "fields": {
+    "cart": 1,
+    "product": 13,
+    "quantity": 1
+  }
+},
+{
+  "model": "orders.cartitem",
+  "pk": 9,
+  "fields": {
+    "cart": 1,
+    "product": 24,
+    "quantity": 3
+  }
+}
+]

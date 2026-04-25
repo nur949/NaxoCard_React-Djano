@@ -60,60 +60,73 @@ CATALOG = {
     ],
 }
 
+DEMO_ASSET_URL_BASE = "/media/demo-products"
+DEMO_ASSET_STORAGE_BASE = "demo-products"
+
 IMAGE_POOLS = {
-    "mens-shoes": [
-        "https://pngimg.com/d/shoes_PNG7475.png",
-        "https://pngimg.com/d/shoes_PNG7490.png",
-        "https://pngimg.com/d/shoes_PNG7479.png",
+        "mens-shoes": [
+        f"{DEMO_ASSET_URL_BASE}/mens-black.svg",
+        f"{DEMO_ASSET_URL_BASE}/mens-brown.svg",
+        f"{DEMO_ASSET_URL_BASE}/mens-white.svg",
     ],
     "womens-shoes": [
-        "https://pngimg.com/d/women_shoes_PNG7486.png",
-        "https://pngimg.com/d/women_shoes_PNG7470.png",
-        "https://pngimg.com/d/women_shoes_PNG7494.png",
+        f"{DEMO_ASSET_URL_BASE}/women-black.svg",
+        f"{DEMO_ASSET_URL_BASE}/women-pink.svg",
+        f"{DEMO_ASSET_URL_BASE}/women-white.svg",
     ],
     "kids-shoes": [
-        "https://pngimg.com/d/running_shoes_PNG5818.png",
-        "https://pngimg.com/d/running_shoes_PNG5827.png",
-        "https://pngimg.com/d/running_shoes_PNG5816.png",
+        f"{DEMO_ASSET_URL_BASE}/kids-black.svg",
+        f"{DEMO_ASSET_URL_BASE}/kids-blue.svg",
+        f"{DEMO_ASSET_URL_BASE}/kids-pink.svg",
     ],
     "sneakers": [
-        "https://pngimg.com/d/running_shoes_PNG5824.png",
-        "https://pngimg.com/d/running_shoes_PNG5814.png",
-        "https://pngimg.com/d/running_shoes_PNG5817.png",
+        f"{DEMO_ASSET_URL_BASE}/sneaker-black.svg",
+        f"{DEMO_ASSET_URL_BASE}/sneaker-blue.svg",
+        f"{DEMO_ASSET_URL_BASE}/sneaker-white.svg",
     ],
     "sandals": [
-        "https://pngimg.com/d/sandal_PNG1.png",
-        "https://pngimg.com/d/sandal_PNG26.png",
-        "https://pngimg.com/d/sandal_PNG49.png",
+        f"{DEMO_ASSET_URL_BASE}/sandal-black.svg",
+        f"{DEMO_ASSET_URL_BASE}/sandal-brown.svg",
+        f"{DEMO_ASSET_URL_BASE}/sandal-white.svg",
     ],
     "loafers": [
-        "https://pngimg.com/d/shoes_PNG7468.png",
-        "https://pngimg.com/d/shoes_PNG7487.png",
-        "https://pngimg.com/d/shoes_PNG7493.png",
+        f"{DEMO_ASSET_URL_BASE}/loafer-black.svg",
+        f"{DEMO_ASSET_URL_BASE}/loafer-brown.svg",
+        f"{DEMO_ASSET_URL_BASE}/loafer-white.svg",
     ],
 }
 
 COLOR_IMAGE_POOLS = {
-    "Black": [
-        "https://pngimg.com/d/shoes_PNG7468.png",
-        "https://pngimg.com/d/running_shoes_PNG5817.png",
-    ],
-    "Brown": [
-        "https://pngimg.com/d/shoes_PNG7475.png",
-        "https://pngimg.com/d/shoes_PNG7487.png",
-    ],
-    "White": [
-        "https://pngimg.com/d/running_shoes_PNG5814.png",
-        "https://pngimg.com/d/running_shoes_PNG5816.png",
-    ],
-    "Blue": [
-        "https://pngimg.com/d/running_shoes_PNG5827.png",
-        "https://pngimg.com/d/women_shoes_PNG7486.png",
-    ],
-    "Pink": [
-        "https://pngimg.com/d/women_shoes_PNG7470.png",
-        "https://pngimg.com/d/women_shoes_PNG7494.png",
-    ],
+    "mens-shoes": {
+        "Black": [f"{DEMO_ASSET_URL_BASE}/mens-black.svg", f"{DEMO_ASSET_URL_BASE}/loafer-black.svg"],
+        "Brown": [f"{DEMO_ASSET_URL_BASE}/mens-brown.svg", f"{DEMO_ASSET_URL_BASE}/loafer-brown.svg"],
+        "White": [f"{DEMO_ASSET_URL_BASE}/mens-white.svg", f"{DEMO_ASSET_URL_BASE}/sneaker-white.svg"],
+    },
+    "womens-shoes": {
+        "Black": [f"{DEMO_ASSET_URL_BASE}/women-black.svg", f"{DEMO_ASSET_URL_BASE}/women-white.svg"],
+        "Pink": [f"{DEMO_ASSET_URL_BASE}/women-pink.svg", f"{DEMO_ASSET_URL_BASE}/women-white.svg"],
+        "White": [f"{DEMO_ASSET_URL_BASE}/women-white.svg", f"{DEMO_ASSET_URL_BASE}/women-black.svg"],
+    },
+    "kids-shoes": {
+        "Black": [f"{DEMO_ASSET_URL_BASE}/kids-black.svg", f"{DEMO_ASSET_URL_BASE}/kids-blue.svg"],
+        "Blue": [f"{DEMO_ASSET_URL_BASE}/kids-blue.svg", f"{DEMO_ASSET_URL_BASE}/kids-black.svg"],
+        "Pink": [f"{DEMO_ASSET_URL_BASE}/kids-pink.svg", f"{DEMO_ASSET_URL_BASE}/kids-white.svg"],
+    },
+    "sneakers": {
+        "Black": [f"{DEMO_ASSET_URL_BASE}/sneaker-black.svg", f"{DEMO_ASSET_URL_BASE}/sneaker-blue.svg"],
+        "Blue": [f"{DEMO_ASSET_URL_BASE}/sneaker-blue.svg", f"{DEMO_ASSET_URL_BASE}/sneaker-white.svg"],
+        "White": [f"{DEMO_ASSET_URL_BASE}/sneaker-white.svg", f"{DEMO_ASSET_URL_BASE}/sneaker-black.svg"],
+    },
+    "sandals": {
+        "Black": [f"{DEMO_ASSET_URL_BASE}/sandal-black.svg", f"{DEMO_ASSET_URL_BASE}/sandal-brown.svg"],
+        "Brown": [f"{DEMO_ASSET_URL_BASE}/sandal-brown.svg", f"{DEMO_ASSET_URL_BASE}/sandal-white.svg"],
+        "White": [f"{DEMO_ASSET_URL_BASE}/sandal-white.svg", f"{DEMO_ASSET_URL_BASE}/sandal-black.svg"],
+    },
+    "loafers": {
+        "Black": [f"{DEMO_ASSET_URL_BASE}/loafer-black.svg", f"{DEMO_ASSET_URL_BASE}/loafer-brown.svg"],
+        "Brown": [f"{DEMO_ASSET_URL_BASE}/loafer-brown.svg", f"{DEMO_ASSET_URL_BASE}/loafer-white.svg"],
+        "White": [f"{DEMO_ASSET_URL_BASE}/loafer-white.svg", f"{DEMO_ASSET_URL_BASE}/loafer-black.svg"],
+    },
 }
 
 
@@ -157,6 +170,7 @@ class Command(BaseCommand):
                 name, description, price, compare_at_price, rating, review_count, sales_count = item
                 slug = slugify(name)
                 gallery = [image_pool[index % len(image_pool)], image_pool[(index + 1) % len(image_pool)]]
+                image_name = gallery[0].split("/")[-1]
                 product, was_created = Product.all_objects.update_or_create(
                     slug=slug,
                     defaults={
@@ -165,8 +179,8 @@ class Command(BaseCommand):
                         "price": Decimal(price),
                         "compare_at_price": Decimal(compare_at_price),
                         "stock": 18 + (index * 7),
-                        "image": "",
-                        "gallery": gallery,
+                        "image": f"{DEMO_ASSET_STORAGE_BASE}/{image_name}",
+                        "gallery": gallery[1:],
                         "description": description,
                         "rating": Decimal(str(rating)),
                         "review_count": review_count,
@@ -189,9 +203,17 @@ class Command(BaseCommand):
         if category_slug == "kids-shoes":
             variants = [("Size", value, 10 + index) for value in ("28", "30", "32", "34")]
             variants += [("Color", value, 12 + index) for value in ("Black", "Blue", "Pink")]
+        elif category_slug == "womens-shoes":
+            variants = [("Size", value, 8 + index) for value in ("36", "37", "38", "39", "40")]
+            variants += [("Color", value, 10 + index) for value in ("Black", "Pink", "White")]
+        elif category_slug == "sneakers":
+            variants = [("Size", value, 8 + index) for value in ("39", "40", "41", "42", "43")]
+            variants += [("Color", value, 10 + index) for value in ("Black", "Blue", "White")]
         else:
             variants = [("Size", value, 8 + index) for value in ("39", "40", "41", "42", "43")]
             variants += [("Color", value, 10 + index) for value in ("Black", "Brown", "White")]
+
+        product.variants.all().delete()
 
         for name, value, stock in variants:
             ProductVariant.objects.update_or_create(
@@ -200,6 +222,6 @@ class Command(BaseCommand):
                 value=value,
                 defaults={
                     "stock": stock,
-                    "gallery": COLOR_IMAGE_POOLS.get(value, [])[:2] if name == "Color" else [],
+                    "gallery": COLOR_IMAGE_POOLS.get(category_slug, {}).get(value, [])[:2] if name == "Color" else [],
                 },
             )

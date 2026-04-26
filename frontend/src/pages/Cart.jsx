@@ -17,10 +17,10 @@ export default function Cart() {
       <div className="mb-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
         <div>
           <p className="text-xs font-black uppercase tracking-[0.2em] text-primary">Shopping Cart</p>
-          <h1 className="mt-2 text-4xl font-black">Review your bag</h1>
+          <h1 className="mt-2 text-[2.1rem] font-black sm:text-4xl">Review your bag</h1>
           <p className="mt-2 text-muted-foreground">{itemCount} item{itemCount === 1 ? "" : "s"} ready for checkout.</p>
         </div>
-        <Button asChild variant="outline"><Link to="/products"><ShoppingBag size={17} /> Continue shopping</Link></Button>
+        <Button asChild variant="outline" className="w-full sm:w-auto"><Link to="/products"><ShoppingBag size={17} /> Continue shopping</Link></Button>
       </div>
 
       {cart.items.length === 0 ? (
@@ -35,11 +35,11 @@ export default function Cart() {
           </CardContent>
         </Card>
       ) : (
-        <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
+        <div className="grid gap-6 xl:grid-cols-[1fr_380px]">
           <div className="grid gap-4">
             {cart.items.map((item) => (
               <Card key={item.id} className="overflow-hidden">
-                <CardContent className="grid gap-4 p-4 sm:grid-cols-[120px_1fr_auto] sm:items-center">
+                <CardContent className="grid gap-4 p-4 md:grid-cols-[110px_1fr] xl:grid-cols-[120px_1fr_auto] md:items-center">
                   <Link to={`/products/${item.product.slug}`} className="overflow-hidden rounded-md bg-muted">
                     <img className="h-32 w-full bg-white object-contain transition-transform duration-300 hover:scale-[1.02] sm:h-28" src={productImage(item.product, "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=400&q=80")} alt={item.product.name} />
                   </Link>
@@ -58,8 +58,12 @@ export default function Cart() {
                       </div>
                       <Button variant="ghost" size="sm" onClick={() => remove(item.id)}><Trash2 size={16} /> Remove</Button>
                     </div>
+                    <div className="mt-4 md:hidden">
+                      <p className="text-sm text-muted-foreground">Tk {item.product.price} each</p>
+                      <strong className="text-xl text-primary">Tk {item.subtotal}</strong>
+                    </div>
                   </div>
-                  <div className="text-right">
+                  <div className="hidden text-right xl:block">
                     <p className="text-sm text-muted-foreground">Tk {item.product.price} each</p>
                     <strong className="text-xl text-primary">Tk {item.subtotal}</strong>
                   </div>

@@ -14,13 +14,23 @@ const tiles = [
 export default function HomeCategoryTiles() {
   return (
     <section className="section py-8">
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-8">
+      <div
+        className="grid auto-cols-[20%] grid-flow-col gap-3 overflow-x-auto pb-2 snap-x snap-mandatory sm:grid-cols-4 sm:grid-flow-row sm:auto-cols-auto sm:overflow-visible lg:grid-cols-8"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+      >
         {tiles.map(({ label, image, to }) => (
-          <Link key={label} to={to} className="group text-center">
-            <div className="overflow-hidden rounded-md bg-muted shadow-soft">
-              <img src={image} alt={label} loading="lazy" className="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <Link key={label} to={to} className="group min-w-0 snap-start text-center">
+            <div className="overflow-hidden rounded-full bg-muted shadow-soft sm:rounded-md">
+              <img
+                src={image}
+                alt={label}
+                loading="lazy"
+                className="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
             </div>
-            <p className="mt-2 text-xs font-black uppercase tracking-wide group-hover:text-primary">{label}</p>
+            <p className="mt-2 text-[10px] font-black uppercase tracking-[0.06em] leading-tight group-hover:text-primary sm:text-xs sm:tracking-wide">
+              {label}
+            </p>
           </Link>
         ))}
       </div>

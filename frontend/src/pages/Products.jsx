@@ -235,18 +235,18 @@ export default function Products() {
         </div>
       </div>
 
-      <div className="section py-8">
-        <div className="grid gap-6 lg:grid-cols-[220px_minmax(0,1fr)]">
-          <aside className="hidden lg:block">
+      <div className="section py-6 sm:py-8">
+        <div className="grid gap-6 xl:grid-cols-[240px_minmax(0,1fr)]">
+          <aside className="hidden xl:block">
             <div className="panel sticky top-28 p-3">
               <FilterPanel categories={categories} filters={filters} setFilters={setFilters} apply={apply} reset={reset} />
             </div>
           </aside>
 
           <div>
-            <div className="mb-5 flex flex-col gap-4 rounded-lg border bg-card p-4 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <p className="font-bold">{count} products</p>
+            <div className="mb-5 flex flex-col gap-4 rounded-xl border bg-card p-4 md:p-5 lg:flex-row lg:items-center lg:justify-between">
+              <div className="min-w-0">
+                <p className="font-bold text-sm sm:text-base">{count} products</p>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {activeFilters.map(([key, value]) => (
                     <Badge key={key} variant="outline" className="gap-1">
@@ -259,25 +259,27 @@ export default function Products() {
                   )}
                 </div>
               </div>
-              <div className="flex flex-wrap items-center gap-2">
-                <Button variant="outline" className="lg:hidden" onClick={() => setFiltersOpen(true)}><Filter size={16} /> Filters</Button>
-                <select className="input w-44" value={filters.ordering} onChange={(e) => setFilters({ ...filters, ordering: e.target.value })}>
+              <div className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto] lg:flex lg:flex-wrap lg:items-center">
+                <Button variant="outline" className="w-full xl:hidden sm:w-auto" onClick={() => setFiltersOpen(true)}><Filter size={16} /> Filters</Button>
+                <select className="input w-full sm:w-52" value={filters.ordering} onChange={(e) => setFilters({ ...filters, ordering: e.target.value })}>
                   <option value="">Featured</option>
                   <option value="-created_at">Newest</option>
                   <option value="price">Price low to high</option>
                   <option value="-price">Price high to low</option>
                   <option value="-rating">Top rated</option>
                 </select>
-                <Button variant={view === "grid" ? "default" : "outline"} size="icon" onClick={() => setView("grid")} aria-label="Grid view"><Grid2X2 size={18} /></Button>
-                <Button variant={view === "list" ? "default" : "outline"} size="icon" onClick={() => setView("list")} aria-label="List view"><List size={18} /></Button>
+                <div className="flex items-center gap-2">
+                  <Button variant={view === "grid" ? "default" : "outline"} size="icon" onClick={() => setView("grid")} aria-label="Grid view"><Grid2X2 size={18} /></Button>
+                  <Button variant={view === "list" ? "default" : "outline"} size="icon" onClick={() => setView("list")} aria-label="List view"><List size={18} /></Button>
+                </div>
               </div>
             </div>
 
             <ErrorBox message={error} />
             {loading ? (
-              <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3"><Skeleton lines={12} /></div>
+              <div className="grid grid-cols-2 gap-4 xl:grid-cols-3"><Skeleton lines={12} /></div>
             ) : products.length > 0 ? (
-              <div className={view === "grid" ? "grid gap-5 sm:grid-cols-2 xl:grid-cols-3" : "grid gap-5"}>
+              <div className={view === "grid" ? "grid grid-cols-2 gap-4 xl:grid-cols-3" : "grid gap-4"}>
                 {products.map((product) => <ProductCard key={product.id} product={product} view={view} onChanged={() => load()} />)}
               </div>
             ) : (
@@ -293,8 +295,8 @@ export default function Products() {
       </div>
 
       {filtersOpen && (
-        <div className="fixed inset-0 z-50 bg-foreground/40 lg:hidden">
-          <div className="ml-auto h-full w-[88vw] max-w-sm overflow-y-auto bg-card p-5 shadow-premium">
+        <div className="fixed inset-0 z-50 bg-foreground/60 backdrop-blur-sm xl:hidden">
+          <div className="ml-auto h-full w-full max-w-md overflow-y-auto bg-card p-5 shadow-premium sm:w-[82vw]">
             <div className="mb-5 flex items-center justify-between">
               <h2 className="text-xl">Filters</h2>
               <Button variant="ghost" size="icon" onClick={() => setFiltersOpen(false)}><X size={18} /></Button>

@@ -75,21 +75,21 @@ export default function Checkout() {
       <CheckoutSteps active={2} />
       <div className="mb-6">
         <p className="text-xs font-black uppercase tracking-[0.2em] text-primary">Easy checkout</p>
-        <h1 className="mt-2 text-4xl font-black">Shipping and payment</h1>
+        <h1 className="mt-2 text-[2.1rem] font-black sm:text-4xl">Shipping and payment</h1>
         <p className="mt-2 text-muted-foreground">Fill in your details and place the order directly. No account is required for cash on delivery.</p>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
+      <div className="grid gap-6 xl:grid-cols-[1fr_380px]">
         <form className="grid gap-5" onSubmit={submit}>
           <ErrorBox message={error} />
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-xl"><User size={20} /> Contact</CardTitle>
             </CardHeader>
-            <CardContent className="grid gap-3 sm:grid-cols-2">
+            <CardContent className="grid gap-3 md:grid-cols-2">
               <input className="input" placeholder="Full name" value={guestName} onChange={(e) => setGuestName(e.target.value)} required />
               <input className="input" placeholder="Email address" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-              <input className="input" placeholder="Phone number" value={contact} onChange={(e) => setContact(e.target.value)} required />
+              <input className="input md:col-span-2" placeholder="Phone number" value={contact} onChange={(e) => setContact(e.target.value)} required />
             </CardContent>
           </Card>
 
@@ -111,7 +111,7 @@ export default function Checkout() {
               <CardTitle className="flex items-center gap-2 text-xl"><CreditCard size={20} /> Payment</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-3">
-              <div className="grid gap-3 sm:grid-cols-2">
+              <div className="grid gap-3 md:grid-cols-2">
                 <label className={`flex cursor-pointer items-start gap-3 rounded-lg border p-4 ${paymentMethod === "cod" ? "border-primary bg-primary/5" : "border-border"}`}>
                   <input type="radio" name="payment-method" className="mt-1" checked={paymentMethod === "cod"} onChange={() => setPaymentMethod("cod")} />
                   <span className="grid gap-1">
@@ -127,9 +127,9 @@ export default function Checkout() {
                   </span>
                 </label>
               </div>
-              <div className="grid gap-3 sm:grid-cols-[1fr_auto]">
+              <div className="grid gap-3 md:grid-cols-[1fr_auto]">
                 <input className="input" placeholder="Coupon code" value={couponCode} onChange={(e) => setCouponCode(e.target.value.toUpperCase())} />
-                <Button type="button" variant="outline" onClick={applyCoupon}>Apply coupon</Button>
+                <Button type="button" variant="outline" className="w-full md:w-auto" onClick={applyCoupon}>Apply coupon</Button>
               </div>
               {couponInfo?.valid && <div className="rounded-md border border-primary/20 bg-primary/10 p-3 text-sm text-primary">Coupon applied. Discount: Tk {couponInfo.discount_amount}</div>}
               <div className="rounded-md border bg-muted p-4 text-sm text-muted-foreground">
@@ -143,7 +143,7 @@ export default function Checkout() {
           </Card>
         </form>
 
-        <div className="grid h-fit gap-4 lg:sticky lg:top-44">
+        <div className="grid h-fit gap-4 xl:sticky xl:top-44">
           <CheckoutSummary items={cart.items} total={cart.total} />
           <Card>
             <CardContent className="flex gap-3 p-4 text-sm text-muted-foreground">

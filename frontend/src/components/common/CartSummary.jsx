@@ -9,7 +9,7 @@ export default function CartSummary({ total = "0.00", itemCount = 0, disabled = 
   const estimatedTotal = (subtotal + shipping).toFixed(2);
 
   return (
-    <Card className="h-fit lg:sticky lg:top-44">
+    <Card className="h-fit xl:sticky xl:top-44">
       <CardHeader>
         <CardTitle className="text-lg">Order summary</CardTitle>
       </CardHeader>

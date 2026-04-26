@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import api, { mediaUrl } from "../../api/client.js";
 import { Button } from "../ui/button.jsx";
 
-export default function SearchBox({ compact = false }) {
+export default function SearchBox({ compact = false, autoFocus = false }) {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [recent, setRecent] = useState(() => JSON.parse(localStorage.getItem("recentSearches") || "[]"));
@@ -13,6 +13,7 @@ export default function SearchBox({ compact = false }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const closeTimer = useRef(null);
+  const inputRef = useRef(null);
   const navigate = useNavigate();
   const trimmedQuery = query.trim();
   const showRecent = focused && trimmedQuery.length === 0 && recent.length > 0;
@@ -52,6 +53,14 @@ export default function SearchBox({ compact = false }) {
       clearTimeout(timer);
     };
   }, [trimmedQuery]);
+
+  useEffect(() => {
+    if (!autoFocus) return;
+    const timer = window.setTimeout(() => {
+      inputRef.current?.focus();
+    }, 50);
+    return () => window.clearTimeout(timer);
+  }, [autoFocus]);
 
   function openSearch() {
     if (closeTimer.current) window.clearTimeout(closeTimer.current);
@@ -116,6 +125,7 @@ export default function SearchBox({ compact = false }) {
       <form className="relative" onSubmit={(event) => { event.preventDefault(); submit(); }}>
         <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
         <input
+          ref={inputRef}
           className="input h-10 pl-9 pr-9"
           value={query}
           onChange={(event) => setQuery(event.target.value)}

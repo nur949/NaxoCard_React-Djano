@@ -9,11 +9,11 @@ export default function CheckoutSteps({ active = 1 }) {
         const complete = number < active;
         const current = number === active;
         return (
-          <div key={step} className={`flex items-center justify-center gap-2 px-3 py-3 text-sm font-bold ${current ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}>
-            <span className={`flex h-6 w-6 items-center justify-center rounded-full border ${complete ? "bg-primary text-primary-foreground" : ""}`}>
+          <div key={step} className={`flex items-center justify-center gap-2 px-2 py-3 text-xs font-bold sm:px-3 sm:text-sm ${current ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}>
+            <span className={`flex h-6 w-6 items-center justify-center rounded-full border text-[11px] sm:text-xs ${complete ? "bg-primary text-primary-foreground" : ""}`}>
               {complete ? <Check size={14} /> : number}
             </span>
-            <span className="hidden sm:inline">{step}</span>
+            <span>{step}</span>
           </div>
         );
       })}

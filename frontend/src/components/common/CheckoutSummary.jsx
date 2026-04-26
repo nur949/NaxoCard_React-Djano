@@ -10,13 +10,13 @@ export default function CheckoutSummary({ items = [], total = "0.00" }) {
       </CardHeader>
       <CardContent className="grid gap-4">
         {items.map((item) => (
-          <div className="flex gap-3 text-sm" key={item.id}>
-            <img className="h-14 w-14 rounded-md bg-white object-contain" src={productImage(item.product, "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=200&q=80")} alt={item.product.name} />
+          <div className="flex items-start gap-3 text-sm" key={item.id}>
+            <img className="h-12 w-12 rounded-md bg-white object-contain sm:h-14 sm:w-14" src={productImage(item.product, "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=200&q=80")} alt={item.product.name} />
             <div className="min-w-0 flex-1">
               <p className="line-clamp-1 font-semibold">{item.product.name}</p>
               <p className="text-xs text-muted-foreground">Qty {item.quantity}</p>
             </div>
-            <span className="font-bold">Tk {item.subtotal}</span>
+            <span className="shrink-0 font-bold">Tk {item.subtotal}</span>
           </div>
         ))}
         <div className="flex justify-between border-t pt-3 font-black">

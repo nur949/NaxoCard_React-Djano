@@ -109,14 +109,14 @@ function ProductCardComponent(rawProps) {
       tabIndex={0}
       className={cn("group relative overflow-hidden rounded-xl border border-border bg-card shadow-soft transition-shadow hover:shadow-lg", className)}
     >
-      <div className="p-4">
+      <div className="p-2.5 sm:p-4">
         <div className="relative overflow-hidden rounded-xl border border-slate-100 bg-white">
           <Link to={href} className="block overflow-hidden" aria-label={title}>
             <img
               src={image}
               alt={title}
               loading="lazy"
-              className="aspect-square w-full object-contain p-4 transition duration-300 ease-out hover:scale-[1.05]"
+              className="aspect-square w-full object-contain p-2.5 transition duration-300 ease-out hover:scale-[1.05] sm:p-4"
             />
           </Link>
           <div className="absolute left-3 top-3 z-20 flex items-center gap-2">
@@ -137,16 +137,16 @@ function ProductCardComponent(rawProps) {
           </button>
         </div>
 
-        <div className="mt-4 space-y-3">
+        <div className="mt-3 space-y-2.5">
           <div className="flex items-start justify-between gap-3">
             <Link to={href} className="min-w-0">
-              <h3 className="line-clamp-2 min-h-[3.25rem] text-base font-semibold leading-6 text-foreground transition-colors hover:text-primary">
+              <h3 className="line-clamp-2 min-h-[2.8rem] text-[0.9rem] font-semibold leading-5 text-foreground transition-colors hover:text-primary sm:min-h-[3.25rem] sm:text-base sm:leading-6">
                 {title}
               </h3>
             </Link>
             <span
               className={cn(
-                "shrink-0 rounded-full px-2.5 py-1 text-[11px] font-bold",
+                "shrink-0 rounded-full px-2 py-1 text-[10px] font-bold sm:px-2.5 sm:text-[11px]",
                 stock > 0
                   ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300"
                   : "bg-muted text-muted-foreground"
@@ -157,9 +157,9 @@ function ProductCardComponent(rawProps) {
           </div>
 
           <div className="flex items-end gap-2">
-            <span className="text-2xl font-black text-foreground">Tk {price}</span>
+            <span className="text-[1rem] font-black text-foreground sm:text-2xl">Tk {price}</span>
             {oldPrice ? (
-              <span className="text-sm font-medium text-muted-foreground line-through">Tk {oldPrice}</span>
+              <span className="text-xs font-medium text-muted-foreground line-through sm:text-sm">Tk {oldPrice}</span>
             ) : null}
           </div>
 
@@ -175,7 +175,7 @@ function ProductCardComponent(rawProps) {
                   )}
                 />
               ))}
-              <span className="ml-1 text-sm font-medium text-muted-foreground">
+              <span className="ml-1 text-xs font-medium text-muted-foreground sm:text-sm">
                 {numericRating.toFixed(1)} ({ratingCount})
               </span>
             </div>
@@ -187,7 +187,7 @@ function ProductCardComponent(rawProps) {
             disabled={stock < 1 || (!onAddToCart && !product?.id)}
             initial={{ y: 10, opacity: 0.92 }}
             whileHover={{ y: 0 }}
-            className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-foreground px-4 text-sm font-semibold text-background transition hover:bg-primary disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-lg bg-foreground px-3 text-xs font-semibold text-background transition hover:bg-primary disabled:cursor-not-allowed disabled:opacity-60 sm:h-11 sm:gap-2 sm:px-4 sm:text-sm"
           >
             <ShoppingCart size={17} />
             {stock > 0 ? "Add to cart" : "Unavailable"}

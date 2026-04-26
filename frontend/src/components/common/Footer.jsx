@@ -43,19 +43,19 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <footer className="mt-16 border-t bg-card">
-      <div className="section grid gap-10 py-12 lg:grid-cols-[1.2fr_2fr_1.1fr]">
-        <div>
+    <footer className="mt-12 border-t bg-card sm:mt-16">
+      <div className="section grid gap-8 py-9 sm:gap-10 sm:py-12 lg:grid-cols-[1.2fr_2fr_1.1fr]">
+        <div className="text-center lg:text-left">
           <Link to="/" className="text-3xl font-black tracking-tight text-primary">NaxoCard</Link>
-          <p className="mt-4 max-w-sm text-sm leading-6 text-muted-foreground">
+          <p className="mx-auto mt-4 max-w-sm text-sm leading-6 text-muted-foreground lg:mx-0">
             Stylish shoes and accessories for everyday shopping in Bangladesh.
           </p>
           <div className="mt-5 grid gap-3 text-sm text-muted-foreground">
-            <span className="flex items-center gap-2"><MapPin size={16} className="text-primary" /> Dhaka, Bangladesh</span>
-            <span className="flex items-center gap-2"><Phone size={16} className="text-primary" /> 09666200300</span>
-            <span className="flex items-center gap-2"><Mail size={16} className="text-primary" /> admin@gmail.com</span>
+            <span className="flex items-center justify-center gap-2 lg:justify-start"><MapPin size={16} className="text-primary" /> Dhaka, Bangladesh</span>
+            <span className="flex items-center justify-center gap-2 lg:justify-start"><Phone size={16} className="text-primary" /> 09666200300</span>
+            <span className="flex items-center justify-center gap-2 lg:justify-start"><Mail size={16} className="text-primary" /> admin@gmail.com</span>
           </div>
-          <div className="mt-5 flex gap-2">
+          <div className="mt-5 flex justify-center gap-2 lg:justify-start">
             {socialLinks.map(({ label, href, icon: Icon }) => (
               <Button
                 key={label}
@@ -72,7 +72,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="grid gap-8 sm:grid-cols-3">
+        <div className="grid gap-8 text-center sm:grid-cols-3 sm:text-left">
           {footerGroups.map((group) => (
             <div key={group.title}>
               <h3 className="text-sm font-black uppercase tracking-wide">{group.title}</h3>
@@ -87,7 +87,7 @@ export default function Footer() {
           ))}
         </div>
 
-        <div className="rounded-lg border bg-background p-5 shadow-soft">
+        <div className="rounded-lg border bg-background p-5 text-center shadow-soft lg:text-left">
           <h3 className="text-lg font-black">Get member deals</h3>
           <p className="mt-2 text-sm leading-6 text-muted-foreground">Get updates on new arrivals and special offers.</p>
           <form className="mt-4 grid gap-2" onSubmit={(event) => event.preventDefault()}>

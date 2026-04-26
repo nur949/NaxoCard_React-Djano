@@ -4,7 +4,6 @@ import HeroSection from "../components/common/HeroSection.jsx";
 import HomeCategoryTiles from "../components/common/HomeCategoryTiles.jsx";
 import HomeProductShowcase from "../components/common/HomeProductShowcase.jsx";
 import PromoBanners from "../components/common/PromoBanners.jsx";
-import SeoContentSection from "../components/common/SeoContentSection.jsx";
 import Testimonials from "../components/common/Testimonials.jsx";
 import Skeleton from "../components/Skeleton.jsx";
 
@@ -87,7 +86,6 @@ export default function Home() {
             subtitle="Explore the most in-demand sneakers, sandals, and loafers right now."
             products={trending}
           />
-          <SeoContentSection />
         </>
       )}
       <Testimonials />

@@ -510,31 +510,57 @@ export default function ProductDetails() {
         </div>
       </section>
 
-        <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_420px]">
+      <section className="section py-12">
+        <div className="grid gap-6 lg:grid-cols-[1fr_420px]">
           <div className="rounded-2xl border bg-card p-4 sm:p-6">
-            <h2 className="text-2xl">Reviews</h2>
-            <div className="mt-4 grid gap-4">
+            <h2 className="text-2xl font-black mb-6">Reviews</h2>
+            <div className="mt-4 grid gap-6">
               {(product.reviews || []).slice(0, 4).map((item) => (
-                <div key={item.id} className="border-b pb-4 last:border-b-0 last:pb-0">
-                  <div className="flex items-center gap-2 text-accent"><Star size={15} fill="currentColor" /> {item.rating}</div>
-                  <p className="mt-1 font-semibold">{item.title || "Customer review"}</p>
-                  <p className="mt-1 text-sm text-muted-foreground">{item.comment || "No written comment."}</p>
+                <div key={item.id} className="border-b border-border pb-6 last:border-b-0 last:pb-0">
+                  <div className="flex items-center gap-2 text-primary mb-2">
+                    <Star size={14} fill="currentColor" /> 
+                    <span className="font-bold">{item.rating}</span>
+                  </div>
+                  <p className="font-bold text-lg mb-1">{item.title || "Customer review"}</p>
+                  <p className="text-muted-foreground leading-relaxed">{item.comment || "No written comment."}</p>
                 </div>
               ))}
-              {(!product.reviews || product.reviews.length === 0) && <p className="text-sm text-muted-foreground">No reviews yet. Be the first to review this product.</p>}
+              {(!product.reviews || product.reviews.length === 0) && (
+                <div className="text-center py-10 bg-muted/20 rounded-2xl">
+                  <p className="text-muted-foreground font-bold">No reviews yet. Be the first to review this product.</p>
+                </div>
+              )}
             </div>
           </div>
 
-          <form className="rounded-2xl border bg-card p-4 sm:p-6" onSubmit={submitReview}>
-            <h3 className="text-lg">Write a review</h3>
-            {reviewMessage && <p className="mt-3 rounded-md bg-muted p-3 text-sm text-muted-foreground">{reviewMessage}</p>}
-            <div className="mt-4 grid gap-3">
-              <select className="input" value={review.rating} onChange={(event) => setReview({ ...review, rating: Number(event.target.value) })}>
-                {[5, 4, 3, 2, 1].map((value) => <option key={value} value={value}>{value} stars</option>)}
-              </select>
-              <input className="input" placeholder="Review title" value={review.title} onChange={(event) => setReview({ ...review, title: event.target.value })} />
-              <textarea className="input min-h-24" placeholder="Share your experience" value={review.comment} onChange={(event) => setReview({ ...review, comment: event.target.value })} />
-              <Button disabled={reviewLoading}>{reviewLoading && <Loader2 className="animate-spin" size={16} />} Submit review</Button>
+          <form className="rounded-2xl border border-border bg-card p-4 sm:p-6" onSubmit={submitReview}>
+            <h3 className="text-xl font-black mb-6">Write a Review</h3>
+            {reviewMessage && (
+              <div className="mb-6 p-4 rounded-xl bg-primary/10 text-primary text-sm font-bold">
+                {reviewMessage}
+              </div>
+            )}
+            <div className="grid gap-4">
+              <div className="space-y-2">
+                <label className="text-xs font-black uppercase tracking-widest text-muted-foreground">Rating</label>
+                <select className="input h-12 rounded-xl" value={review.rating} onChange={(event) => setReview({ ...review, rating: Number(event.target.value) })}>
+                  {[5, 4, 3, 2, 1].map((value) => <option key={value} value={value}>{value} Stars</option>)}
+                </select>
+              </div>
+              <div className="space-y-2">
+                <label className="text-xs font-black uppercase tracking-widest text-muted-foreground">Title</label>
+                <input className="input h-12 rounded-xl" placeholder="Summarize your experience" value={review.title} onChange={(event) => setReview({ ...review, title: event.target.value })} />
+              </div>
+              <div className="space-y-2">
+                <label className="text-xs font-black uppercase tracking-widest text-muted-foreground">Comment</label>
+                <textarea className="input min-h-32 rounded-xl py-3" placeholder="What did you like or dislike?" value={review.comment} onChange={(event) => setReview({ ...review, comment: event.target.value })} />
+              </div>
+              <button 
+                disabled={reviewLoading}
+                className="btn-premium w-full h-12"
+              >
+                {reviewLoading ? <Loader2 className="animate-spin" size={18} /> : "Post Review"}
+              </button>
             </div>
           </form>
         </div>

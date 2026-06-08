@@ -8,11 +8,13 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from orders.views import CartViewSet, CouponViewSet, OrderViewSet, StripeCheckoutView
 from products.views import CategoryViewSet, ProductViewSet
+from core.views import BannerViewSet
 from users.views import AdminActivityLogView, AdminDashboardAnalyticsView, AdminUserViewSet, LoyaltyView, PasswordChangeView, RegisterView, UserProfileView
 
 router = DefaultRouter()
 router.register("categories", CategoryViewSet, basename="category")
 router.register("products", ProductViewSet, basename="product")
+router.register("banners", BannerViewSet, basename="banner")
 router.register("cart", CartViewSet, basename="cart")
 router.register("orders", OrderViewSet, basename="order")
 router.register("coupons", CouponViewSet, basename="coupon")

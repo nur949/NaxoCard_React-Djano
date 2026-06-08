@@ -49,22 +49,39 @@ export default {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        xl: "1rem",
+        "2xl": "1.5rem",
+        "3xl": "2rem",
       },
       fontFamily: {
         sans: ["Inter", "ui-sans-serif", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"],
+        display: ["Cal Sans", "Inter", "sans-serif"],
       },
       boxShadow: {
-        soft: "0 18px 45px hsl(var(--foreground) / 0.08)",
-        premium: "0 24px 70px hsl(var(--foreground) / 0.12)",
+        soft: "0 18px 45px hsl(var(--foreground) / 0.04)",
+        premium: "0 24px 70px hsl(var(--foreground) / 0.1)",
+        neon: "0 0 20px hsl(var(--primary) / 0.3)",
+        glass: "0 8px 32px 0 rgba(31, 38, 135, 0.07)",
+        "glass-heavy": "0 12px 48px 0 rgba(0, 0, 0, 0.15)",
       },
       keyframes: {
         "fade-in": {
-          from: { opacity: "0", transform: "translateY(8px)" },
+          from: { opacity: "0", transform: "translateY(12px)" },
           to: { opacity: "1", transform: "translateY(0)" },
         },
+        "float": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
+        "pulse-glow": {
+          "0%, 100%": { opacity: "0.5", transform: "scale(1)" },
+          "50%": { opacity: "0.8", transform: "scale(1.05)" },
+        }
       },
       animation: {
-        "fade-in": "fade-in 220ms ease-out",
+        "fade-in": "fade-in 0.4s ease-out",
+        "float": "float 6s ease-in-out infinite",
+        "pulse-glow": "pulse-glow 4s ease-in-out infinite",
       },
     },
   },

@@ -107,22 +107,37 @@ function ProductCardComponent(rawProps) {
       onKeyDown={handleCardKeyDown}
       role="link"
       tabIndex={0}
-      className={cn("group relative overflow-hidden rounded-xl border border-border bg-card shadow-soft transition-shadow hover:shadow-lg", className)}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      whileHover={{ y: -8 }}
+      className={cn(
+        "group relative overflow-hidden rounded-[2rem] border border-border bg-card shadow-soft transition-all duration-500 hover:shadow-premium",
+        className
+      )}
     >
-      <div className="p-2.5 sm:p-4">
-        <div className="relative overflow-hidden rounded-xl border border-slate-100 bg-white">
-          <Link to={href} className="block overflow-hidden" aria-label={title}>
+      <div className="p-3 sm:p-4">
+        {/* Image Container */}
+        <div className="relative aspect-square overflow-hidden rounded-[1.5rem] bg-gradient-to-b from-muted/50 to-muted/20">
+          <Link to={href} className="block h-full w-full" aria-label={title}>
             <img
               src={image}
               alt={title}
               loading="lazy"
-              className="aspect-square w-full object-contain p-2.5 transition duration-300 ease-out hover:scale-[1.05] sm:p-4"
+              className="h-full w-full object-contain p-6 transition-transform duration-700 ease-out group-hover:scale-110 group-hover:rotate-6"
             />
           </Link>
-          <div className="absolute left-3 top-3 z-20 flex items-center gap-2">
+          
+          {/* Badges */}
+          <div className="absolute left-4 top-4 z-20 flex flex-col gap-2">
             {hasDiscount ? (
-              <span className="rounded-full bg-destructive px-2.5 py-1 text-xs font-bold text-destructive-foreground">
+              <span className="rounded-full bg-primary px-3 py-1 text-[10px] font-black uppercase tracking-wider text-primary-foreground shadow-neon">
                 {discount}% OFF
+              </span>
+            ) : null}
+            {stock > 0 && stock < 5 ? (
+              <span className="rounded-full bg-orange-500 px-3 py-1 text-[10px] font-black uppercase tracking-wider text-white shadow-lg">
+                Low Stock
               </span>
             ) : null}
           </div>
@@ -130,68 +145,57 @@ function ProductCardComponent(rawProps) {
           <button
             type="button"
             onClick={handleWishlist}
-            className="absolute right-3 top-3 z-20 inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/60 bg-white/85 text-foreground shadow-sm transition hover:scale-105 hover:bg-white"
+            className="absolute right-4 top-4 z-20 inline-flex h-10 w-10 items-center justify-center rounded-full surface-glass text-foreground shadow-soft transition-all hover:scale-110 hover:bg-primary hover:text-white"
             aria-label="Add to wishlist"
           >
-            <Heart size={18} fill={wishlisted ? "currentColor" : "none"} />
+            <Heart size={20} className={cn(wishlisted && "fill-current")} />
           </button>
         </div>
 
-        <div className="mt-3 space-y-2.5">
-          <div className="flex items-start justify-between gap-3">
-            <Link to={href} className="min-w-0">
-              <h3 className="line-clamp-2 min-h-[2.8rem] text-[0.9rem] font-semibold leading-5 text-foreground transition-colors hover:text-primary sm:min-h-[3.25rem] sm:text-base sm:leading-6">
-                {title}
-              </h3>
-            </Link>
-            <span
-              className={cn(
-                "shrink-0 rounded-full px-2 py-1 text-[10px] font-bold sm:px-2.5 sm:text-[11px]",
-                stock > 0
-                  ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300"
-                  : "bg-muted text-muted-foreground"
-              )}
-            >
-              {availability || (stock > 0 ? "In stock" : "Out of stock")}
-            </span>
-          </div>
-
-          <div className="flex items-end gap-2">
-            <span className="text-[1rem] font-black text-foreground sm:text-2xl">Tk {price}</span>
-            {oldPrice ? (
-              <span className="text-xs font-medium text-muted-foreground line-through sm:text-sm">Tk {oldPrice}</span>
-            ) : null}
-          </div>
-
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-1">
+        {/* Content Section */}
+        <div className="mt-5 px-1 pb-2">
+          <div className="flex items-center gap-1 mb-2">
+            <div className="flex">
               {Array.from({ length: 5 }).map((_, index) => (
                 <Star
                   key={index}
-                  size={15}
+                  size={12}
                   className={cn(
                     "transition-colors",
-                    index < Math.round(numericRating) ? "fill-amber-400 text-amber-400" : "fill-muted text-muted"
+                    index < Math.round(numericRating) ? "fill-primary text-primary" : "fill-muted text-muted"
                   )}
                 />
               ))}
-              <span className="ml-1 text-xs font-medium text-muted-foreground sm:text-sm">
-                {numericRating.toFixed(1)} ({ratingCount})
-              </span>
             </div>
+            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">
+              ({ratingCount})
+            </span>
           </div>
 
-          <motion.button
-            type="button"
-            onClick={handleAddToCart}
-            disabled={stock < 1 || (!onAddToCart && !product?.id)}
-            initial={{ y: 10, opacity: 0.92 }}
-            whileHover={{ y: 0 }}
-            className="inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-lg bg-foreground px-3 text-xs font-semibold text-background transition hover:bg-primary disabled:cursor-not-allowed disabled:opacity-60 sm:h-11 sm:gap-2 sm:px-4 sm:text-sm"
-          >
-            <ShoppingCart size={17} />
-            {stock > 0 ? "Add to cart" : "Unavailable"}
-          </motion.button>
+          <Link to={href} className="block mb-3">
+            <h3 className="line-clamp-2 text-lg font-black leading-tight text-foreground transition-colors group-hover:text-primary">
+              {title}
+            </h3>
+          </Link>
+
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex flex-col">
+              {oldPrice ? (
+                <span className="text-xs font-bold text-muted-foreground line-through opacity-60">Tk {oldPrice}</span>
+              ) : null}
+              <span className="text-2xl font-black text-foreground tracking-tighter">Tk {price}</span>
+            </div>
+            
+            <motion.button
+              type="button"
+              onClick={handleAddToCart}
+              disabled={stock < 1 || (!onAddToCart && !product?.id)}
+              whileTap={{ scale: 0.9 }}
+              className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-neon transition-all hover:rotate-12 disabled:bg-muted disabled:text-muted-foreground disabled:shadow-none"
+            >
+              <ShoppingCart size={22} />
+            </motion.button>
+          </div>
         </div>
       </div>
     </motion.article>

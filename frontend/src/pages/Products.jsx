@@ -224,72 +224,132 @@ export default function Products() {
   }, [load, loadCategories, loadWishlist, params]);
 
   return (
-    <section>
-      <div className="border-b bg-muted/50">
-        <div className="section py-3">
-          <div className="flex flex-col justify-between gap-2 lg:flex-row lg:items-end">
-            <div>
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-primary">{headerLine}</p>
-            </div>
+    <section className="bg-background min-h-screen">
+      <div className="bg-muted/30 border-b border-border">
+        <div className="section py-6">
+          <div className="flex flex-col gap-2">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-primary">Explore Collection</p>
+            <h1 className="text-4xl md:text-5xl font-black tracking-tighter">{headerLine}</h1>
           </div>
         </div>
       </div>
 
-      <div className="section py-6 sm:py-8">
-        <div className="grid gap-6 xl:grid-cols-[240px_minmax(0,1fr)]">
+      <div className="section py-12">
+        <div className="grid gap-12 xl:grid-cols-[280px_1fr]">
+          
+          {/* Desktop Filter Panel */}
           <aside className="hidden xl:block">
-            <div className="panel sticky top-28 p-3">
+            <div className="panel sticky top-32 p-6 space-y-8 bg-card/50 backdrop-blur-xl">
+              <h2 className="text-xl font-black tracking-tight border-b border-border pb-4">Filter Products</h2>
               <FilterPanel categories={categories} filters={filters} setFilters={setFilters} apply={apply} reset={reset} />
             </div>
           </aside>
 
           <div>
-            <div className="mb-5 flex flex-col gap-4 rounded-xl border bg-card p-4 md:p-5 lg:flex-row lg:items-center lg:justify-between">
-              <div className="min-w-0">
-                <p className="font-bold text-sm sm:text-base">{count} products</p>
-                <div className="mt-2 flex flex-wrap gap-2">
+            {/* Toolbar */}
+            <div className="mb-8 flex flex-col gap-6 p-6 rounded-[2rem] bg-card border border-border shadow-soft lg:flex-row lg:items-center lg:justify-between">
+              <div className="flex flex-col gap-3">
+                <p className="font-black text-lg tracking-tight">{count} <span className="text-muted-foreground font-bold">Products Found</span></p>
+                <div className="flex flex-wrap gap-2">
                   {activeFilters.map(([key, value]) => (
-                    <Badge key={key} variant="outline" className="gap-1">
+                    <Badge key={key} variant="secondary" className="pl-3 pr-1 py-1 rounded-full gap-2 border-border bg-muted/50 text-[10px] font-black uppercase tracking-wider">
                       {filterLabels[key] || key}: {value === "true" ? "Yes" : value}
-                      <button onClick={() => removeFilter(key)} aria-label={`Remove ${key}`}><X size={12} /></button>
+                      <button 
+                        onClick={() => removeFilter(key)} 
+                        className="w-5 h-5 rounded-full bg-foreground/10 flex items-center justify-center hover:bg-destructive hover:text-white transition-colors"
+                      >
+                        <X size={10} />
+                      </button>
                     </Badge>
                   ))}
-                  {activeFilters.length > 0 && (
-                    <button className="text-sm font-semibold text-primary" onClick={reset}>Clear all</button>
-                  )}
                 </div>
               </div>
-              <div className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto] lg:flex lg:flex-wrap lg:items-center">
-                <Button variant="outline" className="w-full xl:hidden sm:w-auto" onClick={() => setFiltersOpen(true)}><Filter size={16} /> Filters</Button>
-                <select className="input w-full sm:w-52" value={filters.ordering} onChange={(e) => setFilters({ ...filters, ordering: e.target.value })}>
-                  <option value="">Featured</option>
-                  <option value="-created_at">Newest</option>
-                  <option value="price">Price low to high</option>
-                  <option value="-price">Price high to low</option>
-                  <option value="-rating">Top rated</option>
-                </select>
-                <div className="flex items-center gap-2">
-                  <Button variant={view === "grid" ? "default" : "outline"} size="icon" onClick={() => setView("grid")} aria-label="Grid view"><Grid2X2 size={18} /></Button>
-                  <Button variant={view === "list" ? "default" : "outline"} size="icon" onClick={() => setView("list")} aria-label="List view"><List size={18} /></Button>
+
+              <div className="flex flex-wrap items-center gap-4">
+                <Button variant="outline" className="xl:hidden rounded-2xl h-12 px-6" onClick={() => setFiltersOpen(true)}>
+                  <Filter size={18} className="mr-2" /> 
+                  Filters
+                </Button>
+                
+                <div className="relative flex-1 lg:flex-none">
+                  <select 
+                    className="w-full lg:w-56 h-12 pl-4 pr-10 rounded-2xl border-2 border-border bg-background font-black text-sm appearance-none focus:border-primary outline-none transition-all" 
+                    value={filters.ordering} 
+                    onChange={(e) => setFilters({ ...filters, ordering: e.target.value })}
+                  >
+                    <option value="">Featured</option>
+                    <option value="-created_at">Newest Arrivals</option>
+                    <option value="price">Price: Low to High</option>
+                    <option value="-price">Price: High to Low</option>
+                    <option value="-rating">Top Rated</option>
+                  </select>
+                  <SlidersHorizontal size={16} className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground" />
+                </div>
+
+                <div className="flex items-center gap-2 bg-muted/30 p-1 rounded-2xl border border-border">
+                  <button 
+                    onClick={() => setView("grid")}
+                    className={cn(
+                      "w-10 h-10 rounded-xl flex items-center justify-center transition-all",
+                      view === "grid" ? "bg-white text-primary shadow-soft" : "text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    <Grid2X2 size={20} />
+                  </button>
+                  <button 
+                    onClick={() => setView("list")}
+                    className={cn(
+                      "w-10 h-10 rounded-xl flex items-center justify-center transition-all",
+                      view === "list" ? "bg-white text-primary shadow-soft" : "text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    <List size={20} />
+                  </button>
                 </div>
               </div>
             </div>
 
             <ErrorBox message={error} />
+
             {loading ? (
-              <div className="grid grid-cols-2 gap-4 xl:grid-cols-3"><Skeleton lines={12} /></div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <Skeleton lines={12} />
+              </div>
             ) : products.length > 0 ? (
-              <div className={view === "grid" ? "grid grid-cols-2 gap-4 xl:grid-cols-3" : "grid gap-4"}>
-                {products.map((product) => <ProductCard key={product.id} product={product} view={view} onChanged={() => load()} />)}
+              <div className={cn(
+                "grid gap-8 transition-all duration-500",
+                view === "grid" ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"
+              )}>
+                {products.map((product) => (
+                  <ProductCard key={product.id} product={product} view={view} onChanged={() => load()} />
+                ))}
               </div>
             ) : (
-              <div className="panel p-10 text-center">
-                <h2 className="text-2xl">No products found</h2>
-                <p className="mt-2 text-muted-foreground">Try another category, keyword, or price range.</p>
-                <Button className="mt-5" onClick={reset}>Clear filters</Button>
+              <div className="py-20 text-center rounded-[3rem] border-2 border-dashed border-border">
+                <div className="inline-flex h-20 w-20 items-center justify-center rounded-full bg-muted mb-6">
+                  <Search size={32} className="text-muted-foreground" />
+                </div>
+                <h2 className="text-3xl font-black mb-2 tracking-tight">No products found</h2>
+                <p className="text-muted-foreground text-lg mb-8">Try adjusting your filters or search keywords.</p>
+                <button 
+                  onClick={reset}
+                  className="bg-primary text-primary-foreground px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-sm shadow-neon hover:scale-105 transition-all"
+                >
+                  Clear All Filters
+                </button>
               </div>
             )}
-            {next && <div className="mt-8 text-center"><Button variant="outline" onClick={() => load(next, true)}>Load more</Button></div>}
+
+            {next && (
+              <div className="mt-16 text-center">
+                <button 
+                  onClick={() => load(next, true)}
+                  className="px-12 py-4 rounded-2xl border-2 border-primary text-primary font-black uppercase tracking-widest text-sm hover:bg-primary hover:text-white transition-all shadow-premium"
+                >
+                  Load More Products
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

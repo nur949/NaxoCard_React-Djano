@@ -269,157 +269,246 @@ export default function ProductDetails() {
 
   return (
     <>
-      <section className="border-b bg-muted/35">
-        <div className="section flex flex-wrap items-center gap-2 py-4 text-xs font-semibold text-muted-foreground sm:text-sm">
-          <span>Home</span><span>/</span><span>{product.category?.name || "Products"}</span><span>/</span><span className="truncate text-foreground">{product.name}</span>
+      <section className="bg-muted/30 border-b border-border">
+        <div className="section py-4">
+          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-muted-foreground">
+            <Link to="/" className="hover:text-primary transition-colors">Home</Link>
+            <ChevronRight size={14} />
+            <Link to="/products" className="hover:text-primary transition-colors">{product.category?.name || "Products"}</Link>
+            <ChevronRight size={14} />
+            <span className="text-foreground truncate max-w-[200px]">{product.name}</span>
+          </div>
         </div>
       </section>
 
-      <section className="section grid gap-6 py-5 sm:gap-10 sm:py-8 lg:grid-cols-[1.02fr_0.98fr]">
-        <div>
-          <div className="rounded-[1.75rem] border border-slate-200/80 bg-[linear-gradient(180deg,#ffffff,#f8fbff)] p-3 shadow-[0_18px_48px_rgba(15,23,42,0.06)] sm:p-4">
-            <div className="grid gap-4 lg:grid-cols-[92px_1fr]">
-            <div className="order-2 flex gap-2 overflow-x-auto pb-1 lg:order-1 lg:grid lg:content-start">
-              {(displayedImages.length ? displayedImages : [heroImage]).map((image) => (
-                <button key={image} className={`h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-white shadow-sm transition-all sm:h-20 sm:w-20 ${selectedImage === image ? "ring-2 ring-primary/40" : "hover:shadow-md"}`} onClick={() => setSelectedImage(image)} aria-label="View product image">
-                  <img src={image} alt="" className="h-full w-full object-contain" loading="lazy" />
-                </button>
+      <section className="section py-8 sm:py-16">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
+          
+          {/* Left Side: Image Gallery */}
+          <div className="space-y-6">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="relative aspect-square rounded-[3rem] overflow-hidden bg-gradient-to-b from-muted/50 to-muted/20 border border-border shadow-soft group"
+            >
+              <AnimatePresence mode="wait">
+                <motion.img
+                  key={heroImage}
+                  src={heroImage}
+                  alt={product.name}
+                  initial={{ opacity: 0, scale: 1.1 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.5 }}
+                  className="h-full w-full object-contain p-12 transition-transform duration-700 group-hover:scale-105"
+                />
+              </AnimatePresence>
+              
+              <button 
+                onClick={() => setViewerOpen(true)}
+                className="absolute bottom-8 right-8 h-12 w-12 rounded-full surface-glass flex items-center justify-center text-foreground hover:bg-primary hover:text-white transition-all shadow-premium"
+              >
+                <ZoomIn size={24} />
+              </button>
+
+              <div className="absolute top-8 left-8 flex flex-col gap-3">
+                {product.discount_percent > 0 && (
+                  <span className="bg-primary text-primary-foreground px-4 py-1 rounded-full text-xs font-black uppercase tracking-widest shadow-neon">
+                    {product.discount_percent}% OFF
+                  </span>
+                )}
+                <span className={cn(
+                  "px-4 py-1 rounded-full text-xs font-black uppercase tracking-widest shadow-lg",
+                  inStock ? "bg-emerald-500 text-white" : "bg-destructive text-white"
+                )}>
+                  {inStock ? "In Stock" : "Sold Out"}
+                </span>
+              </div>
+            </motion.div>
+
+            <div className="grid grid-cols-5 gap-4">
+              {displayedImages.map((image, i) => (
+                <motion.button
+                  key={image}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  onClick={() => setSelectedImage(image)}
+                  className={cn(
+                    "aspect-square rounded-2xl overflow-hidden bg-muted border-2 transition-all",
+                    selectedImage === image ? "border-primary scale-105 shadow-neon" : "border-transparent opacity-60 hover:opacity-100"
+                  )}
+                >
+                  <img src={image} alt="" className="h-full w-full object-contain p-2" />
+                </motion.button>
               ))}
             </div>
-            <div
-              className={`order-1 overflow-hidden rounded-[1.5rem] bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.96),rgba(240,247,255,0.9))] shadow-[0_18px_42px_rgba(15,23,42,0.08)] lg:order-2 ${zoomActive ? "cursor-zoom-out" : "cursor-zoom-in"}`}
-              onMouseEnter={() => setZoomActive(true)}
-              onMouseLeave={() => {
-                setZoomActive(false);
-                setZoomPosition({ x: 50, y: 50 });
-              }}
-              onMouseMove={handleImageZoom}
-              onClick={() => openViewer(heroImage)}
+          </div>
+
+          {/* Right Side: Product Info (Sticky) */}
+          <div className="lg:sticky lg:top-32 lg:self-start space-y-8">
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
             >
-              <img
-                className="h-[230px] w-full object-contain p-3 transition-transform duration-200 ease-out sm:h-[420px] md:h-[520px] lg:h-[560px]"
-                src={heroImage}
-                alt={product.name}
-                style={{
-                  transformOrigin: `${zoomPosition.x}% ${zoomPosition.y}%`,
-                  transform: zoomActive ? "scale(2.35)" : "scale(1)",
-                }}
-              />
-              <div className="absolute inset-x-4 bottom-4 flex items-center justify-between rounded-full border border-white/70 bg-white/88 px-3 py-2 text-[11px] font-bold uppercase tracking-[0.12em] text-slate-700 shadow-sm backdrop-blur sm:text-xs">
-                <span>Tap for full screen</span>
-                <span>{displayedImages.indexOf(heroImage) + 1}/{displayedImages.length || 1}</span>
+              <h1 className="text-4xl lg:text-6xl font-black leading-tight tracking-tighter mb-4">
+                {product.name}
+              </h1>
+              <div className="flex items-center gap-4 mb-6">
+                <div className="flex items-center gap-1 bg-primary/10 text-primary px-3 py-1 rounded-full">
+                  <Star size={16} fill="currentColor" />
+                  <span className="text-sm font-black">{Number(product.rating || 0).toFixed(1)}</span>
+                </div>
+                <span className="text-sm text-muted-foreground font-bold uppercase tracking-widest">
+                  {product.review_count || 0} REVIEWS
+                </span>
+                <span className="w-1 h-1 rounded-full bg-border" />
+                <span className="text-sm text-muted-foreground font-bold uppercase tracking-widest">
+                  SKU: {productCode}
+                </span>
+              </div>
+            </motion.div>
+
+            <div className="space-y-4">
+              <div className="flex items-end gap-4">
+                <span className="text-5xl font-black text-foreground tracking-tighter">Tk {product.price}</span>
+                {product.compare_at_price && (
+                  <span className="text-2xl font-bold text-muted-foreground line-through mb-1 opacity-50">
+                    Tk {product.compare_at_price}
+                  </span>
+                )}
+              </div>
+              <p className="text-muted-foreground leading-relaxed text-lg max-w-lg">
+                {product.description}
+              </p>
+            </div>
+
+            <div className="space-y-6">
+              {Object.entries(variantGroups).map(([name, values]) => (
+                <div key={name} className="space-y-3">
+                  <p className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">Select {name}</p>
+                  <div className="flex flex-wrap gap-3">
+                    {values.map((variant) => (
+                      <button
+                        key={variant.id}
+                        disabled={variant.stock < 1}
+                        onClick={() => setSelectedVariants({ ...selectedVariants, [name]: variant.value })}
+                        className={cn(
+                          "min-w-[60px] h-12 px-4 rounded-2xl border-2 font-black text-sm transition-all flex items-center justify-center gap-2",
+                          selectedVariants[name] === variant.value 
+                            ? "border-primary bg-primary text-primary-foreground shadow-neon" 
+                            : "border-border bg-background hover:border-primary/50",
+                          variant.stock < 1 && "opacity-30 cursor-not-allowed"
+                        )}
+                      >
+                        {isColorVariant(name) && (
+                          <span 
+                            className="w-4 h-4 rounded-full border border-white/20" 
+                            style={{ backgroundColor: colorSwatch(variant.value) }}
+                          />
+                        )}
+                        {variant.value}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="space-y-6 pt-6 border-t border-border">
+              <div className="flex items-center gap-6">
+                <div className="flex h-14 rounded-2xl border-2 border-border overflow-hidden bg-muted/20">
+                  <button 
+                    onClick={() => changeQuantity(quantity - 1)}
+                    className="w-14 flex items-center justify-center hover:bg-primary hover:text-white transition-colors"
+                  >
+                    <Minus size={20} />
+                  </button>
+                  <input 
+                    type="number" 
+                    value={quantity}
+                    onChange={(e) => changeQuantity(e.target.value)}
+                    className="w-16 bg-transparent text-center font-black text-lg outline-none"
+                  />
+                  <button 
+                    onClick={() => changeQuantity(quantity + 1)}
+                    className="w-14 flex items-center justify-center hover:bg-primary hover:text-white transition-colors"
+                  >
+                    <Plus size={20} />
+                  </button>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-xs font-black uppercase tracking-widest text-muted-foreground">Total Price</span>
+                  <span className="text-2xl font-black">Tk {subtotal}</span>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <button 
+                  disabled={!inStock || !variantsSelected}
+                  onClick={() => add(product.id, quantity, product)}
+                  className="flex-1 h-16 bg-primary text-primary-foreground rounded-2xl font-black uppercase tracking-[0.2em] text-sm shadow-neon hover:scale-[1.02] active:scale-[0.98] transition-all disabled:bg-muted disabled:text-muted-foreground disabled:shadow-none"
+                >
+                  Add to Cart
+                </button>
+                <button 
+                  onClick={() => api.post(`/products/${slug}/wishlist/`).then(() => setProduct({ ...product, is_wishlisted: !product.is_wishlisted }))}
+                  className={cn(
+                    "w-16 h-16 rounded-2xl border-2 flex items-center justify-center transition-all",
+                    product.is_wishlisted ? "bg-primary border-primary text-white shadow-neon" : "border-border text-foreground hover:border-primary"
+                  )}
+                >
+                  <Heart size={24} className={cn(product.is_wishlisted && "fill-current")} />
+                </button>
               </div>
             </div>
-          </div>
-          <p className="mt-3 text-center text-[11px] font-semibold text-muted-foreground sm:text-xs">Tap image on mobile for fullscreen zoom, or hover on desktop to inspect detail.</p>
-          </div>
-        </div>
 
-        <div className="lg:sticky lg:top-40 lg:self-start">
-          <div className="rounded-[1.75rem] border border-slate-200/80 bg-white p-4 shadow-[0_18px_48px_rgba(15,23,42,0.06)] sm:p-5">
-          <div className="border-b pb-5">
-            <div className="mb-3 flex flex-wrap items-center gap-2">
-              {product.discount_percent > 0 && <Badge variant="default">Sale</Badge>}
-              <Badge variant={inStock ? "outline" : "destructive"}>{inStock ? "In stock" : "Sold out"}</Badge>
-            </div>
-            <h1 className="text-[1.45rem] font-black uppercase leading-tight tracking-normal sm:text-4xl">{product.name}</h1>
-            <div className="mt-4 grid gap-2 text-sm text-muted-foreground">
-              <p><span className="font-bold text-foreground">Brand:</span> {product.category?.name || "NaxoCard"}</p>
-              <p><span className="font-bold text-foreground">Product Code:</span> {productCode}</p>
-              <p><span className="font-bold text-foreground">Availability:</span> {inStock ? "In stock" : "Out of stock"}</p>
-            </div>
-            <div className="mt-3 flex items-center gap-2 text-accent">
-              <Star size={18} fill="currentColor" />
-              <span className="font-bold">{Number(product.rating || 0).toFixed(1)}</span>
-              <span className="text-sm text-muted-foreground">({product.review_count || 0} reviews)</span>
-            </div>
-          </div>
-
-          <div className="border-b py-5">
-            <div className="flex flex-wrap items-end gap-3">
-              {product.compare_at_price && <span className="text-2xl font-bold text-muted-foreground line-through">Tk {product.compare_at_price}</span>}
-              <span className="text-3xl font-black text-primary">Tk {product.price}</span>
-            </div>
-            <div className="mt-4 grid gap-2 text-sm font-semibold text-muted-foreground">
-              <span className="flex items-center gap-2"><ShieldCheck size={16} className="text-primary" /> PLEASE CHECK THE PRODUCT INFRONT OF DELIVERY MAN</span>
-              <span className="flex items-center gap-2"><Truck size={16} className="text-primary" /> FREE SHIPPING</span>
-              <span className="flex items-center gap-2"><RotateCcw size={16} className="text-primary" /> Size exchange available within 7 days</span>
-            </div>
-          </div>
-
-          {Object.entries(variantGroups).map(([name, values]) => (
-            <div className="border-b py-5" key={name}>
-              <p className="mb-3 text-sm font-black uppercase">{name} *</p>
-              <div className="flex flex-wrap gap-2">
-                {values.map((variant) => (
-                  isColorVariant(name) ? (
-                    <button
-                      key={variant.id}
-                      type="button"
-                      className={`flex min-w-[96px] items-center gap-2 border px-3 py-2 text-sm font-bold transition-all sm:min-w-[110px] sm:gap-3 ${selectedVariants[name] === variant.value ? "border-foreground bg-foreground text-background shadow-sm" : "border-border bg-background hover:border-foreground"} disabled:cursor-not-allowed disabled:opacity-40`}
-                      onClick={() => setSelectedVariants({ ...selectedVariants, [name]: variant.value })}
-                      disabled={variant.stock < 1}
-                    >
-                      <span
-                        className="h-5 w-5 shrink-0 rounded-full border border-slate-300"
-                        style={{ backgroundColor: colorSwatch(variant.value) }}
-                        aria-hidden="true"
-                      />
-                      <span>{variant.value}</span>
-                    </button>
-                  ) : (
-                    <button
-                      key={variant.id}
-                      type="button"
-                      className={`min-w-12 border px-3 py-2 text-sm font-bold transition-colors sm:min-w-14 sm:px-4 ${selectedVariants[name] === variant.value ? "border-foreground bg-foreground text-background" : "border-border bg-background hover:border-foreground"} disabled:cursor-not-allowed disabled:opacity-40`}
-                      onClick={() => setSelectedVariants({ ...selectedVariants, [name]: variant.value })}
-                      disabled={variant.stock < 1}
-                    >
-                      {variant.value}
-                    </button>
-                  )
-                ))}
+            {/* Trust Badges */}
+            <div className="grid grid-cols-2 gap-4 pt-8">
+              <div className="flex items-center gap-3 p-4 rounded-2xl bg-muted/30 border border-border">
+                <Truck className="text-primary" />
+                <span className="text-xs font-bold uppercase tracking-wider">Free Delivery</span>
+              </div>
+              <div className="flex items-center gap-3 p-4 rounded-2xl bg-muted/30 border border-border">
+                <RotateCcw className="text-primary" />
+                <span className="text-xs font-bold uppercase tracking-wider">7 Day Return</span>
               </div>
             </div>
-          ))}
-
-          <div className="py-5">
-            <p className="mb-3 text-sm font-black uppercase">Quantity:</p>
-            <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-              <div className="flex h-12 overflow-hidden border">
-                <button className="grid w-12 place-items-center border-r hover:bg-muted" onClick={() => changeQuantity(quantity - 1)} aria-label="Decrease quantity"><Minus size={16} /></button>
-                <input className="w-16 border-0 bg-background text-center text-sm font-black outline-none" type="number" min="1" max={product.stock} value={quantity} onChange={(event) => changeQuantity(event.target.value)} />
-                <button className="grid w-12 place-items-center border-l hover:bg-muted" onClick={() => changeQuantity(quantity + 1)} aria-label="Increase quantity"><Plus size={16} /></button>
-              </div>
-              <p className="text-sm font-semibold text-muted-foreground">Subtotal: <span className="text-lg font-black text-foreground">Tk {subtotal}</span></p>
-            </div>
-            {!variantsSelected && requiredVariantNames.length > 0 && <p className="mt-3 text-sm font-semibold text-primary">Select {requiredVariantNames.join(" and ")} before adding to cart.</p>}
-            <div className="mt-5 grid gap-3 md:grid-cols-[1fr_auto]">
-              <button className="flex h-13 min-h-[3.25rem] items-center justify-center gap-2 bg-black px-6 text-sm font-black uppercase tracking-wide text-white transition-colors hover:bg-primary disabled:cursor-not-allowed disabled:bg-black/40 sm:h-14 sm:px-8" onClick={() => add(product.id, quantity, product)} disabled={!inStock || !variantsSelected}>
-                <ShoppingCart size={18} /> Add to cart
-              </button>
-              <Button variant="outline" className="h-13 min-h-[3.25rem] px-5 sm:h-14" onClick={() => api.post(`/products/${slug}/wishlist/`).then(() => setProduct({ ...product, is_wishlisted: !product.is_wishlisted }))}>
-                <Heart size={18} fill={product.is_wishlisted ? "currentColor" : "none"} /> Add to Wish List
-              </Button>
-            </div>
-          </div>
           </div>
         </div>
       </section>
 
-      <section className="section py-8">
-        <div className="overflow-hidden rounded-2xl border bg-card">
-          <div className="flex overflow-x-auto border-b">
+      {/* Tabs & Content */}
+      <section className="section py-16">
+        <div className="border-t border-border pt-16">
+          <div className="flex gap-12 mb-12 overflow-x-auto pb-4 scrollbar-hide">
             {[
-              ["description", "Description"],
-              ["terms", "Terms and Conditions"],
-              ["size", "Size Chart"],
+              ["description", "Product Details"],
+              ["terms", "Returns & Policy"],
+              ["size", "Size Guide"],
             ].map(([id, label]) => (
-              <button key={id} className={`shrink-0 border-r px-4 py-4 text-xs font-black uppercase sm:px-5 sm:text-sm ${activeTab === id ? "bg-foreground text-background" : "hover:bg-muted"}`} onClick={() => setActiveTab(id)}>{label}</button>
+              <button 
+                key={id}
+                onClick={() => setActiveTab(id)}
+                className={cn(
+                  "text-xl md:text-2xl font-black uppercase tracking-tighter whitespace-nowrap transition-all",
+                  activeTab === id ? "text-primary scale-110" : "text-muted-foreground opacity-50 hover:opacity-100"
+                )}
+              >
+                {label}
+              </button>
             ))}
           </div>
-          <div className="p-4 sm:p-6">{tabContent[activeTab]}</div>
+          <motion.div 
+            key={activeTab}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="max-w-4xl"
+          >
+            {tabContent[activeTab]}
+          </motion.div>
         </div>
+      </section>
 
         <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_420px]">
           <div className="rounded-2xl border bg-card p-4 sm:p-6">

@@ -43,83 +43,82 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <footer className="mt-12 border-t bg-card sm:mt-16">
-      <div className="section grid gap-8 py-9 sm:gap-10 sm:py-12 lg:grid-cols-[1.2fr_2fr_1.1fr]">
-        <div className="text-center lg:text-left">
-          <Link to="/" className="text-3xl font-black tracking-tight text-primary">NaxoCard</Link>
-          <p className="mx-auto mt-4 max-w-sm text-sm leading-6 text-muted-foreground lg:mx-0">
-            Stylish shoes and accessories for everyday shopping in Bangladesh.
+    <footer className="mt-24 border-t border-border bg-card">
+      <div className="section grid gap-12 py-16 lg:grid-cols-[1.5fr_2fr_1fr]">
+        
+        {/* Brand Section */}
+        <div className="space-y-6 text-center lg:text-left">
+          <Link to="/" className="text-4xl font-black tracking-tighter text-foreground">
+            Naxo<span className="text-primary">Card</span>
+          </Link>
+          <p className="max-w-xs mx-auto lg:mx-0 text-muted-foreground leading-relaxed">
+            Redefining the shoe shopping experience with premium quality and unparalleled comfort.
           </p>
-          <div className="mt-5 grid gap-3 text-sm text-muted-foreground">
-            <span className="flex items-center justify-center gap-2 lg:justify-start"><MapPin size={16} className="text-primary" /> Dhaka, Bangladesh</span>
-            <span className="flex items-center justify-center gap-2 lg:justify-start"><Phone size={16} className="text-primary" /> 09666200300</span>
-            <span className="flex items-center justify-center gap-2 lg:justify-start"><Mail size={16} className="text-primary" /> admin@gmail.com</span>
-          </div>
-          <div className="mt-5 flex justify-center gap-2 lg:justify-start">
+          <div className="flex justify-center lg:justify-start gap-4">
             {socialLinks.map(({ label, href, icon: Icon }) => (
-              <Button
+              <a
                 key={label}
-                asChild
-                variant="outline"
-                size="icon"
-                className="transition hover:border-primary hover:text-primary"
+                href={href}
+                target="_blank"
+                rel="noreferrer"
+                className="w-10 h-10 rounded-xl border border-border flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-white hover:border-primary transition-all shadow-soft"
+                aria-label={label}
               >
-                <a href={href} target="_blank" rel="noreferrer" aria-label={label}>
-                  <Icon size={17} />
-                </a>
-              </Button>
+                <Icon size={18} />
+              </a>
             ))}
           </div>
         </div>
 
-        <div className="grid gap-8 text-center sm:grid-cols-3 sm:text-left">
+        {/* Links Section */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
           {footerGroups.map((group) => (
-            <div key={group.title}>
-              <h3 className="text-sm font-black uppercase tracking-wide">{group.title}</h3>
-              <div className="mt-4 grid gap-2.5">
+            <div key={group.title} className="space-y-4">
+              <h3 className="text-xs font-black uppercase tracking-[0.2em] text-foreground/50">{group.title}</h3>
+              <ul className="space-y-3">
                 {group.links.map(([label, to]) => (
-                  <Link key={label} to={to} className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
-                    {label}
-                  </Link>
+                  <li key={label}>
+                    <Link 
+                      to={to} 
+                      className="text-sm font-bold text-muted-foreground hover:text-primary transition-colors"
+                    >
+                      {label}
+                    </Link>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
           ))}
         </div>
 
-        <div className="rounded-lg border bg-background p-5 text-center shadow-soft lg:text-left">
-          <h3 className="text-lg font-black">Get member deals</h3>
-          <p className="mt-2 text-sm leading-6 text-muted-foreground">Get updates on new arrivals and special offers.</p>
-          <form className="mt-4 grid gap-2" onSubmit={(event) => event.preventDefault()}>
-            <label className="sr-only" htmlFor="footer-email">Email address</label>
-            <input id="footer-email" className="input" type="email" placeholder="Email address" />
-            <Button type="submit" className="w-full">Subscribe</Button>
+        {/* Newsletter Section */}
+        <div className="p-8 rounded-[2rem] bg-muted/30 border border-border shadow-soft">
+          <h3 className="text-xl font-black mb-2">Join the Club</h3>
+          <p className="text-sm text-muted-foreground mb-6">Get early access to drops and exclusive offers.</p>
+          <form className="space-y-3" onSubmit={(event) => event.preventDefault()}>
+            <input 
+              className="w-full h-12 px-4 rounded-xl border border-border bg-background outline-none focus:ring-2 focus:ring-primary/20 transition-all text-sm font-bold" 
+              type="email" 
+              placeholder="Your email address" 
+            />
+            <button className="w-full h-12 bg-foreground text-background rounded-xl font-black uppercase tracking-widest text-xs hover:bg-primary hover:text-white transition-all">
+              Subscribe
+            </button>
           </form>
-          <p className="mt-3 text-xs text-muted-foreground">Simple updates only.</p>
         </div>
+
       </div>
 
-      <div className="border-t">
-        <div className="section flex flex-col gap-3 py-5 text-xs font-semibold text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-start">
-            <span>&copy; 2026 NaxoCard. All rights reserved.</span>
-            <span className="hidden sm:inline">|</span>
-            <span>
-              Developed by:{" "}
-              <a
-                href="https://github.com/nur949"
-                target="_blank"
-                rel="noreferrer"
-                className="font-semibold text-foreground transition hover:text-primary"
-              >
-                Md. Nur Jamal Miah
-              </a>
-            </span>
+      <div className="border-t border-border py-8">
+        <div className="section flex flex-col md:flex-row items-center justify-between gap-6 text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+          <div className="flex items-center gap-4">
+            <span>&copy; 2026 NaxoCard</span>
+            <span className="w-1 h-1 rounded-full bg-border" />
+            <span>Built by Md. Nur Jamal Miah</span>
           </div>
-          <div className="flex flex-wrap gap-4">
-            <Link to="/privacy" className="hover:text-primary">Privacy</Link>
-            <Link to="/terms" className="hover:text-primary">Terms</Link>
-            <Link to="/refund-policy" className="hover:text-primary">Refund policy</Link>
+          <div className="flex gap-6">
+            <Link to="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
+            <Link to="/terms" className="hover:text-primary transition-colors">Terms of Service</Link>
           </div>
         </div>
       </div>

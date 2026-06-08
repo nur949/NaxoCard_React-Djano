@@ -54,34 +54,25 @@ export default function Layout() {
   }, [open, searchOpen]);
 
   const navTone = useMemo(
-    () =>
-      heroMode
-        ? {
-            header: "bg-background/82 text-foreground shadow-none backdrop-blur-xl border-b border-slate-200/70",
-            link: "text-foreground/80 hover:text-primary",
-            iconButton: "border-slate-200 bg-white/92 text-foreground hover:bg-slate-50",
-            mobile: "border-slate-800/90 bg-[linear-gradient(180deg,rgba(8,15,29,0.99),rgba(15,23,42,0.98))] text-slate-50",
-            logo: "text-primary",
-          }
-        : {
-            header: "bg-background/92 text-foreground shadow-sm backdrop-blur-xl border-b border-border/60",
-            link: "text-foreground/80 hover:text-primary",
-            iconButton: "border-border bg-background text-foreground hover:bg-muted",
-            mobile: "border-slate-800/90 bg-[linear-gradient(180deg,rgba(8,15,29,0.99),rgba(15,23,42,0.98))] text-slate-50",
-            logo: "text-primary",
-          },
-    [heroMode]
+    () => ({
+      header: "bg-background/40 text-foreground border-b border-white/10 backdrop-blur-2xl shadow-glass",
+      link: "text-foreground/70 hover:text-primary transition-all font-black uppercase tracking-widest",
+      iconButton: "border-white/10 bg-white/5 text-foreground hover:bg-primary hover:text-white transition-all rounded-2xl",
+      mobile: "bg-background/95 text-foreground backdrop-blur-3xl",
+      logo: "text-foreground font-black tracking-tighter",
+    }),
+    []
   );
 
   const mobileChrome = {
-    shell: "border-slate-200/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(244,247,252,0.96))] text-slate-900 shadow-[0_10px_35px_rgba(15,23,42,0.08)]",
-    tile: "border-slate-200/90 bg-white/95 text-slate-700 shadow-[0_4px_14px_rgba(15,23,42,0.06)] hover:bg-slate-50 hover:text-slate-950",
-    search: "border-slate-200/90 bg-white text-slate-500 hover:bg-slate-50",
-    bottomShell: "border-slate-200/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(241,245,249,0.95))] shadow-[0_18px_46px_rgba(15,23,42,0.16)]",
-    bottomItem: "text-slate-500 hover:bg-slate-100 hover:text-slate-950",
-    bottomItemActive: "bg-sky-50 text-sky-700",
-    homeActive: "bg-[linear-gradient(180deg,#2563eb,#1d4ed8)] text-white shadow-[0_12px_30px_rgba(37,99,235,0.32)]",
-    homeIdle: "bg-[linear-gradient(180deg,#0f172a,#1e293b)] text-white shadow-[0_10px_24px_rgba(15,23,42,0.18)] hover:bg-[linear-gradient(180deg,#2563eb,#1d4ed8)]",
+    shell: "border-white/10 bg-background/60 backdrop-blur-2xl text-foreground shadow-glass",
+    tile: "border-white/10 bg-white/5 text-foreground hover:bg-primary hover:text-white rounded-2xl transition-all",
+    search: "border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10 rounded-full transition-all",
+    bottomShell: "border-white/10 bg-background/60 backdrop-blur-2xl shadow-glass-heavy rounded-[2.5rem]",
+    bottomItem: "text-muted-foreground hover:text-primary transition-all",
+    bottomItemActive: "text-primary",
+    homeActive: "bg-primary text-primary-foreground shadow-neon rounded-2xl scale-110",
+    homeIdle: "bg-white/10 text-foreground rounded-2xl hover:bg-primary hover:text-white",
   };
 
   const mobileBottomNav = [
